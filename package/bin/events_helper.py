@@ -1,61 +1,83 @@
 import json
 import logging
+from datetime import timedelta
 
-import import_declare_test
+import import_declare_test  # noqa: F401  (adds lib/ to sys.path)
 from solnlib import conf_manager, log
+from solnlib.modular_input import checkpointer
 from splunklib import modularinput as smi
 
+from shadowtrackr_lib.client import AuthError, ShadowTrackrClient, ShadowTrackrError, build_proxy_url
+from shadowtrackr_lib.events import EventCollector
 
 ADDON_NAME = "shadowtrackr"
+SOURCETYPE = "shadowtrackr:events"
+CHECKPOINT_COLLECTION = "shadowtrackr_checkpoints"
+DEFAULT_TIMEOUT = 60
+
 
 def logger_for_input(input_name: str) -> logging.Logger:
     return log.Logs().get_logger(f"{ADDON_NAME.lower()}_{input_name}")
 
 
-def get_account_api_key(session_key: str, account_name: str):
+def _conf(session_key: str, conf_name: str):
     cfm = conf_manager.ConfManager(
         session_key,
         ADDON_NAME,
-        realm=f"__REST_CREDENTIAL__#{ADDON_NAME}#configs/conf-shadowtrackr_account",
+        realm=f"__REST_CREDENTIAL__#{ADDON_NAME}#configs/conf-{conf_name}",
     )
-    account_conf_file = cfm.get_conf("shadowtrackr_account")
-    return account_conf_file.get(account_name).get("api_key")
+    return cfm.get_conf(conf_name)
 
 
-def get_data_from_api(logger: logging.Logger, api_key: str):
-    logger.info("Getting data from an external API")
-    dummy_data = [
-        {
-            "line1": "hello",
-        },
-        {
-            "line2": "world",
-        },
-    ]
-    return dummy_data
+def get_account(session_key: str, account_name: str) -> dict:
+    return _conf(session_key, "shadowtrackr_account").get(account_name)
+
+
+def get_settings(session_key: str) -> dict:
+    settings_conf = _conf(session_key, "shadowtrackr_settings")
+    settings = {}
+    for stanza in ("proxy", "advanced"):
+        try:
+            settings[stanza] = settings_conf.get(stanza) or {}
+        except conf_manager.ConfStanzaNotExistException:
+            settings[stanza] = {}
+    return settings
+
+
+def _int(value, default: int) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def build_client(session_key: str, account_name: str) -> ShadowTrackrClient:
+    account = get_account(session_key, account_name)
+    settings = get_settings(session_key)
+    kwargs = {
+        "api_key": account.get("api_key"),
+        "timeout": _int(settings["advanced"].get("request_timeout"), DEFAULT_TIMEOUT),
+        "proxy_url": build_proxy_url(settings["proxy"]),
+    }
+    if account.get("base_url"):
+        kwargs["base_url"] = account["base_url"]
+    return ShadowTrackrClient(**kwargs)
 
 
 def validate_input(definition: smi.ValidationDefinition):
-    return
+    params = definition.parameters
+    for field, low, high in (("backfill_days", 0, 90), ("overlap_minutes", 0, 1440)):
+        value = params.get(field)
+        if value is not None and not (low <= _int(value, -1) <= high):
+            raise ValueError(f"{field} must be a whole number between {low} and {high}")
 
 
 def stream_events(inputs: smi.InputDefinition, event_writer: smi.EventWriter):
-    # inputs.inputs is a Python dictionary object like:
-    # {
-    #   "events://<input_name>": {
-    #     "account": "<account_name>",
-    #     "disabled": "0",
-    #     "host": "$decideOnStartup",
-    #     "index": "<index_name>",
-    #     "interval": "<interval_value>",
-    #     "python.version": "python3",
-    #   },
-    # }
+    session_key = inputs.metadata["session_key"]
     for input_name, input_item in inputs.inputs.items():
         normalized_input_name = input_name.split("/")[-1]
         logger = logger_for_input(normalized_input_name)
         try:
-            session_key = inputs.metadata["session_key"]
             log_level = conf_manager.get_log_level(
                 logger=logger,
                 session_key=session_key,
@@ -64,25 +86,44 @@ def stream_events(inputs: smi.InputDefinition, event_writer: smi.EventWriter):
             )
             logger.setLevel(log_level)
             log.modular_input_start(logger, normalized_input_name)
-            api_key = get_account_api_key(session_key, input_item.get("account"))
-            data = get_data_from_api(logger, api_key)
-            sourcetype = "dummy-data"
-            for line in data:
+
+            account_name = input_item.get("account")
+            index = input_item.get("index")
+            client = build_client(session_key, account_name)
+            ckpt = checkpointer.KVStoreCheckpointer(CHECKPOINT_COLLECTION, session_key, ADDON_NAME)
+            ckpt_key = f"events_{normalized_input_name}"
+
+            def write(record, timestamp):
                 event_writer.write_event(
                     smi.Event(
-                        data=json.dumps(line, ensure_ascii=False, default=str),
-                        index=input_item.get("index"),
-                        sourcetype=sourcetype,
+                        data=json.dumps(record, ensure_ascii=False, default=str),
+                        time=f"{timestamp:.3f}",
+                        index=index,
+                        sourcetype=SOURCETYPE,
                     )
                 )
-            log.events_ingested(
-                logger,
-                input_name,
-                sourcetype,
-                len(data),
-                input_item.get("index"),
-                account=input_item.get("account"),
+
+            collector = EventCollector(
+                client=client,
+                load_checkpoint=lambda: ckpt.get(ckpt_key),
+                save_checkpoint=lambda state: ckpt.update(ckpt_key, state),
+                write_event=write,
+                logger=logger,
+                backfill=timedelta(days=_int(input_item.get("backfill_days"), 7)),
+                overlap=timedelta(minutes=_int(input_item.get("overlap_minutes"), 15)),
             )
+            count = collector.run()
+            log.events_ingested(logger, input_name, SOURCETYPE, count, index, account=account_name)
             log.modular_input_end(logger, normalized_input_name)
+        except AuthError as e:
+            log.log_exception(
+                logger,
+                e,
+                "Authentication Error",
+                msg_before="ShadowTrackr rejected the API key for account "
+                f"'{input_item.get('account')}'. Check the key and that API access is enabled: ",
+            )
+        except ShadowTrackrError as e:
+            log.log_exception(logger, e, "API Error", msg_before="ShadowTrackr API request failed: ")
         except Exception as e:
-            log.log_exception(logger, e, "my custom error type", msg_before="Exception raised while ingesting data for demo_input: ")
+            log.log_exception(logger, e, "Unknown Error", msg_before="Unexpected error while collecting events: ")

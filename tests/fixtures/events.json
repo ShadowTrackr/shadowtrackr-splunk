@@ -1,0 +1,2062 @@
+{
+  "results": "235 results found",
+  "error": "",
+  "data": [
+    {
+      "timestamp": "2026-10-08T03:41:10Z",
+      "eventid": 1657,
+      "level": 71,
+      "source": "websites",
+      "msg": "Found website: h1.h2.example.com at Microsoft Azure<br>The website is not publicly readable (HTTPS: 404 Not Found, HTTP: 404 Not Found)",
+      "cs1": "Cloud: Microsoft Azure ( 192.0.2.1); HTTP: 404 Not Found; HTTPS: 404 Not Found",
+      "request": "h1.h2.example.com&cloudprovider=Microsoft Azure"
+    },
+    {
+      "timestamp": "2026-10-08T03:41:26Z",
+      "eventid": 156,
+      "level": 60,
+      "source": "ctname",
+      "msg": "Discovered and added url h3.example.com",
+      "cs1": "URL: h3.example.com; DNS: example.com.; DNS: 192.0.2.2; Website: no",
+      "request": "h3.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T03:44:05Z",
+      "eventid": 1412,
+      "level": 91,
+      "source": "ssl",
+      "msg": "Found a certificate for h4.h5.h2.example.com with grade M on 192.0.2.1.",
+      "cs1": "CN: ; SAN: h6.h7.example-1.net; Host: 192.0.2.1; Issuer: ; Not before: 2026-10-06 20:49; Not after: 2027-10-06 20:49; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h4.h5.h2.example.com&ip=192.0.2.1&serial=&url=h4.h5.h2.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T03:45:25Z",
+      "eventid": 278,
+      "level": 71,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.3",
+      "cs1": "Hosted at: OVH SAS in Germany",
+      "dst": "192.0.2.3"
+    },
+    {
+      "timestamp": "2026-10-08T03:46:57Z",
+      "eventid": 1801,
+      "level": 50,
+      "source": "whois",
+      "msg": "Found whois record for example.com at RegistryGate GmbH",
+      "cs1": "Registrar: RegistryGate GmbH; DNSSEC: unsigned; Nameservers: h8.example-2.net,  h9.example-2.net,  h8.example-2.net,  h9.example-2.net; Expires: 2027-08-08"
+    },
+    {
+      "timestamp": "2026-10-08T03:51:04Z",
+      "eventid": 1683,
+      "level": 60,
+      "source": "websites",
+      "msg": "Discovered and added ip 192.0.2.4",
+      "cs1": "IP: 192.0.2.4; ISP: OVH SAS; City: Limburg an der Lahn; Country: Germany",
+      "dst": "192.0.2.4"
+    },
+    {
+      "timestamp": "2026-10-08T03:51:45Z",
+      "eventid": 101,
+      "level": 60,
+      "source": "dns",
+      "msg": "Found server (ipv4) for h10.h11.example-3.net at Fastly",
+      "request": "h10.h11.example-3.net"
+    },
+    {
+      "timestamp": "2026-10-08T03:53:12Z",
+      "eventid": 120,
+      "level": 60,
+      "source": "dns",
+      "msg": "Found server (ipv6) for docs.example.com at Cloudflare",
+      "request": "docs.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T03:53:52Z",
+      "eventid": 1683,
+      "level": 60,
+      "source": "websites",
+      "msg": "Discovered and added ip 192.0.2.5",
+      "cs1": "IP: 192.0.2.5; Reverse DNS: h12.example-4.net; ISP: MISTRAL; City: Berlin; Country: Germany",
+      "dst": "192.0.2.5"
+    },
+    {
+      "timestamp": "2026-10-08T03:53:54Z",
+      "eventid": 120,
+      "level": 60,
+      "source": "dns",
+      "msg": "Found server (ipv6) for h13.example.com at Fastly",
+      "request": "h13.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T03:53:56Z",
+      "eventid": 120,
+      "level": 60,
+      "source": "dns",
+      "msg": "Found server (ipv6) for events.example.com at Cloudflare",
+      "request": "events.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T03:54:02Z",
+      "eventid": 120,
+      "level": 60,
+      "source": "dns",
+      "msg": "Found server (ipv6) for h14.example.com at Cloudflare",
+      "request": "h14.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T03:54:06Z",
+      "eventid": 120,
+      "level": 60,
+      "source": "dns",
+      "msg": "Found server (ipv6) for h15.example.com at Cloudflare",
+      "request": "h15.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T03:59:47Z",
+      "eventid": 156,
+      "level": 60,
+      "source": "ctname",
+      "msg": "Discovered and added url h16.h17.example.com",
+      "cs1": "URL: h16.h17.example.com; DNS: 192.0.2.6; Website: yes; Registrar: RegistryGate GmbH; DNS sec: unsigned; Nameservers: h8.example-2.net, h9.example-2.net, h8.example-2.net, h9.example-2.net",
+      "request": "h16.h17.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T03:59:58Z",
+      "eventid": 120,
+      "level": 60,
+      "source": "dns",
+      "msg": "Found server (ipv6) for www.example.com at Cloudflare",
+      "request": "www.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T04:04:38Z",
+      "eventid": 1392,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Discovered and added ip 192.0.2.6",
+      "cs1": "IP: 192.0.2.6; Reverse DNS: h18.example-4.net; ISP: IONOS SE; City: Frankfurt am Main; Country: Germany",
+      "dst": "192.0.2.6",
+      "fname": "ssl "
+    },
+    {
+      "timestamp": "2026-10-08T04:11:22Z",
+      "eventid": 1301,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Found a certificate for h19.dev.example.com with grade A+ on 192.0.2.3.",
+      "cs1": "CN: h19.dev.example.com; SAN: h19.dev.example.com; Host: 192.0.2.3; Issuer: YR2; Not before: 2026-09-20 12:04; Not after: 2026-12-19 12:04; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h19.dev.example.com&ip=192.0.2.3&serial=55281220E087835B92558589EAFF309CAD68&url=h19.dev.example.com",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-08T04:11:50Z",
+      "eventid": 1392,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Discovered and added ip 192.0.2.7",
+      "cs1": "IP: 192.0.2.7; Reverse DNS: h20.h21.h22.example-4.net; ISP: IONOS SE; City: Berlin; Country: Germany",
+      "dst": "192.0.2.7",
+      "fname": "ssl "
+    },
+    {
+      "timestamp": "2026-10-08T04:13:14Z",
+      "eventid": 1392,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Discovered and added ip 192.0.2.8",
+      "cs1": "IP: 192.0.2.8; Reverse DNS: h23.h24.h25.h26.example-4.net; ISP: IONOS SE; City: Frankfurt am Main; Country: Germany",
+      "dst": "192.0.2.8",
+      "fname": "ssl "
+    },
+    {
+      "timestamp": "2026-10-08T04:15:47Z",
+      "eventid": 1663,
+      "level": 80,
+      "source": "websites",
+      "msg": "Found website: h13.example.com at Fastly<br>Security grade: B+ (weak)",
+      "cs1": "Cloud: Fastly ( 2001:db8::1); Server: nginx; HTTP: 301 Moved Permanently; HTTPS: 200 OK; Tech stack: Font Awesome  Nginx  Stimulus  Varnish",
+      "request": "h13.example.com&cloudprovider=Fastly"
+    },
+    {
+      "timestamp": "2026-10-08T04:18:33Z",
+      "eventid": 156,
+      "level": 60,
+      "source": "ctname",
+      "msg": "Discovered and added url h27.h28.example.com",
+      "cs1": "URL: h27.h28.example.com; DNS: 192.0.2.9; Website: yes; Registrar: RegistryGate GmbH; DNS sec: unsigned; Nameservers: h8.example-2.net, h9.example-2.net, h8.example-2.net, h9.example-2.net",
+      "request": "h27.h28.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T04:18:47Z",
+      "eventid": 1663,
+      "level": 71,
+      "source": "websites",
+      "msg": "Found website: events.example.com at Cloudflare<br>The website is not publicly readable (HTTPS: 404 Not Found, HTTP: 404 Not Found)",
+      "cs1": "Cloud: Cloudflare ( 2001:db8::2); HTTP: 404 Not Found; HTTPS: 404 Not Found",
+      "request": "events.example.com&cloudprovider=Cloudflare"
+    },
+    {
+      "timestamp": "2026-10-08T04:19:03Z",
+      "eventid": 1683,
+      "level": 60,
+      "source": "websites",
+      "msg": "Discovered and added ip 192.0.2.10",
+      "cs1": "IP: 192.0.2.10; Reverse DNS: h29.example-4.net; ISP: IONOS SE example-5.net; City: Berlin; Country: Germany",
+      "dst": "192.0.2.10"
+    },
+    {
+      "timestamp": "2026-10-08T04:19:22Z",
+      "eventid": 1663,
+      "level": 71,
+      "source": "websites",
+      "msg": "Found website: h14.example.com at Cloudflare<br>The website is not publicly readable (HTTPS: 404 Not Found, HTTP: 404 Not Found)",
+      "cs1": "Cloud: Cloudflare ( 2001:db8::3); HTTP: 404 Not Found; HTTPS: 404 Not Found",
+      "request": "h14.example.com&cloudprovider=Cloudflare"
+    },
+    {
+      "timestamp": "2026-10-08T04:19:33Z",
+      "eventid": 1392,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Discovered and added ip 192.0.2.11",
+      "cs1": "IP: 192.0.2.11; Reverse DNS: h30.example-4.net; ISP: IONOS SE; City: Berlin; Country: Germany",
+      "dst": "192.0.2.11",
+      "fname": "ssl "
+    },
+    {
+      "timestamp": "2026-10-08T04:20:01Z",
+      "eventid": 1663,
+      "level": 90,
+      "source": "websites",
+      "msg": "Found website: www.example.com at Cloudflare<br>Security grade: C- (bad, you should fix this)",
+      "cs1": "Cloud: Cloudflare ( 2001:db8::4); Server: cloudflare; HTTP: 301 Moved Permanently; HTTPS: 200 OK; Tech stack: Cloudflare  Linkedin Insight Tag",
+      "request": "www.example.com&cloudprovider=Cloudflare"
+    },
+    {
+      "timestamp": "2026-10-08T04:20:10Z",
+      "eventid": 1663,
+      "level": 71,
+      "source": "websites",
+      "msg": "Found website: h15.example.com at Cloudflare<br>The website is not publicly readable (HTTPS: 404 Not Found, HTTP: 404 Not Found)",
+      "cs1": "Cloud: Cloudflare ( 2001:db8::3); HTTP: 404 Not Found; HTTPS: 404 Not Found",
+      "request": "h15.example.com&cloudprovider=Cloudflare"
+    },
+    {
+      "timestamp": "2026-10-08T04:20:13Z",
+      "eventid": 279,
+      "level": 81,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.12, and it has warnings",
+      "cs1": "Hosted at: Krystal Hosting Ltd in United Kingdom; Warning: ftp has warnings",
+      "dst": "192.0.2.12"
+    },
+    {
+      "timestamp": "2026-10-08T04:21:38Z",
+      "eventid": 278,
+      "level": 71,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.13 (h31.h32.example.com)",
+      "cs1": "Hosted at: IONOS SE in Germany",
+      "dst": "192.0.2.13"
+    },
+    {
+      "timestamp": "2026-10-08T04:22:07Z",
+      "eventid": 1663,
+      "level": 80,
+      "source": "websites",
+      "msg": "Found website: docs.example.com at Cloudflare<br>Security grade: B (weak)",
+      "cs1": "Cloud: Cloudflare ( 2001:db8::5); Server: cloudflare; HTTP: 301 Moved Permanently; HTTPS: 200 OK; Tech stack: Cloudflare  Vercel",
+      "request": "docs.example.com&cloudprovider=Cloudflare"
+    },
+    {
+      "timestamp": "2026-10-08T04:22:15Z",
+      "eventid": 1411,
+      "level": 81,
+      "source": "ssl",
+      "msg": "Found a certificate for monitoring.example.com with grade B on 192.0.2.14.",
+      "cs1": "CN: monitoring.example.com; SAN: monitoring.example.com; Host: 192.0.2.14; Issuer: YR1; Not before: 2026-09-02 08:46; Not after: 2026-12-01 08:46; Protocols: TLS 1.0, TLS 1.1, TLS 1.2, TLS 1.3; Warning: Grade capped to B. TLS 1.0 offered; Warning: Grade capped to B. TLS 1.1 offered",
+      "request": "monitoring.example.com&ip=192.0.2.14&serial=6E51C6B36D6F3C9F0AC9056A4AD683CBF721&url=monitoring.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T04:22:51Z",
+      "eventid": 279,
+      "level": 81,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.15, and it has warnings",
+      "cs1": "Hosted at: Host Europe GmbH in France; Warning: ftp has warnings",
+      "dst": "192.0.2.15"
+    },
+    {
+      "timestamp": "2026-10-08T04:23:10Z",
+      "eventid": 1301,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Found a certificate for h33.h28.example.com with grade A+ on 192.0.2.9.",
+      "cs1": "CN: h33.h28.example.com; SAN: h33.h28.example.com; Host: 192.0.2.9; Issuer: YR2; Not before: 2026-09-14 20:19; Not after: 2026-12-13 20:19; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h33.h28.example.com&ip=192.0.2.9&serial=319002D3167D53E5753DC98FA36A1009AECA&url=h33.h28.example.com",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-08T04:25:54Z",
+      "eventid": 1392,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Discovered and added ip 192.0.2.16",
+      "cs1": "IP: 192.0.2.16; ISP: OVH SAS; City: Saarbrücken; Country: Germany",
+      "dst": "192.0.2.16",
+      "fname": "ssl "
+    },
+    {
+      "timestamp": "2026-10-08T04:27:21Z",
+      "eventid": 279,
+      "level": 81,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.17, and it has warnings",
+      "cs1": "Hosted at: Krystal Hosting Ltd in The Netherlands; Warning: ftp has warnings",
+      "dst": "192.0.2.17"
+    },
+    {
+      "timestamp": "2026-10-08T04:30:50Z",
+      "eventid": 101,
+      "level": 60,
+      "source": "dns",
+      "msg": "Found server (ipv4) for h34.example.com at Cloudflare",
+      "request": "h34.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T04:31:11Z",
+      "eventid": 1301,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Found a certificate for h35.h36.example.com with grade A+ on 192.0.2.18.",
+      "cs1": "CN: h35.h36.example.com; SAN: h35.h36.example.com; Host: 192.0.2.18; Issuer: YR1; Not before: 2026-09-15 04:58; Not after: 2026-12-14 04:58; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h35.h36.example.com&ip=192.0.2.18&serial=707C2822009BFF43A25544A9394641A659D5&url=h35.h36.example.com",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-08T04:31:37Z",
+      "eventid": 278,
+      "level": 71,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.5 (h37.h38.example.com). The host is up but no open ports are found.",
+      "cs1": "Hosted at: MISTRAL in Germany",
+      "dst": "192.0.2.5"
+    },
+    {
+      "timestamp": "2026-10-08T04:35:15Z",
+      "eventid": 280,
+      "level": 91,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.19, and it has problems",
+      "cs1": "Hosted at: Neue Medien Muennich in Germany; Problem: MySQL has problems; Warning: ftp has warnings",
+      "dst": "192.0.2.19"
+    },
+    {
+      "timestamp": "2026-10-08T04:35:47Z",
+      "eventid": 1392,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Discovered and added ip 192.0.2.12",
+      "cs1": "IP: 192.0.2.12; Reverse DNS: h39.h40.example-6.net; ISP: Krystal Hosting Ltd; City: London; Country: United Kingdom",
+      "dst": "192.0.2.12",
+      "fname": "ssl "
+    },
+    {
+      "timestamp": "2026-10-08T04:36:46Z",
+      "eventid": 1410,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Discovered and suggested url h41.h42.h43.h44.h45.example-7.net",
+      "cs1": "URL: h41.h42.h43.h44.h45.example-7.net; DNS: 192.0.2.17; Website: yes"
+    },
+    {
+      "timestamp": "2026-10-08T04:36:48Z",
+      "eventid": 1410,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Discovered and suggested url www.h41.h42.h43.h44.h45.example-7.net",
+      "cs1": "URL: www.h41.h42.h43.h44.h45.example-7.net; DNS: 192.0.2.17; Website: yes"
+    },
+    {
+      "timestamp": "2026-10-08T04:36:49Z",
+      "eventid": 1683,
+      "level": 60,
+      "source": "websites",
+      "msg": "Discovered and added ip 192.0.2.20",
+      "cs1": "IP: 192.0.2.20; Reverse DNS: example-8.net; ISP: OVH SAS; City: Limburg an der Lahn; Country: Germany",
+      "dst": "192.0.2.20"
+    },
+    {
+      "timestamp": "2026-10-08T04:39:15Z",
+      "eventid": 156,
+      "level": 60,
+      "source": "ctname",
+      "msg": "Discovered and added url h46.h2.example.com",
+      "cs1": "URL: h46.h2.example.com; DNS: 192.0.2.1; Website: yes; Registrar: RegistryGate GmbH; DNS sec: unsigned; Nameservers: h8.example-2.net, h9.example-2.net, h8.example-2.net, h9.example-2.net",
+      "request": "h46.h2.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T04:41:27Z",
+      "eventid": 1390,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Discovered and suggested url h47.h48.example-9.net",
+      "cs1": "Website no",
+      "fname": "ssl "
+    },
+    {
+      "timestamp": "2026-10-08T04:41:28Z",
+      "eventid": 1410,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Discovered and suggested url admin.h48.example-9.net",
+      "cs1": "Website no"
+    },
+    {
+      "timestamp": "2026-10-08T04:41:30Z",
+      "eventid": 1410,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Discovered and suggested url h49.h48.example-9.net",
+      "cs1": "Website no"
+    },
+    {
+      "timestamp": "2026-10-08T04:41:31Z",
+      "eventid": 1410,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Discovered and suggested url h50.h48.example-9.net",
+      "cs1": "Website no"
+    },
+    {
+      "timestamp": "2026-10-08T04:41:42Z",
+      "eventid": 1301,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Found a certificate for h51.h17.example.com with grade A+ on 192.0.2.6.",
+      "cs1": "CN: h51.h17.example.com; SAN: h51.h17.example.com; Host: 192.0.2.6; Issuer: YR2; Not before: 2026-08-11 18:48; Not after: 2026-11-09 18:48; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h51.h17.example.com&ip=192.0.2.6&serial=8D61FCBC512838242E7CDC5AE4F63DD3987C&url=h51.h17.example.com",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-08T04:50:47Z",
+      "eventid": 1358,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h13.example.com expires in three weeks",
+      "cs1": "CN: h13.example.com; SAN: h13.example.com; Host: 192.0.2.21; Issuer: Certainly Intermediate R1; Not before: 2026-09-24 06:42; Not after: 2026-10-24 06:42; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h13.example.com&cid=10000005",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-08T04:51:16Z",
+      "eventid": 1301,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Found a certificate for h52.h32.example.com with grade A+ on 192.0.2.13.",
+      "cs1": "CN: h52.h32.example.com; SAN: h52.h32.example.com; Host: 192.0.2.13; Issuer: YR2; Not before: 2026-08-23 01:43; Not after: 2026-11-21 01:43; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h52.h32.example.com&ip=192.0.2.13&serial=A03EEB9CAF3CC6086ED95E6B0CDCA2F790D4&url=h52.h32.example.com",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-08T04:53:32Z",
+      "eventid": 1657,
+      "level": 90,
+      "source": "websites",
+      "msg": "Found website: h53.h54.example.com on host 192.0.2.22<br>Security grade: D (bad, you should fix this)",
+      "cs1": "Server: 192.0.2.22; Server: nginx/1.30.5; HTTP: 301 Moved Permanently; HTTPS: 200 OK; Tech stack: Nginx 1.30.5",
+      "request": "h53.h54.example.com&wip=192.0.2.22"
+    },
+    {
+      "timestamp": "2026-10-08T04:54:39Z",
+      "eventid": 1411,
+      "level": 81,
+      "source": "ssl",
+      "msg": "Found a certificate for h55.example.com with grade B on 192.0.2.23.",
+      "cs1": "CN: h55.example.com; SAN: h55.example.com; Host: 192.0.2.23; Issuer: YE2; Not before: 2026-08-24 11:04; Not after: 2026-11-22 11:04; Protocols: TLS 1.0, TLS 1.1, TLS 1.2, TLS 1.3; Warning: Grade capped to B. TLS 1.0 offered; Warning: Grade capped to B. TLS 1.1 offered",
+      "request": "h55.example.com&ip=192.0.2.23&serial=2BE1598B7CC5F8A7870CAD78625E48E544EB&url=h55.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T04:56:09Z",
+      "eventid": 1350,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for grafana.h56.example.com expires in two weeks",
+      "cs1": "CN: grafana.h56.example.com; SAN: grafana.h56.example.com; Host: 192.0.2.24; Issuer: YR1; Not before: 2026-07-22 07:50; Not after: 2026-10-20 07:50; Protocols: TLS 1.2, TLS 1.3",
+      "request": "grafana.h56.example.com&cid=10000008",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-08T04:58:07Z",
+      "eventid": 1415,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Renewed certificate for h57.h2.example.com found on 192.0.2.1. Status:",
+      "cs1": "CN: ; SAN: h58.h59.example-1.net; Host: 192.0.2.1; Issuer: ; Not before: 2026-10-06 20:49; Not after: 2027-10-06 20:49; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h57.h2.example.com&ip=192.0.2.1&serial=&url=h57.h2.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T05:11:22Z",
+      "eventid": 1350,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h60.h56.example.com expires in two weeks",
+      "cs1": "CN: h60.h56.example.com; SAN: h60.h56.example.com; Host: 192.0.2.24; Issuer: YR1; Not before: 2026-07-23 11:53; Not after: 2026-10-21 11:53; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h60.h56.example.com&cid=10000009",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-08T05:12:42Z",
+      "eventid": 156,
+      "level": 60,
+      "source": "ctname",
+      "msg": "Discovered and added url h4.h61.h62.example.com",
+      "cs1": "URL: h4.h61.h62.example.com; DNS: 192.0.2.25; Website: no; Registrar: RegistryGate GmbH; DNS sec: unsigned; Nameservers: h8.example-2.net, h9.example-2.net, h8.example-2.net, h9.example-2.net",
+      "request": "h4.h61.h62.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T05:15:13Z",
+      "eventid": 1840,
+      "level": 50,
+      "source": "rdap",
+      "msg": "Found RDAP record for example.com at RegistryGate GmbH",
+      "cs1": "Registrar: RegistryGate GmbH; DNSSEC: No; Nameservers: h8.example-2.net,  h9.example-2.net; Expires: 2027-08-08 12:38:36"
+    },
+    {
+      "timestamp": "2026-10-08T05:16:16Z",
+      "eventid": 156,
+      "level": 60,
+      "source": "ctname",
+      "msg": "Discovered and added url h63.h32.example.com",
+      "cs1": "URL: h63.h32.example.com; DNS: 192.0.2.13; Website: yes; Registrar: RegistryGate GmbH; DNS sec: No; Nameservers: h8.example-2.net, h9.example-2.net",
+      "request": "h63.h32.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T05:20:09Z",
+      "eventid": 155,
+      "level": 60,
+      "source": "ctname",
+      "msg": "Discovered and added url h64.h65.h66.example.com",
+      "cs1": "URL: h64.h65.h66.example.com; DNS: 192.0.2.26; Website: yes; Registrar: RegistryGate GmbH; DNS sec: No; Nameservers: h8.example-2.net, h9.example-2.net",
+      "request": "h64.h65.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T05:20:21Z",
+      "eventid": 155,
+      "level": 60,
+      "source": "ctname",
+      "msg": "Discovered and added url h67.h68.h66.example.com",
+      "cs1": "URL: h67.h68.h66.example.com; DNS: 192.0.2.26; Website: yes; Registrar: RegistryGate GmbH; DNS sec: No; Nameservers: h8.example-2.net, h9.example-2.net",
+      "request": "h67.h68.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T05:20:32Z",
+      "eventid": 155,
+      "level": 60,
+      "source": "ctname",
+      "msg": "Discovered and added url h69.h70.h66.example.com",
+      "cs1": "URL: h69.h70.h66.example.com; DNS: 192.0.2.26; Website: yes; Registrar: RegistryGate GmbH; DNS sec: No; Nameservers: h8.example-2.net, h9.example-2.net",
+      "request": "h69.h70.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T05:20:41Z",
+      "eventid": 155,
+      "level": 60,
+      "source": "ctname",
+      "msg": "Discovered and added url app.example.com",
+      "cs1": "URL: app.example.com; DNS: 192.0.2.27; Website: yes; Registrar: RegistryGate GmbH; DNS sec: No; Nameservers: h8.example-2.net, h9.example-2.net",
+      "request": "app.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T05:20:54Z",
+      "eventid": 155,
+      "level": 60,
+      "source": "ctname",
+      "msg": "Discovered and added url h71.h72.h66.example.com",
+      "cs1": "URL: h71.h72.h66.example.com; DNS: 192.0.2.26; Website: yes; Registrar: RegistryGate GmbH; DNS sec: No; Nameservers: h8.example-2.net, h9.example-2.net",
+      "request": "h71.h72.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T05:21:04Z",
+      "eventid": 155,
+      "level": 60,
+      "source": "ctname",
+      "msg": "Discovered and added url h73.h74.h66.example.com",
+      "cs1": "URL: h73.h74.h66.example.com; DNS: 192.0.2.26; Website: yes; Registrar: RegistryGate GmbH; DNS sec: No; Nameservers: h8.example-2.net, h9.example-2.net",
+      "request": "h73.h74.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T05:23:03Z",
+      "eventid": 3310,
+      "level": 81,
+      "source": "ssl",
+      "msg": "TLS check \"early_data\" is now a problem on events.example.com",
+      "request": "events.example.com&ip=2001:db8::2&serial=&url=events.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T05:23:03Z",
+      "eventid": 3311,
+      "level": 20,
+      "source": "ssl",
+      "msg": "TLS check \"early_data\" is ok again on events.example.com",
+      "request": "events.example.com&ip=192.0.2.28&serial=&url=events.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T05:30:37Z",
+      "eventid": 1683,
+      "level": 60,
+      "source": "websites",
+      "msg": "Discovered and added ip 192.0.2.29",
+      "cs1": "IP: 192.0.2.29; ISP: OVH SAS; City: Limburg an der Lahn; Country: Germany",
+      "dst": "192.0.2.29"
+    },
+    {
+      "timestamp": "2026-10-08T05:42:09Z",
+      "eventid": 1657,
+      "level": 71,
+      "source": "websites",
+      "msg": "Found website: h75.h66.example.com on host 192.0.2.26<br>The website is not publicly readable (HTTPS: 404 Not Found, HTTP: 404 Not Found)",
+      "cs1": "Server: 192.0.2.26; HTTP: 404 Not Found; HTTPS: 404 Not Found",
+      "request": "h75.h66.example.com&wip=192.0.2.26"
+    },
+    {
+      "timestamp": "2026-10-08T05:44:33Z",
+      "eventid": 278,
+      "level": 71,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.30 (h76.h27.h77.h78.cdn.example-10.net). The host is up but no open ports are found.",
+      "cs1": "Hosted at: OVH SAS in United Kingdom",
+      "dst": "192.0.2.30"
+    },
+    {
+      "timestamp": "2026-10-08T05:48:44Z",
+      "eventid": 1664,
+      "level": 60,
+      "source": "websites",
+      "msg": "Discovered and suggested url h42.example-11.net",
+      "cs1": "URL: h42.example-11.net; DNS: h79.example-12.net.; DNS: 192.0.2.31; Website: yes"
+    },
+    {
+      "timestamp": "2026-10-08T05:51:25Z",
+      "eventid": 1683,
+      "level": 60,
+      "source": "websites",
+      "msg": "Discovered and added ip 192.0.2.32",
+      "cs1": "IP: 192.0.2.32; ISP: OVH SAS; City: Roubaix; Country: France",
+      "dst": "192.0.2.32"
+    },
+    {
+      "timestamp": "2026-10-08T05:54:15Z",
+      "eventid": 1301,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Found a certificate for h80.h28.example.com with grade A+ on 192.0.2.9.",
+      "cs1": "CN: h80.h28.example.com; SAN: h80.h28.example.com; Host: 192.0.2.9; Issuer: YR1; Not before: 2026-09-15 02:44; Not after: 2026-12-14 02:44; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h80.h28.example.com&ip=192.0.2.9&serial=82853416D112FB3A141E4CE0828A291C18A4&url=h80.h28.example.com",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-08T05:56:01Z",
+      "eventid": 278,
+      "level": 71,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.33 (h81.h82.example.com)",
+      "cs1": "Hosted at: OVH SAS in Germany",
+      "dst": "192.0.2.33"
+    },
+    {
+      "timestamp": "2026-10-08T06:03:16Z",
+      "eventid": 278,
+      "level": 71,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.20 (admin.h83.example.com)",
+      "cs1": "Hosted at: OVH SAS in Germany",
+      "dst": "192.0.2.20"
+    },
+    {
+      "timestamp": "2026-10-08T06:06:46Z",
+      "eventid": 279,
+      "level": 81,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.15 (old.example.com), and it has warnings",
+      "cs1": "Hosted at: Host Europe GmbH in France; Warning: ftp has warnings",
+      "dst": "192.0.2.15"
+    },
+    {
+      "timestamp": "2026-10-08T06:09:22Z",
+      "eventid": 280,
+      "level": 91,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.19 (h84.example.com), and it has problems",
+      "cs1": "Hosted at: Neue Medien Muennich in Germany; Problem: MySQL has problems; Warning: ftp has warnings",
+      "dst": "192.0.2.19"
+    },
+    {
+      "timestamp": "2026-10-08T06:09:39Z",
+      "eventid": 279,
+      "level": 81,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.17 (h41.example.com), and it has warnings",
+      "cs1": "Hosted at: Krystal Hosting Ltd in The Netherlands; Warning: ftp has warnings",
+      "dst": "192.0.2.17"
+    },
+    {
+      "timestamp": "2026-10-08T06:11:23Z",
+      "eventid": 279,
+      "level": 81,
+      "source": "hosts",
+      "msg": "Found host: 192.0.2.12 (h85.example.com), and it has warnings",
+      "cs1": "Hosted at: Krystal Hosting Ltd in United Kingdom; Warning: ftp has warnings",
+      "dst": "192.0.2.12"
+    },
+    {
+      "timestamp": "2026-10-08T06:50:45Z",
+      "eventid": 1358,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h86.h87.h66.example.com expires in three weeks",
+      "cs1": "CN: h86.h87.h66.example.com; SAN: h86.h87.h66.example.com; Host: 192.0.2.26; Issuer: YR2; Not before: 2026-07-29 22:32; Not after: 2026-10-27 22:32; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h86.h87.h66.example.com&cid=10000011",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-08T06:52:01Z",
+      "eventid": 1358,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h88.h89.h66.example.com expires in three weeks",
+      "cs1": "CN: h88.h89.h66.example.com; SAN: h88.h89.h66.example.com; Host: 192.0.2.26; Issuer: YR1; Not before: 2026-07-27 22:32; Not after: 2026-10-25 22:32; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h88.h89.h66.example.com&cid=10000012",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-08T06:55:34Z",
+      "eventid": 1416,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Detected changed TLS settings for h90.h91.h66.example.com on 192.0.2.26. Status:",
+      "cs1": "CN: TRAEFIK DEFAULT CERT; SAN: h92.h93.example-1.net; Host: 192.0.2.26; Issuer: ; Not before: 2026-10-08 04:54; Not after: 2027-10-08 04:54; Protocols: TLS 1.2; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h94.h95.h66.example.com&ip=192.0.2.26&serial=F28D60CF2CD1BE069039A9DD9E94E458&url=h90.h91.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-08T11:48:40Z",
+      "eventid": 1551,
+      "level": 50,
+      "source": "asn",
+      "msg": "Found ASN 8560 for 192.0.2.6",
+      "dst": "192.0.2.6"
+    },
+    {
+      "timestamp": "2026-10-08T11:49:04Z",
+      "eventid": 1551,
+      "level": 50,
+      "source": "asn",
+      "msg": "Found ASN 8560 for 192.0.2.8",
+      "dst": "192.0.2.8"
+    },
+    {
+      "timestamp": "2026-10-08T11:49:18Z",
+      "eventid": 1551,
+      "level": 50,
+      "source": "asn",
+      "msg": "Found ASN 8972 for 192.0.2.15",
+      "dst": "192.0.2.15"
+    },
+    {
+      "timestamp": "2026-10-08T11:49:54Z",
+      "eventid": 1551,
+      "level": 50,
+      "source": "asn",
+      "msg": "Found ASN 202053 for 192.0.2.27",
+      "dst": "192.0.2.27"
+    },
+    {
+      "timestamp": "2026-10-08T15:18:19Z",
+      "eventid": 1551,
+      "level": 50,
+      "source": "asn",
+      "msg": "Found ASN 16276 for 192.0.2.34",
+      "dst": "192.0.2.34"
+    },
+    {
+      "timestamp": "2026-10-08T15:18:36Z",
+      "eventid": 1551,
+      "level": 50,
+      "source": "asn",
+      "msg": "Found ASN 16276 for 192.0.2.33",
+      "dst": "192.0.2.33"
+    },
+    {
+      "timestamp": "2026-10-08T18:23:46Z",
+      "eventid": 3001,
+      "level": 61,
+      "source": "phish",
+      "msg": "Detected example-13.net, which looks like your asset example.com. We'll monitor it and warn you if things get phishy.",
+      "cs1": "Phishy url: example-13.net; Original url: example.com; Registrar: OVH, SAS; Nameservers: h96.example-14.net,  h97.example-14.net; Mailservers: h98.mail.example-14.net,  h99.mail.example-14.net; Hosted at: OVH SAS in France"
+    },
+    {
+      "timestamp": "2026-10-08T18:29:57Z",
+      "eventid": 3001,
+      "level": 61,
+      "source": "phish",
+      "msg": "Detected example-15.net, which looks like your asset example.com. We'll monitor it and warn you if things get phishy.",
+      "cs1": "Phishy url: example-15.net; Original url: example.com; Registrar: DOMAINPEOPLE, INC.; Nameservers: h100.h101.example-16.net,  h102.h101.example-16.net; Mailservers: mail.example-15.net; Hosted at: SoftLayer in Canada"
+    },
+    {
+      "timestamp": "2026-10-08T18:35:16Z",
+      "eventid": 3005,
+      "level": 61,
+      "source": "phish",
+      "msg": "Detected changes on phishy domain example-13.net, which looks like your asset example.com",
+      "cs1": "Phishy url: example-13.net; Original url: example.com; Registrar: OVH, SAS; Nameservers: h96.example-14.net,  h97.example-14.net; Mailservers: h98.mail.example-14.net,  h99.mail.example-14.net; Hosted at: OVH SAS in France"
+    },
+    {
+      "timestamp": "2026-10-08T18:41:44Z",
+      "eventid": 3005,
+      "level": 61,
+      "source": "phish",
+      "msg": "Detected changes on phishy domain example-15.net, which looks like your asset example.com",
+      "cs1": "Phishy url: example-15.net; Original url: example.com; Registrar: DOMAINPEOPLE, INC.; Nameservers: h100.h101.example-16.net,  h102.h101.example-16.net; Mailservers: mail.example-15.net; Hosted at: SoftLayer in Canada"
+    },
+    {
+      "timestamp": "2026-10-08T18:42:07Z",
+      "eventid": 3306,
+      "level": 91,
+      "source": "cisa",
+      "msg": "Actively exploited CVE-2015-3306 (ProFTPD) may affect 2 of your assets (software version unknown)",
+      "cs1": "CVE: CVE-2015-3306; Vulnerability: ProFTPD Improper Access Control Vulnerability; Product: ProFTPD; Added to KEV: 2026-10-08; CISA due date: 2026-10-11; Required action: Apply mitigations in accordance with vendor instructions, ensuring compliance with CISA’s BOD 26-04 Prioritizing Security Updates Based on Risk (see URL in Notes) guidance and CISA’s “Forensics Triage Requirements” (see URL in Notes). Follow applicable BOD 26-04 guidance for cloud services or discontinue use of the product if mitigations are unavailable. Stakeholders are responsible for evaluating each asset's internet exposure and ensuring adherence to BOD 26-04 patching guidelines.; Your assets: 2 possibly affected, software version unknown (listed below); Warning: 192.0.2.35 — ProFTPD (version unknown); Warning: 192.0.2.15 — ProFTPD (version unknown)"
+    },
+    {
+      "timestamp": "2026-10-09T00:34:25Z",
+      "eventid": 1657,
+      "level": 71,
+      "source": "websites",
+      "msg": "Found website: h103.h2.example.com at Microsoft Azure<br>The website is not publicly readable (HTTPS: 404 Not Found, HTTP: 404 Not Found)",
+      "cs1": "Cloud: Microsoft Azure ( 192.0.2.1); HTTP: 404 Not Found; HTTPS: 404 Not Found",
+      "request": "h103.h2.example.com&cloudprovider=Microsoft Azure"
+    },
+    {
+      "timestamp": "2026-10-09T04:26:51Z",
+      "eventid": 1648,
+      "level": 1,
+      "source": "websites",
+      "msg": "Detected  jQuery 3.5.1 on website www.example.com (192.0.2.2)",
+      "request": "www.example.com&wid=10000014"
+    },
+    {
+      "timestamp": "2026-10-09T04:33:08Z",
+      "eventid": 1649,
+      "level": 1,
+      "source": "websites",
+      "msg": "DataTables 1.10.21 was removed from website h104.example.com (192.0.2.16)",
+      "request": "h104.example.com&wid=10000015"
+    },
+    {
+      "timestamp": "2026-10-09T04:53:59Z",
+      "eventid": 1668,
+      "level": 81,
+      "source": "websites",
+      "msg": "Website security grade for h105.example.com changed from F to D",
+      "request": "h105.example.com&wid=10000016"
+    },
+    {
+      "timestamp": "2026-10-09T06:18:01Z",
+      "eventid": 1646,
+      "level": 4,
+      "source": "websites",
+      "msg": "HTTP header x-vercel-id on docs.example.com changed from lhr1::iad1::f2hkm-1791432735006-89437ff4c54f to arn1::iad1::445nt-1791526553800-c64c4f16982a",
+      "request": "docs.example.com&wid=10000017"
+    },
+    {
+      "timestamp": "2026-10-09T11:39:22Z",
+      "eventid": 281,
+      "level": 61,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.36 (test.h19.dev.example.com)",
+      "cs1": "Hosted at: OVH SAS in Germany",
+      "dst": "192.0.2.36"
+    },
+    {
+      "timestamp": "2026-10-09T13:14:44Z",
+      "eventid": 1350,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h106.h56.example.com expires in two weeks",
+      "cs1": "CN: h106.h56.example.com; SAN: h106.h56.example.com; Host: 192.0.2.24; Issuer: YR2; Not before: 2026-07-22 07:50; Not after: 2026-10-20 07:50; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h106.h56.example.com&cid=10000018",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-09T13:43:07Z",
+      "eventid": 1413,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Renewed certificate for h107.example.com found on 192.0.2.26. Status:",
+      "cs1": "CN: h107.example.com; SAN: h107.example.com; Host: 192.0.2.26; Issuer: YR1; Not before: 2026-10-09 05:14; Not after: 2027-01-07 05:14; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h107.example.com&ip=192.0.2.26&serial=8DAF6FCD2246470384F3C502D16DB13D3885&url=h107.example.com"
+    },
+    {
+      "timestamp": "2026-10-09T13:48:08Z",
+      "eventid": 1346,
+      "level": 6,
+      "source": "ssl",
+      "msg": "Certificate issuer changed for h106.h66.example.com on 192.0.2.26",
+      "cs1": "CN: h106.h66.example.com; SAN: h106.h66.example.com; Host: 192.0.2.26; Issuer: YR1; Not before: 2026-10-09 06:17; Not after: 2027-01-07 06:17; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h106.h66.example.com&ip=192.0.2.26&serial=D4486D14D88F98F6FBF7A55E41A46AFFA344&url=h106.h66.example.com",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-09T14:02:35Z",
+      "eventid": 1412,
+      "level": 91,
+      "source": "ssl",
+      "msg": "Found a certificate for h108.h2.example.com with grade M on 192.0.2.1.",
+      "cs1": "CN: ; SAN: h109.h110.example-1.net; Host: 192.0.2.1; Issuer: ; Not before: 2026-10-09 09:00; Not after: 2027-10-09 09:00; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h108.h2.example.com&ip=192.0.2.1&serial=&url=h108.h2.example.com"
+    },
+    {
+      "timestamp": "2026-10-09T14:45:48Z",
+      "eventid": 1350,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h111.h56.example.com expires in two weeks",
+      "cs1": "CN: h111.h56.example.com; SAN: h111.h56.example.com; Host: 192.0.2.24; Issuer: YR1; Not before: 2026-07-22 10:15; Not after: 2026-10-20 10:15; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h111.h56.example.com&cid=10000021",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-09T14:46:16Z",
+      "eventid": 1349,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h112.h113.h66.example.com expires within a week",
+      "cs1": "CN: h112.h113.h66.example.com; SAN: h112.h113.h66.example.com; Host: 192.0.2.26; Issuer: YR2; Not before: 2026-07-17 22:32; Not after: 2026-10-15 22:32; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h112.h113.h66.example.com&cid=10000022",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-10T03:49:17Z",
+      "eventid": 1826,
+      "level": 6,
+      "source": "whois",
+      "msg": "Whois record for example.com is renewed",
+      "cs1": "Registrar: RegistryGate GmbH; DNSSEC: unsigned; Nameservers: h8.example-2.net,  h9.example-2.net,  h8.example-2.net,  h9.example-2.net; Expires: 2027-08-08"
+    },
+    {
+      "timestamp": "2026-10-10T16:51:31Z",
+      "eventid": 1559,
+      "level": 10,
+      "source": "asn",
+      "msg": "BGP prefix for 192.0.2.35 changed from 192.0.2.37/24 to 192.0.2.38/22",
+      "dst": "192.0.2.35"
+    },
+    {
+      "timestamp": "2026-10-11T00:36:42Z",
+      "eventid": 1350,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h13.example.com expires in two weeks",
+      "cs1": "CN: h13.example.com; SAN: h13.example.com; Host: 192.0.2.39; Issuer: Certainly Intermediate R1; Not before: 2026-09-24 06:42; Not after: 2026-10-24 06:42; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h13.example.com&cid=10000005",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-11T01:11:59Z",
+      "eventid": 1413,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Renewed certificate for h114.h17.example.com found on 192.0.2.6. Status:",
+      "cs1": "CN: h114.h17.example.com; SAN: h114.h17.example.com; Host: 192.0.2.6; Issuer: YR2; Not before: 2026-10-10 17:48; Not after: 2027-01-08 17:48; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h114.h17.example.com&ip=192.0.2.6&serial=489004C3E0DD8BDCE13F10134B8BF773B531&url=h114.h17.example.com"
+    },
+    {
+      "timestamp": "2026-10-11T02:38:03Z",
+      "eventid": 1412,
+      "level": 91,
+      "source": "ssl",
+      "msg": "Found a certificate for h115.h116.h66.example.com with grade M on 192.0.2.26.",
+      "cs1": "CN: ; SAN: h117.h118.example-1.net; Host: 192.0.2.26; Issuer: ; Not before: 2026-10-11 02:36; Not after: 2027-10-11 02:36; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h115.h116.h66.example.com&ip=192.0.2.26&serial=&url=h115.h116.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-11T14:26:33Z",
+      "eventid": 3304,
+      "level": 91,
+      "source": "reachability",
+      "msg": "Website admin.h27.example.com (192.0.2.30) is down since 2026-10-09 13:36 UTC, confirmed from CA, FR and US (Connection refused)",
+      "cs1": "Down since: 2026-10-09 13:36 UTC; Reason: Connection refused; Confirmed by toronto-node-3 (CA): Time out; Confirmed by paris-node-3 (FR): Connection refused; Confirmed by newark-node-5 (US): Connection refused",
+      "request": "admin.h27.example.com&wid=10000024"
+    },
+    {
+      "timestamp": "2026-10-11T15:07:10Z",
+      "eventid": 1553,
+      "level": 9,
+      "source": "asn",
+      "msg": "ASN name for 192.0.2.13 changed from IONOS-AS - IONOS SE, DE to IONOS-AS This is the joint network for IONOS, Fasthosts, Arsys, 1&1 Mail and Media and 1&1 Telecom. Formerly known as 1&1 Internet SE., DE",
+      "dst": "192.0.2.13"
+    },
+    {
+      "timestamp": "2026-10-11T16:52:20Z",
+      "eventid": 1559,
+      "level": 10,
+      "source": "asn",
+      "msg": "BGP prefix for 192.0.2.35 changed from 192.0.2.38/22 to 192.0.2.37/24",
+      "dst": "192.0.2.35"
+    },
+    {
+      "timestamp": "2026-10-11T16:52:25Z",
+      "eventid": 1553,
+      "level": 9,
+      "source": "asn",
+      "msg": "ASN name for 192.0.2.19 changed from NMM-AS - Neue Medien Muennich GmbH, DE to NMM-AS D - 02742 Friedersdorf Hauptstrasse 68, DE",
+      "dst": "192.0.2.19"
+    },
+    {
+      "timestamp": "2026-10-12T06:18:13Z",
+      "eventid": 1668,
+      "level": 81,
+      "source": "websites",
+      "msg": "Website security grade for monitoring.example.com changed from F to C",
+      "request": "monitoring.example.com&wid=10000025"
+    },
+    {
+      "timestamp": "2026-10-12T06:30:57Z",
+      "eventid": 1826,
+      "level": 6,
+      "source": "whois",
+      "msg": "Whois record for example.com is renewed",
+      "cs1": "Registrar: RegistryGate GmbH; DNSSEC: unsigned; Nameservers: h8.example-2.net,  h9.example-2.net,  h8.example-2.net,  h9.example-2.net; Expires: 2027-08-08"
+    },
+    {
+      "timestamp": "2026-10-12T11:11:10Z",
+      "eventid": 1346,
+      "level": 6,
+      "source": "ssl",
+      "msg": "Certificate issuer changed for old.example.com on 192.0.2.15",
+      "cs1": "CN: h119.h120.example-17.net; SAN: h119.h120.example-17.net; Host: 192.0.2.15; Issuer: YR1; Not before: 2026-10-12 06:41; Not after: 2027-01-10 06:41; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch",
+      "request": "old.example.com&ip=192.0.2.15&serial=54AED5CC6F8B48852BA4888BC8E04487626D&url=old.example.com",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-13T01:37:42Z",
+      "eventid": 281,
+      "level": 61,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.36 (test.h19.dev.example.com)",
+      "cs1": "Hosted at: OVH SAS in Germany",
+      "dst": "192.0.2.36"
+    },
+    {
+      "timestamp": "2026-10-13T08:32:24Z",
+      "eventid": 1559,
+      "level": 10,
+      "source": "asn",
+      "msg": "BGP prefix for 192.0.2.35 changed from 192.0.2.37/24 to 192.0.2.38/22",
+      "dst": "192.0.2.35"
+    },
+    {
+      "timestamp": "2026-10-13T08:32:54Z",
+      "eventid": 1553,
+      "level": 9,
+      "source": "asn",
+      "msg": "ASN name for 192.0.2.15 changed from GD-EMEA-DC-SXB1, DE to GD-EMEA-DC-SXB1 - Host Europe GmbH, DE",
+      "dst": "192.0.2.15"
+    },
+    {
+      "timestamp": "2026-10-13T13:25:20Z",
+      "eventid": 101,
+      "level": 60,
+      "source": "dns",
+      "msg": "Found server (ipv4) for example.com at Cloudflare",
+      "request": "example.com"
+    },
+    {
+      "timestamp": "2026-10-13T19:34:28Z",
+      "eventid": 1349,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h121.h56.example.com expires within a week",
+      "cs1": "CN: h121.h56.example.com; SAN: h121.h56.example.com; Host: 192.0.2.24; Issuer: YR2; Not before: 2026-07-22 10:13; Not after: 2026-10-20 10:13; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h121.h56.example.com&cid=10000027",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-13T20:10:07Z",
+      "eventid": 1415,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Renewed certificate for h122.h123.h66.example.com found on 192.0.2.26. Status:",
+      "cs1": "CN: TRAEFIK DEFAULT CERT; SAN: h124.h125.example-1.net; Host: 192.0.2.26; Issuer: ; Not before: 2026-10-13 20:09; Not after: 2027-10-13 20:09; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h122.h123.h66.example.com&ip=192.0.2.26&serial=2A1E1549F12C2C9C8BF1F0D9A482BDC0&url=h122.h123.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-14T05:25:50Z",
+      "eventid": 3309,
+      "level": 20,
+      "source": "websites",
+      "msg": "Security header check \"Redirection\" passes again on h126.h17.example.com",
+      "request": "h126.h17.example.com"
+    },
+    {
+      "timestamp": "2026-10-14T07:37:30Z",
+      "eventid": 1655,
+      "level": 4,
+      "source": "websites",
+      "msg": "HTTP header link changed on www.example.com",
+      "cs1": "link changed from:; ; rel=preload; as=style; crossorigin; integrity=\"sha384-xrr66Rcx5isAtNrx49MmQgjd6vuXP3T+O/NQu8nBVChHx1Y1IN8V7JRxpMvxt2BI\",; rel=preconnect; crossorigin; to:; ; rel=preload; as=style; crossorigin; integrity=\"sha384-Nz8nsWTQgMmyOFt1Lvm19EJaRvd5q3LM54NIvOsGO34jjMrgQs+zp4wiOt6wjO7h\",; rel=preconnect; crossorigin",
+      "request": "www.example.com&wid=10000014"
+    },
+    {
+      "timestamp": "2026-10-14T08:45:43Z",
+      "eventid": 1655,
+      "level": 4,
+      "source": "websites",
+      "msg": "HTTP header link changed on example.com",
+      "cs1": "link changed from:; ; rel=preload; as=style; crossorigin; integrity=\"sha384-xrr66Rcx5isAtNrx49MmQgjd6vuXP3T+O/NQu8nBVChHx1Y1IN8V7JRxpMvxt2BI\",; rel=preconnect; crossorigin; to:; ; rel=preload; as=style; crossorigin; integrity=\"sha384-Nz8nsWTQgMmyOFt1Lvm19EJaRvd5q3LM54NIvOsGO34jjMrgQs+zp4wiOt6wjO7h\",; rel=preconnect; crossorigin",
+      "request": "example.com&wid=10000029"
+    },
+    {
+      "timestamp": "2026-10-15T03:16:02Z",
+      "eventid": 1413,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Renewed certificate for h127.h28.example.com found on 192.0.2.9. Status:",
+      "cs1": "CN: h127.h28.example.com; SAN: h127.h28.example.com; Host: 192.0.2.9; Issuer: YR2; Not before: 2026-10-14 00:08; Not after: 2027-01-12 00:08; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h127.h28.example.com&ip=192.0.2.9&serial=258D24987638F1962AA941EB10AD51D56734&url=h127.h28.example.com"
+    },
+    {
+      "timestamp": "2026-10-15T05:12:46Z",
+      "eventid": 1349,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for grafana.h56.example.com expires within a week",
+      "cs1": "CN: grafana.h56.example.com; SAN: grafana.h56.example.com; Host: 192.0.2.24; Issuer: YR1; Not before: 2026-07-22 07:50; Not after: 2026-10-20 07:50; Protocols: TLS 1.2, TLS 1.3",
+      "request": "grafana.h56.example.com&cid=10000008",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-15T05:31:08Z",
+      "eventid": 1412,
+      "level": 91,
+      "source": "ssl",
+      "msg": "Found a certificate for h128.h129.h66.example.com with grade M on 192.0.2.26.",
+      "cs1": "CN: TRAEFIK DEFAULT CERT; SAN: h130.h131.example-1.net; Host: 192.0.2.26; Issuer: ; Not before: 2026-10-15 05:29; Not after: 2027-10-15 05:29; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h128.h129.h66.example.com&ip=192.0.2.26&serial=05B99CDE26D71777CC649B09EF540BDA&url=h128.h129.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-15T06:20:14Z",
+      "eventid": 1358,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h132.h133.h66.example.com expires in three weeks",
+      "cs1": "CN: h132.h133.h66.example.com; SAN: h132.h133.h66.example.com; Host: 192.0.2.26; Issuer: YR2; Not before: 2026-08-05 22:27; Not after: 2026-11-03 22:27; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h132.h133.h66.example.com&cid=10000032",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-15T06:30:57Z",
+      "eventid": 1350,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h86.h87.h66.example.com expires in two weeks",
+      "cs1": "CN: h86.h87.h66.example.com; SAN: h86.h87.h66.example.com; Host: 192.0.2.26; Issuer: YR2; Not before: 2026-07-29 22:32; Not after: 2026-10-27 22:32; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h86.h87.h66.example.com&cid=10000011",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-15T08:14:32Z",
+      "eventid": 1346,
+      "level": 6,
+      "source": "ssl",
+      "msg": "Certificate issuer changed for h134.h135.h66.example.com on 192.0.2.26",
+      "cs1": "CN: TRAEFIK DEFAULT CERT; SAN: h136.h137.example-1.net; Host: 192.0.2.26; Issuer: ; Not before: 2026-10-15 08:13; Not after: 2027-10-15 08:13; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h134.h135.h66.example.com&ip=192.0.2.26&serial=ECC2D7FA5372D89ABDEBBACF0B495944&url=h134.h135.h66.example.com",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-15T13:02:02Z",
+      "eventid": 1657,
+      "level": 71,
+      "source": "websites",
+      "msg": "Found website: h138.h2.example.com at Microsoft Azure<br>The website is not publicly readable (HTTPS: 404 Not Found, HTTP: 404 Not Found)",
+      "cs1": "Cloud: Microsoft Azure ( 192.0.2.1); HTTP: 404 Not Found; HTTPS: 404 Not Found",
+      "request": "h138.h2.example.com&cloudprovider=Microsoft Azure"
+    },
+    {
+      "timestamp": "2026-10-16T06:06:28Z",
+      "eventid": 1668,
+      "level": 81,
+      "source": "websites",
+      "msg": "Website security grade for h105.example.com changed from F to D",
+      "request": "h105.example.com&wid=10000016"
+    },
+    {
+      "timestamp": "2026-10-16T07:53:48Z",
+      "eventid": 1826,
+      "level": 6,
+      "source": "whois",
+      "msg": "Whois record for example.com is renewed",
+      "cs1": "Registrar: RegistryGate GmbH; DNSSEC: unsigned; Nameservers: h8.example-2.net,  h9.example-2.net,  h8.example-2.net,  h9.example-2.net; Expires: 2027-08-08"
+    },
+    {
+      "timestamp": "2026-10-16T08:54:21Z",
+      "eventid": 282,
+      "level": 81,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.35 (h139.example.com) with warnings",
+      "cs1": "Hosted at: IONOS SE in Germany; Warning: ftp has warnings",
+      "dst": "192.0.2.35"
+    },
+    {
+      "timestamp": "2026-10-16T11:21:13Z",
+      "eventid": 3311,
+      "level": 20,
+      "source": "ssl",
+      "msg": "TLS check \"CAA record\" is ok again on h140.h141.example.com on 192.0.2.7",
+      "request": "h140.h141.example.com&ip=192.0.2.7&serial=186179AC7B17906347B845729DEF5B6D2867&url=h140.h141.example.com"
+    },
+    {
+      "timestamp": "2026-10-16T13:31:42Z",
+      "eventid": 3310,
+      "level": 50,
+      "source": "ssl",
+      "msg": "TLS check \"CAA record\" is now a warning on h142.h143.h66.example.com on 192.0.2.26",
+      "request": "h144.h145.h66.example.com&ip=192.0.2.26&serial=A2FAD282A05A7A889FD095913DD68BF9&url=h142.h143.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-16T13:38:12Z",
+      "eventid": 1349,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h121.h56.example.com expires within a week",
+      "cs1": "CN: h121.h56.example.com; SAN: h121.h56.example.com; Host: 192.0.2.24; Issuer: YR2; Not before: 2026-07-22 10:13; Not after: 2026-10-20 10:13; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h121.h56.example.com&cid=10000027",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-17T09:59:00Z",
+      "eventid": 281,
+      "level": 61,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.3 (h146.h19.dev.example.com)",
+      "cs1": "Hosted at: OVH SAS in Germany",
+      "dst": "192.0.2.3"
+    },
+    {
+      "timestamp": "2026-10-17T13:05:55Z",
+      "eventid": 3304,
+      "level": 91,
+      "source": "reachability",
+      "msg": "Website h147.h62.example.com (192.0.2.25) is down since 2026-10-16 13:01 UTC, confirmed from US and NL (Time out)",
+      "cs1": "Down since: 2026-10-16 13:01 UTC; Reason: Time out; Confirmed by newark-node-3 (US): Time out; Confirmed by amsterdam-node-2 (NL): Time out",
+      "request": "h147.h62.example.com&wid=10000036"
+    },
+    {
+      "timestamp": "2026-10-17T13:09:51Z",
+      "eventid": 3304,
+      "level": 91,
+      "source": "reachability",
+      "msg": "Website h114.h62.example.com (192.0.2.25) is down since 2026-10-16 13:03 UTC, confirmed from FR and DE (Time out)",
+      "cs1": "Down since: 2026-10-16 13:03 UTC; Reason: Time out; Confirmed by paris-node-1 (FR): Time out; Confirmed by frankfurt-node-8 (DE): Time out",
+      "request": "h114.h62.example.com&wid=10000037"
+    },
+    {
+      "timestamp": "2026-10-17T15:58:01Z",
+      "eventid": 1559,
+      "level": 10,
+      "source": "asn",
+      "msg": "BGP prefix for 192.0.2.35 changed from 192.0.2.38/22 to 192.0.2.37/24",
+      "dst": "192.0.2.35"
+    },
+    {
+      "timestamp": "2026-10-17T21:41:01Z",
+      "eventid": 1415,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Renewed certificate for h148.h149.h66.example.com found on 192.0.2.26. Status:",
+      "cs1": "CN: TRAEFIK DEFAULT CERT; SAN: h150.h151.example-1.net; Host: 192.0.2.26; Issuer: ; Not before: 2026-10-17 21:39; Not after: 2027-10-17 21:39; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h152.h153.h66.example.com&ip=192.0.2.26&serial=FE16EFC9B5850127EAEA3C1E8DEA35CD&url=h148.h149.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-17T21:41:07Z",
+      "eventid": 1413,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Renewed certificate for h154.h32.example.com found on 192.0.2.13. Status:  Note that the certificate issuer changed.",
+      "cs1": "CN: h154.h32.example.com; SAN: h154.h32.example.com; Host: 192.0.2.13; Issuer: YR1; Not before: 2026-10-17 10:45; Not after: 2027-01-15 10:45; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h154.h32.example.com&ip=192.0.2.13&serial=E33AAFAAEAFC657671A1AD0BBBD697ACC50C&url=h154.h32.example.com"
+    },
+    {
+      "timestamp": "2026-10-17T22:33:26Z",
+      "eventid": 1359,
+      "level": 91,
+      "source": "ssl",
+      "msg": "The certificate for h112.h113.h66.example.com expired",
+      "cs1": "CN: h112.h113.h66.example.com; SAN: h112.h113.h66.example.com; Host: 192.0.2.26; Issuer: YR2; Not before: 2026-07-17 22:32; Not after: 2026-10-15 22:32; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to T. Certificate expired; Problem: Grade capped to T. Issues with chain of trust (expired)",
+      "request": "h112.h113.h66.example.com&cid=10000022",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-17T22:46:52Z",
+      "eventid": 1349,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h155.h156.h66.example.com expires within a week",
+      "cs1": "CN: h155.h156.h66.example.com; SAN: h155.h156.h66.example.com; Host: 192.0.2.26; Issuer: YR2; Not before: 2026-07-22 22:32; Not after: 2026-10-20 22:32; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h155.h156.h66.example.com&cid=10000040",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-18T03:35:11Z",
+      "eventid": 1358,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h157.h158.h66.example.com expires in three weeks",
+      "cs1": "CN: h157.h158.h66.example.com; SAN: h157.h158.h66.example.com; Host: 192.0.2.26; Issuer: YR1; Not before: 2026-08-09 22:27; Not after: 2026-11-07 22:27; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h157.h158.h66.example.com&cid=10000041",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-18T09:09:24Z",
+      "eventid": 1645,
+      "level": 4,
+      "source": "websites",
+      "msg": "Website h159.h160.example.com has a new header field: x-accel-expires : 0",
+      "request": "h159.h160.example.com&wid=10000042"
+    },
+    {
+      "timestamp": "2026-10-18T13:12:23Z",
+      "eventid": 3304,
+      "level": 91,
+      "source": "reachability",
+      "msg": "Website h161.h62.example.com (192.0.2.25) is down since 2026-10-16 13:04 UTC, confirmed from SE, DE and NL (Time out)",
+      "cs1": "Down since: 2026-10-16 13:04 UTC; Reason: Time out; Confirmed by stockholm-node-1 (SE): Time out; Confirmed by frankfurt-node-4 (DE): Time out; Confirmed by amsterdam-node-5 (NL): Time out",
+      "request": "h161.h62.example.com&wid=10000043"
+    },
+    {
+      "timestamp": "2026-10-19T03:31:10Z",
+      "eventid": 3311,
+      "level": 20,
+      "source": "ssl",
+      "msg": "TLS check \"CAA record\" is ok again on h105.example.com on 192.0.2.40",
+      "request": "www.h105.example.com&ip=192.0.2.40&serial=40B577FF124F46B48B2CF0E67609186233CA&url=h105.example.com"
+    },
+    {
+      "timestamp": "2026-10-19T03:44:01Z",
+      "eventid": 3310,
+      "level": 81,
+      "source": "ssl",
+      "msg": "TLS check \"FS_TLS13_sig_algs\" is now a problem on h55.example.com",
+      "request": "h55.example.com&ip=192.0.2.23&serial=2BE1598B7CC5F8A7870CAD78625E48E544EB&url=h55.example.com"
+    },
+    {
+      "timestamp": "2026-10-19T06:37:07Z",
+      "eventid": 1648,
+      "level": 1,
+      "source": "websites",
+      "msg": "Detected Next.js 14.2.24 on website h105.example.com (192.0.2.40)",
+      "request": "h105.example.com&wid=10000016"
+    },
+    {
+      "timestamp": "2026-10-19T06:51:15Z",
+      "eventid": 1349,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h88.h89.h66.example.com expires within a week",
+      "cs1": "CN: h88.h89.h66.example.com; SAN: h88.h89.h66.example.com; Host: 192.0.2.26; Issuer: YR1; Not before: 2026-07-27 22:32; Not after: 2026-10-25 22:32; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h88.h89.h66.example.com&cid=10000012",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-19T08:19:48Z",
+      "eventid": 1668,
+      "level": 81,
+      "source": "websites",
+      "msg": "Website security grade for monitoring.example.com changed from F to C",
+      "request": "monitoring.example.com&wid=10000025"
+    },
+    {
+      "timestamp": "2026-10-19T12:20:05Z",
+      "eventid": 282,
+      "level": 81,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.35 (h139.example.com) with warnings",
+      "cs1": "Hosted at: IONOS SE in Germany; Warning: ftp has warnings",
+      "dst": "192.0.2.35"
+    },
+    {
+      "timestamp": "2026-10-19T13:26:09Z",
+      "eventid": 3304,
+      "level": 91,
+      "source": "reachability",
+      "msg": "Website h162.h62.example.com (192.0.2.25) is down since 2026-10-16 13:02 UTC, confirmed from IT, GB, ES and US (Time out)",
+      "cs1": "Down since: 2026-10-16 13:02 UTC; Reason: Time out; Confirmed by milan-node-4 (IT): Time out; Confirmed by london-node-5 (GB): Time out; Confirmed by madrid-node-3 (ES): Time out; Confirmed by newark-node-3 (US): Time out",
+      "request": "h162.h62.example.com&wid=10000045"
+    },
+    {
+      "timestamp": "2026-10-19T13:38:57Z",
+      "eventid": 3304,
+      "level": 91,
+      "source": "reachability",
+      "msg": "Website h4.h163.h62.example.com (192.0.2.25) is down since 2026-10-16 13:08 UTC, confirmed from JP, DE, GB and CA (Time out)",
+      "cs1": "Down since: 2026-10-16 13:08 UTC; Reason: Time out; Confirmed by tokyo-node-1 (JP): Time out; Confirmed by frankfurt-node-2 (DE): Time out; Confirmed by london-node-7 (GB): Time out; Confirmed by toronto-node-2 (CA): Time out",
+      "request": "h4.h163.h62.example.com&wid=10000046"
+    },
+    {
+      "timestamp": "2026-10-19T20:47:06Z",
+      "eventid": 101,
+      "level": 60,
+      "source": "dns",
+      "msg": "Found server (ipv4) for example.com at Cloudflare",
+      "request": "example.com"
+    },
+    {
+      "timestamp": "2026-10-20T05:41:04Z",
+      "eventid": 1646,
+      "level": 4,
+      "source": "websites",
+      "msg": "HTTP header server on h164.h66.example.com changed from nginx/1.30.5 to nginx/1.30.6",
+      "request": "h164.h66.example.com&wid=10000047"
+    },
+    {
+      "timestamp": "2026-10-20T08:04:25Z",
+      "eventid": 1826,
+      "level": 6,
+      "source": "whois",
+      "msg": "Whois record for example.com is renewed",
+      "cs1": "Registrar: RegistryGate GmbH; DNSSEC: unsigned; Nameservers: h8.example-2.net,  h9.example-2.net,  h8.example-2.net,  h9.example-2.net; Expires: 2027-08-08"
+    },
+    {
+      "timestamp": "2026-10-20T09:28:56Z",
+      "eventid": 1649,
+      "level": 1,
+      "source": "websites",
+      "msg": "Nginx 1.30.6 was removed from website h165.h66.example.com (192.0.2.26)",
+      "request": "h165.h66.example.com&wid=10000048"
+    },
+    {
+      "timestamp": "2026-10-20T09:38:44Z",
+      "eventid": 3308,
+      "level": 50,
+      "source": "websites",
+      "msg": "Security header check \"Redirection\" no longer passes on grafana.h56.example.com",
+      "request": "grafana.h56.example.com"
+    },
+    {
+      "timestamp": "2026-10-20T11:27:17Z",
+      "eventid": 283,
+      "level": 91,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.14 (monitoring.example.com) with problems",
+      "cs1": "Hosted at: OVH SAS in United Kingdom; Problem: NFS export open to everyone.; Warning: Internet exposed RPC portmapper.",
+      "dst": "192.0.2.14"
+    },
+    {
+      "timestamp": "2026-10-20T12:16:40Z",
+      "eventid": 281,
+      "level": 61,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.10 (h166.h167.example.com)",
+      "cs1": "Hosted at: IONOS SE example-5.net in Germany",
+      "dst": "192.0.2.10"
+    },
+    {
+      "timestamp": "2026-10-20T12:29:15Z",
+      "eventid": 283,
+      "level": 91,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.19 (h84.example.com) with problems",
+      "cs1": "Hosted at: Neue Medien Muennich in Germany; Problem: MySQL has problems; Problem: SMB/RPC should not be accessible from the internet.; Warning: ftp has warnings",
+      "dst": "192.0.2.19"
+    },
+    {
+      "timestamp": "2026-10-20T13:54:52Z",
+      "eventid": 1412,
+      "level": 91,
+      "source": "ssl",
+      "msg": "Found a certificate for h168.h169.example.com with grade M on 192.0.2.9.",
+      "cs1": "CN: TRAEFIK DEFAULT CERT; SAN: h170.h171.example-1.net; Host: 192.0.2.9; Issuer: ; Not before: 2026-10-20 12:40; Not after: 2027-10-20 12:40; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h168.h169.example.com&ip=192.0.2.9&serial=8AFE185EE95ACDCF79024F3B899434E1&url=h168.h169.example.com"
+    },
+    {
+      "timestamp": "2026-10-20T14:17:20Z",
+      "eventid": 1346,
+      "level": 6,
+      "source": "ssl",
+      "msg": "Certificate issuer changed for h172.h173.h66.example.com on 192.0.2.26",
+      "cs1": "CN: TRAEFIK DEFAULT CERT; SAN: h174.h175.example-1.net; Host: 192.0.2.26; Issuer: ; Not before: 2026-10-20 14:15; Not after: 2027-10-20 14:15; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h172.h173.h66.example.com&ip=192.0.2.26&serial=77F35FBDCD0C4D419CD368FD83A4803B&url=h172.h173.h66.example.com",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-20T15:00:18Z",
+      "eventid": 1415,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Renewed certificate for h176.h177.h66.example.com found on 192.0.2.26. Status:",
+      "cs1": "CN: TRAEFIK DEFAULT CERT; SAN: h178.h179.example-1.net; Host: 192.0.2.26; Issuer: ; Not before: 2026-10-20 14:57; Not after: 2027-10-20 14:57; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h180.h181.h66.example.com&ip=192.0.2.26&serial=B89100E162AE937360640E07F5074204&url=h176.h177.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-20T15:20:38Z",
+      "eventid": 1416,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Detected changed TLS settings for h182.h183.example.com on 192.0.2.11. Status:",
+      "cs1": "CN: h182.h183.example.com; SAN: h182.h183.example.com; Host: 192.0.2.11; Issuer: YR2; Not before: 2026-10-09 08:46; Not after: 2027-01-07 08:46; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h182.h183.example.com&ip=192.0.2.11&serial=669C90865726F51C90431DF56E3C724AFFBD&url=h182.h183.example.com"
+    },
+    {
+      "timestamp": "2026-10-20T15:22:50Z",
+      "eventid": 1346,
+      "level": 6,
+      "source": "ssl",
+      "msg": "Certificate issuer changed for h184.h185.h66.example.com on 192.0.2.26",
+      "cs1": "CN: TRAEFIK DEFAULT CERT; SAN: h186.h187.example-1.net; Host: 192.0.2.26; Issuer: ; Not before: 2026-10-20 15:21; Not after: 2027-10-20 15:21; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h184.h185.h66.example.com&ip=192.0.2.26&serial=CD8EA02FD5D558DF9BECC97B78028C58&url=h184.h185.h66.example.com",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-20T15:22:50Z",
+      "eventid": 3310,
+      "level": 81,
+      "source": "ssl",
+      "msg": "TLS check \"Certificate chain of trust\" is now a problem on h184.h185.h66.example.com on 192.0.2.26",
+      "request": "h184.h185.h66.example.com&ip=192.0.2.26&serial=CD8EA02FD5D558DF9BECC97B78028C58&url=h184.h185.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-21T00:26:53Z",
+      "eventid": 3311,
+      "level": 20,
+      "source": "ssl",
+      "msg": "TLS check \"CAA record\" is ok again on h188.h32.example.com on 192.0.2.13",
+      "request": "h188.h32.example.com&ip=192.0.2.13&serial=D8541ABC2A5436F7B56954CDFB120B746CE8&url=h188.h32.example.com"
+    },
+    {
+      "timestamp": "2026-10-21T06:15:16Z",
+      "eventid": 1648,
+      "level": 1,
+      "source": "websites",
+      "msg": "Detected Nginx 1.30.6 on website h189.h28.example.com (192.0.2.9)",
+      "request": "h189.h28.example.com&wid=10000055"
+    },
+    {
+      "timestamp": "2026-10-21T06:33:59Z",
+      "eventid": 1649,
+      "level": 1,
+      "source": "websites",
+      "msg": "Nginx 1.30.5 was removed from website h190.h2.example.com (192.0.2.1)",
+      "request": "h190.h2.example.com&wid=10000056"
+    },
+    {
+      "timestamp": "2026-10-21T06:38:06Z",
+      "eventid": 1646,
+      "level": 4,
+      "source": "websites",
+      "msg": "HTTP header server on h191.h28.example.com changed from nginx/1.30.5 to nginx/1.30.6",
+      "request": "h191.h28.example.com&wid=10000057"
+    },
+    {
+      "timestamp": "2026-10-21T07:53:57Z",
+      "eventid": 1648,
+      "level": 1,
+      "source": "websites",
+      "msg": "Detected Nginx 1.30.6 on website h192.h28.example.com (192.0.2.9)",
+      "request": "h192.h28.example.com&wid=10000058"
+    },
+    {
+      "timestamp": "2026-10-21T08:05:24Z",
+      "eventid": 1649,
+      "level": 1,
+      "source": "websites",
+      "msg": "Nginx 1.30.5 was removed from website h193.h28.example.com (192.0.2.9)",
+      "request": "h193.h28.example.com&wid=10000059"
+    },
+    {
+      "timestamp": "2026-10-21T08:26:42Z",
+      "eventid": 1646,
+      "level": 4,
+      "source": "websites",
+      "msg": "HTTP header server on h194.h28.example.com changed from nginx/1.30.5 to nginx/1.30.6",
+      "request": "h194.h28.example.com&wid=10000060"
+    },
+    {
+      "timestamp": "2026-10-21T09:11:58Z",
+      "eventid": 1649,
+      "level": 1,
+      "source": "websites",
+      "msg": "Nginx 1.30.5 was removed from website h195.h28.example.com (192.0.2.9)",
+      "request": "h195.h28.example.com&wid=10000061"
+    },
+    {
+      "timestamp": "2026-10-21T09:14:37Z",
+      "eventid": 1648,
+      "level": 1,
+      "source": "websites",
+      "msg": "Detected Nginx 1.30.6 on website h196.h66.example.com (192.0.2.26)",
+      "request": "h196.h66.example.com&wid=10000062"
+    },
+    {
+      "timestamp": "2026-10-21T09:38:39Z",
+      "eventid": 1646,
+      "level": 4,
+      "source": "websites",
+      "msg": "HTTP header server on h197.h28.example.com changed from nginx/1.30.5 to nginx/1.30.6",
+      "request": "h197.h28.example.com&wid=10000063"
+    },
+    {
+      "timestamp": "2026-10-21T09:45:21Z",
+      "eventid": 3309,
+      "level": 20,
+      "source": "websites",
+      "msg": "Security header check \"Redirection\" passes again on grafana.h56.example.com",
+      "request": "grafana.h56.example.com"
+    },
+    {
+      "timestamp": "2026-10-21T11:29:40Z",
+      "eventid": 281,
+      "level": 61,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.36 (test.h19.dev.example.com)",
+      "cs1": "Hosted at: OVH SAS in Germany",
+      "dst": "192.0.2.36"
+    },
+    {
+      "timestamp": "2026-10-21T12:31:08Z",
+      "eventid": 282,
+      "level": 81,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.35 (h139.example.com) with warnings",
+      "cs1": "Hosted at: IONOS SE in Germany; Warning: ftp has warnings",
+      "dst": "192.0.2.35"
+    },
+    {
+      "timestamp": "2026-10-21T12:57:43Z",
+      "eventid": 1649,
+      "level": 1,
+      "source": "websites",
+      "msg": "Nginx 1.30.5 was removed from website h198.h32.example.com (192.0.2.13)",
+      "request": "h198.h32.example.com&wid=10000064"
+    },
+    {
+      "timestamp": "2026-10-21T13:20:52Z",
+      "eventid": 1648,
+      "level": 1,
+      "source": "websites",
+      "msg": "Detected Nginx 1.30.6 on website h199.h17.example.com (192.0.2.6)",
+      "request": "h199.h17.example.com&wid=10000065"
+    },
+    {
+      "timestamp": "2026-10-21T13:43:25Z",
+      "eventid": 1646,
+      "level": 4,
+      "source": "websites",
+      "msg": "HTTP header server on h200.h32.example.com changed from nginx/1.30.5 to nginx/1.30.6",
+      "request": "h200.h32.example.com&wid=10000066"
+    },
+    {
+      "timestamp": "2026-10-21T14:45:25Z",
+      "eventid": 3307,
+      "level": 81,
+      "source": "ncsc",
+      "msg": "NCSC advisory NCSC-2026-0443 (Open Source PHP; PHP) may affect 10 of your assets (software version unknown)",
+      "cs1": "Advisory: NCSC-2026-0443; Title: Kwetsbaarheden verholpen in PHP; Products: Open Source PHP, PHP; Published: 2026-10-21; NCSC chance: high; NCSC impact: high; CVEs: CVE-2026-109618, CVE-2026-109619; Your assets: 10 possibly affected, software version unknown (listed below); Warning: 192.0.2.35 — PHP (version unknown); Warning: 192.0.2.15 — PHP (version unknown); Warning: 192.0.2.20 — PHP (version unknown); Warning: 192.0.2.14 — PHP (version unknown); Warning: h85.example.com — PHP (version unknown); Warning: admin.h83.example.com — PHP (version unknown); Warning: h41.example.com — PHP (version unknown); Warning: monitoring.example.com — PHP (version unknown); Warning: old.example.com — PHP (version unknown); Warning: h139.example.com — PHP (version unknown)"
+    },
+    {
+      "timestamp": "2026-10-21T15:38:50Z",
+      "eventid": 1657,
+      "level": 71,
+      "source": "websites",
+      "msg": "Found website: admin.h201.example.com at Cloudflare<br>The website is not publicly readable (HTTPS: SSL Error, HTTP: 409 Conflict)",
+      "cs1": "Cloud: Cloudflare ( 192.0.2.2); HTTP: 409 Conflict; HTTPS: SSL Error",
+      "request": "admin.h201.example.com&cloudprovider=Cloudflare"
+    },
+    {
+      "timestamp": "2026-10-21T21:52:24Z",
+      "eventid": 1416,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Detected changed TLS settings for h202.h28.example.com on 192.0.2.9. Status:",
+      "cs1": "CN: h202.h28.example.com; SAN: h202.h28.example.com; Host: 192.0.2.9; Issuer: YR1; Not before: 2026-10-14 21:43; Not after: 2027-01-12 21:43; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h202.h28.example.com&ip=192.0.2.9&serial=0AC1E3DC300DB5C149D5F981CD4A5EC42C8C&url=h202.h28.example.com"
+    },
+    {
+      "timestamp": "2026-10-21T22:06:03Z",
+      "eventid": 1416,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Detected changed TLS settings for h203.h141.example.com on 192.0.2.7. Status:",
+      "cs1": "CN: h203.h141.example.com; SAN: h203.h141.example.com; Host: 192.0.2.7; Issuer: YR1; Not before: 2026-09-22 02:58; Not after: 2026-12-21 02:58; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h203.h141.example.com&ip=192.0.2.7&serial=BC5A21093E201898EC37940BE3D483B86A47&url=h203.h141.example.com"
+    },
+    {
+      "timestamp": "2026-10-21T22:39:39Z",
+      "eventid": 1416,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Detected changed TLS settings for h204.h32.example.com on 192.0.2.13. Status:",
+      "cs1": "CN: h204.h32.example.com; SAN: h204.h32.example.com; Host: 192.0.2.13; Issuer: YR2; Not before: 2026-10-12 01:17; Not after: 2027-01-10 01:17; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h204.h32.example.com&ip=192.0.2.13&serial=6568BAB84078F0A056872DBB630CAADA8C8B&url=h204.h32.example.com"
+    },
+    {
+      "timestamp": "2026-10-21T23:48:14Z",
+      "eventid": 1413,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Renewed certificate for h111.h56.example.com found on 192.0.2.24. Status:  Note that the certificate issuer changed.",
+      "cs1": "CN: h111.h56.example.com; SAN: h111.h56.example.com; Host: 192.0.2.24; Issuer: YR2; Not before: 2026-10-21 03:08; Not after: 2027-01-19 03:08; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h111.h56.example.com&ip=192.0.2.24&serial=4DAA68199F98598A48CEF5C126A191D3A40B&url=h111.h56.example.com"
+    },
+    {
+      "timestamp": "2026-10-21T23:52:12Z",
+      "eventid": 1416,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Detected changed TLS settings for h205.h66.example.com on 192.0.2.26. Status:",
+      "cs1": "CN: h205.h66.example.com; SAN: h205.h66.example.com; Host: 192.0.2.26; Issuer: YR1; Not before: 2026-09-28 08:58; Not after: 2026-12-27 08:58; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h205.h66.example.com&ip=192.0.2.26&serial=2DC680918258ED9391F58641C090CA385625&url=h205.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-22T08:24:46Z",
+      "eventid": 1668,
+      "level": 81,
+      "source": "websites",
+      "msg": "Website security grade for monitoring.example.com changed from F to C",
+      "request": "monitoring.example.com&wid=10000025"
+    },
+    {
+      "timestamp": "2026-10-22T09:43:12Z",
+      "eventid": 101,
+      "level": 60,
+      "source": "dns",
+      "msg": "Found server (ipv4) for h10.h11.example-3.net at Fastly",
+      "request": "h10.h11.example-3.net"
+    },
+    {
+      "timestamp": "2026-10-22T12:27:47Z",
+      "eventid": 282,
+      "level": 81,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.15 (old.example.com) with warnings",
+      "cs1": "Hosted at: Host Europe GmbH in France; Warning: pop3s has warnings. TLS service with a certificate for Plesk. The service inside the TLS tunnel does not speak first and does not answer http.; Warning: imaps has warnings. TLS service with a certificate for Plesk. The service inside the TLS tunnel does not speak first and does not answer http.; Warning: ftp has warnings; Warning: The certificate expired on 2022-06-23.",
+      "dst": "192.0.2.15"
+    },
+    {
+      "timestamp": "2026-10-23T06:40:09Z",
+      "eventid": 3310,
+      "level": 50,
+      "source": "ssl",
+      "msg": "TLS check \"CAA record\" is now a warning on h16.h17.example.com on 192.0.2.6",
+      "request": "h16.h17.example.com&ip=192.0.2.6&serial=7517C8868C114FD9BCB6988F4B4C1282F6E9&url=h16.h17.example.com"
+    },
+    {
+      "timestamp": "2026-10-23T08:10:29Z",
+      "eventid": 3311,
+      "level": 20,
+      "source": "ssl",
+      "msg": "TLS check \"CAA record\" is ok again on h206.h207.h66.example.com on 192.0.2.26",
+      "request": "h208.h209.h66.example.com&ip=192.0.2.26&serial=73BAE5CF516743800B96194425D84265&url=h206.h207.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-23T10:11:18Z",
+      "eventid": 1645,
+      "level": 4,
+      "source": "websites",
+      "msg": "Website h13.example.com has a new header field: content-encoding : gzip",
+      "request": "h13.example.com&wid=10000074"
+    },
+    {
+      "timestamp": "2026-10-23T10:11:18Z",
+      "eventid": 1655,
+      "level": 4,
+      "source": "websites",
+      "msg": "HTTP header link changed on h13.example.com",
+      "cs1": "link changed from:; ; rel=modulepreload; as=script; crossorigin=anonymous; integrity=sha384-XywBY3UKTaUkiwZpqHr1jSefAgDXG4rIme6MO+JpOFa3MQcRZKyaagV5erYiF9OH; nonce=; nopush,; rel=modulepreload; as=script; crossorigin=anonymous; integrity=sha384-/XlzIll1NPEDkH/JVQVTHjRes32bN+N2Za30kywIhCI0xbiFkLnOpH+VCdf3FWsj; nonce=; nopush,; rel=preload; as=style; crossorigin=anonymous; integrity=sha384-0spO/bGX5sRn8Lls95z61o8ChZP3tGWF74ByPjqd63wQkXRkZVvJtZBtk23Jy2ZN; nopush,; rel=modulepreload; as=script; crossorigin=anonymous; integrity=sha384-wvJrKr6fXfXoAnJxcq/cuQFpUIxj9sU091NYJdB/s1vWgHKDU+6p30XewuXoD/KB; nonce=; nopush,; rel=\"api-catalog\"; to:; ; rel=modulepreload; as=script; crossorigin=anonymous; integrity=sha384-tZqMXno/S1GhL4gR9KAk9xLPYjFxr8tZSTxH5/SEHvEFdGGf4FuPE577HHgbaqIS; nonce=; nopush,; rel=modulepreload; as=script; crossorigin=anonymous; integrity=sha384-/XlzIll1NPEDkH/JVQVTHjRes32bN+N2Za30kywIhCI0xbiFkLnOpH+VCdf3FWsj; nonce=; nopush,; rel=preload; as=style; crossorigin=anonymous; integrity=sha384-0spO/bGX5sRn8Lls95z61o8ChZP3tGWF74ByPjqd63wQkXRkZVvJtZBtk23Jy2ZN; nopush,; rel=modulepreload; as=script; crossorigin=anonymous; integrity=sha384-wvJrKr6fXfXoAnJxcq/cuQFpUIxj9sU091NYJdB/s1vWgHKDU+6p30XewuXoD/KB; nonce=; nopush,; rel=\"api-catalog\"",
+      "request": "h13.example.com&wid=10000074"
+    },
+    {
+      "timestamp": "2026-10-23T11:17:29Z",
+      "eventid": 1358,
+      "level": 60,
+      "source": "ssl",
+      "msg": "The certificate for h13.example.com expires in three weeks",
+      "cs1": "CN: h13.example.com; SAN: h13.example.com; Host: 192.0.2.41; Issuer: Certainly Intermediate R1; Not before: 2026-10-14 05:47; Not after: 2026-11-13 05:47; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h13.example.com&cid=10000075",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-24T07:49:09Z",
+      "eventid": 3312,
+      "level": 81,
+      "source": "websites",
+      "msg": "Possible subdomain takeover: old.example.com points to 192.0.2.15, which serves a website with a certificate for h119.h120.example-17.net and gives the same page to any name. old.example.com is not configured on that server, so whoever controls it can publish content under old.example.com and get a valid certificate for it. Remove the DNS record, or point it back to your own server.",
+      "cs1": "Points to: 192.0.2.15; Certificate for: h119.h120.example-17.net; Same page for a random name: 100%",
+      "request": "old.example.com&wip=192.0.2.15"
+    },
+    {
+      "timestamp": "2026-10-24T08:01:27Z",
+      "eventid": 3312,
+      "level": 81,
+      "source": "websites",
+      "msg": "Possible subdomain takeover: h84.example.com points to 192.0.2.19, which serves a website with a certificate for *.example-2.net, example-2.net and gives the same page to any name. h84.example.com is not configured on that server, so whoever controls it can publish content under h84.example.com and get a valid certificate for it. Remove the DNS record, or point it back to your own server.",
+      "cs1": "Points to: 192.0.2.19; Certificate for: *.example-2.net, example-2.net; Website title: 301 Moved Permanently; Same page for a random name: 100%",
+      "request": "h84.example.com&wip=192.0.2.19"
+    },
+    {
+      "timestamp": "2026-10-24T08:14:57Z",
+      "eventid": 1826,
+      "level": 6,
+      "source": "whois",
+      "msg": "Whois record for example.com is renewed",
+      "cs1": "Registrar: RegistryGate GmbH; DNSSEC: unsigned; Nameservers: h8.example-2.net,  h9.example-2.net,  h8.example-2.net,  h9.example-2.net; Expires: 2027-08-08"
+    },
+    {
+      "timestamp": "2026-10-24T11:26:12Z",
+      "eventid": 3101,
+      "level": 40,
+      "source": "hibp",
+      "msg": "user1@example.org appeared in 3 data breaches: Eye4Fraud (2023-01-25), Epik (2021-09-13) and LeadHunter (2020-03-04)"
+    },
+    {
+      "timestamp": "2026-10-24T12:20:52Z",
+      "eventid": 1655,
+      "level": 4,
+      "source": "websites",
+      "msg": "HTTP header link changed on www.example.com",
+      "cs1": "link changed from:; ; rel=preload; as=style; crossorigin; integrity=\"sha384-Nz8nsWTQgMmyOFt1Lvm19EJaRvd5q3LM54NIvOsGO34jjMrgQs+zp4wiOt6wjO7h\",; rel=preconnect; crossorigin; to:; ; rel=preload; as=style; crossorigin; integrity=\"sha384-TKmSH6LOvZjLSYTtjCx6wb7LCfArASwLQqJZS/Ihmj576TekHceOuSCik4QFIcAC\",; rel=preconnect; crossorigin",
+      "request": "www.example.com&wid=10000014"
+    },
+    {
+      "timestamp": "2026-10-24T14:52:43Z",
+      "eventid": 1415,
+      "level": 91,
+      "source": "ssl",
+      "msg": "Renewed certificate for h210.h66.example.com found on 192.0.2.26. Grade: M.",
+      "cs1": "CN: TRAEFIK DEFAULT CERT; SAN: h211.h212.example-1.net; Host: 192.0.2.26; Issuer: ; Not before: 2026-10-24 14:50; Not after: 2027-10-24 14:50; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h210.h66.example.com&ip=192.0.2.26&serial=8C232CFB61D7F6576A9F769301A25E2D&url=h210.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-24T19:16:23Z",
+      "eventid": 1346,
+      "level": 6,
+      "source": "ssl",
+      "msg": "Certificate issuer changed for h166.h213.example.com on 192.0.2.8",
+      "cs1": "CN: h166.h213.example.com; SAN: h166.h213.example.com; Host: 192.0.2.8; Issuer: YR2; Not before: 2026-10-24 13:53; Not after: 2027-01-22 13:53; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h166.h213.example.com&ip=192.0.2.8&serial=82704DB8F1C39D77D8004F4B2744C4A64434&url=h166.h213.example.com",
+      "fname": " "
+    },
+    {
+      "timestamp": "2026-10-25T18:59:17Z",
+      "eventid": 281,
+      "level": 61,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.36 (test.h19.dev.example.com)",
+      "cs1": "Hosted at: OVH SAS in Germany",
+      "dst": "192.0.2.36"
+    },
+    {
+      "timestamp": "2026-10-25T22:24:11Z",
+      "eventid": 1413,
+      "level": 60,
+      "source": "ssl",
+      "msg": "Renewed certificate for h214.h2.example.com found on 192.0.2.1. Grade: A+. Note that the certificate issuer changed.",
+      "cs1": "CN: h214.h2.example.com; SAN: h214.h2.example.com; Host: 192.0.2.1; Issuer: YR2; Not before: 2026-10-24 15:30; Not after: 2027-01-22 15:30; Protocols: TLS 1.2, TLS 1.3",
+      "request": "h214.h2.example.com&ip=192.0.2.1&serial=785652AB2376AE2DB553B5F2ED6228ACBAD2&url=h214.h2.example.com"
+    },
+    {
+      "timestamp": "2026-10-25T22:31:41Z",
+      "eventid": 1412,
+      "level": 91,
+      "source": "ssl",
+      "msg": "Found a certificate for h215.example.com with grade M on 192.0.2.1.",
+      "cs1": "CN: ; SAN: h216.h217.example-1.net; Host: 192.0.2.1; Issuer: ; Not before: 2026-10-24 19:25; Not after: 2027-10-24 19:25; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h215.example.com&ip=192.0.2.1&serial=&url=h215.example.com"
+    },
+    {
+      "timestamp": "2026-10-26T09:10:52Z",
+      "eventid": 1668,
+      "level": 81,
+      "source": "websites",
+      "msg": "Website security grade for www.h105.example.com changed from F to D",
+      "request": "www.h105.example.com&wid=10000079"
+    },
+    {
+      "timestamp": "2026-10-26T12:06:10Z",
+      "eventid": 101,
+      "level": 60,
+      "source": "dns",
+      "msg": "Found server (ipv4) for example.com at Cloudflare",
+      "request": "example.com"
+    },
+    {
+      "timestamp": "2026-10-27T02:42:11Z",
+      "eventid": 3306,
+      "level": 81,
+      "source": "cisa",
+      "msg": "Actively exploited CVE-2026-109618 (PHP Group PHP) may affect 10 of your assets (software version unknown)",
+      "cs1": "CVE: CVE-2026-109618; Vulnerability: PHP Memory Corruption Vulnerability; Product: PHP Group PHP; Added to KEV: 2026-10-26; CISA due date: 2026-10-29; Required action: Apply mitigations in accordance with vendor instructions, ensuring compliance with CISA’s BOD 26-04 Prioritizing Security Updates Based on Risk (see URL in Notes) guidance and CISA’s “Forensics Triage Requirements” (see URL in Notes). Follow applicable BOD 26-04 guidance for cloud services or discontinue use of the product if mitigations are unavailable. Stakeholders are responsible for evaluating each asset's internet exposure and ensuring adherence to BOD 26-04 patching guidelines.; Your assets: 10 possibly affected, software version unknown (listed below); Warning: 192.0.2.35 — PHP (version unknown); Warning: 192.0.2.15 — PHP (version unknown); Warning: 192.0.2.20 — PHP (version unknown); Warning: 192.0.2.14 — PHP (version unknown); Warning: h85.example.com — PHP (version unknown); Warning: admin.h83.example.com — PHP (version unknown); Warning: h41.example.com — PHP (version unknown); Warning: monitoring.example.com — PHP (version unknown); Warning: old.example.com — PHP (version unknown); Warning: h139.example.com — PHP (version unknown)"
+    },
+    {
+      "timestamp": "2026-10-27T02:42:17Z",
+      "eventid": 3306,
+      "level": 81,
+      "source": "cisa",
+      "msg": "Actively exploited CVE-2026-109619 (PHP Group PHP) may affect 10 of your assets (software version unknown)",
+      "cs1": "CVE: CVE-2026-109619; Vulnerability: PHP Stale Internal Request-State Vulnerability; Product: PHP Group PHP; Added to KEV: 2026-10-26; CISA due date: 2026-10-29; Required action: Apply mitigations in accordance with vendor instructions, ensuring compliance with CISA’s BOD 26-04 Prioritizing Security Updates Based on Risk (see URL in Notes) guidance and CISA’s “Forensics Triage Requirements” (see URL in Notes). Follow applicable BOD 26-04 guidance for cloud services or discontinue use of the product if mitigations are unavailable. Stakeholders are responsible for evaluating each asset's internet exposure and ensuring adherence to BOD 26-04 patching guidelines.; Your assets: 10 possibly affected, software version unknown (listed below); Warning: 192.0.2.35 — PHP (version unknown); Warning: 192.0.2.15 — PHP (version unknown); Warning: 192.0.2.20 — PHP (version unknown); Warning: 192.0.2.14 — PHP (version unknown); Warning: h85.example.com — PHP (version unknown); Warning: admin.h83.example.com — PHP (version unknown); Warning: h41.example.com — PHP (version unknown); Warning: monitoring.example.com — PHP (version unknown); Warning: old.example.com — PHP (version unknown); Warning: h139.example.com — PHP (version unknown)"
+    },
+    {
+      "timestamp": "2026-10-27T06:49:48Z",
+      "eventid": 3310,
+      "level": 50,
+      "source": "ssl",
+      "msg": "TLS check \"CAA record\" is now a warning on h218.h141.example.com on 192.0.2.7",
+      "request": "h218.h141.example.com&ip=192.0.2.7&serial=EC2029E69D5CCE77F098FFB336EC6D15CDB4&url=h218.h141.example.com"
+    },
+    {
+      "timestamp": "2026-10-27T08:21:55Z",
+      "eventid": 1415,
+      "level": 91,
+      "source": "ssl",
+      "msg": "Renewed certificate for h219.h220.h66.example.com found on 192.0.2.26. Grade: M.",
+      "cs1": "CN: TRAEFIK DEFAULT CERT; SAN: h221.h222.example-1.net; Host: 192.0.2.26; Issuer: ; Not before: 2026-10-27 08:21; Not after: 2027-10-27 08:21; Protocols: TLS 1.2, TLS 1.3; Problem: Grade capped to M. Domain name mismatch; Warning: Grade capped to B. Issues with chain of trust (chain incomplete)",
+      "request": "h223.h224.h66.example.com&ip=192.0.2.26&serial=0DE0C330C2F6B1DFA604FF8D3DE921D4&url=h219.h220.h66.example.com"
+    },
+    {
+      "timestamp": "2026-10-27T12:28:33Z",
+      "eventid": 1559,
+      "level": 10,
+      "source": "asn",
+      "msg": "BGP prefix for 192.0.2.35 changed from 192.0.2.37/24 to 192.0.2.38/22",
+      "dst": "192.0.2.35"
+    },
+    {
+      "timestamp": "2026-10-27T23:15:40Z",
+      "eventid": 282,
+      "level": 81,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.35 (h139.example.com) with warnings",
+      "cs1": "Hosted at: IONOS SE in Germany; Warning: ftp has warnings",
+      "dst": "192.0.2.35"
+    },
+    {
+      "timestamp": "2026-10-28T09:26:06Z",
+      "eventid": 1826,
+      "level": 6,
+      "source": "whois",
+      "msg": "Whois record for example.com is renewed",
+      "cs1": "Registrar: RegistryGate GmbH; DNSSEC: unsigned; Nameservers: h8.example-2.net,  h9.example-2.net,  h8.example-2.net,  h9.example-2.net; Expires: 2027-08-08"
+    },
+    {
+      "timestamp": "2026-10-28T10:58:24Z",
+      "eventid": 1655,
+      "level": 4,
+      "source": "websites",
+      "msg": "HTTP header link changed on h13.example.com",
+      "cs1": "link changed from:; ; rel=modulepreload; as=script; crossorigin=anonymous; integrity=sha384-KkWGZOC6xNLI9R3JHT6xPmGnwB8dt2se5KbxOW7OGPJsan7oo+lLLUeOqrv5qEy7; nonce=; nopush,; rel=modulepreload; as=script; crossorigin=anonymous; integrity=sha384-/XlzIll1NPEDkH/JVQVTHjRes32bN+N2Za30kywIhCI0xbiFkLnOpH+VCdf3FWsj; nonce=; nopush,; rel=preload; as=style; crossorigin=anonymous; integrity=sha384-0spO/bGX5sRn8Lls95z61o8ChZP3tGWF74ByPjqd63wQkXRkZVvJtZBtk23Jy2ZN; nopush,; rel=modulepreload; as=script; crossorigin=anonymous; integrity=sha384-wvJrKr6fXfXoAnJxcq/cuQFpUIxj9sU091NYJdB/s1vWgHKDU+6p30XewuXoD/KB; nonce=; nopush,; rel=\"api-catalog\"; to:; ; rel=modulepreload; as=script; crossorigin=anonymous; integrity=sha384-6Hwt5PtLDJHblo2rTpPcsomb45OtHdMkVYRpyPobsj97v21VwdtOJNP81oohZG12; nonce=; nopush,; rel=modulepreload; as=script; crossorigin=anonymous; integrity=sha384-/XlzIll1NPEDkH/JVQVTHjRes32bN+N2Za30kywIhCI0xbiFkLnOpH+VCdf3FWsj; nonce=; nopush,; rel=preload; as=style; crossorigin=anonymous; integrity=sha384-0spO/bGX5sRn8Lls95z61o8ChZP3tGWF74ByPjqd63wQkXRkZVvJtZBtk23Jy2ZN; nopush,; rel=modulepreload; as=script; crossorigin=anonymous; integrity=sha384-wvJrKr6fXfXoAnJxcq/cuQFpUIxj9sU091NYJdB/s1vWgHKDU+6p30XewuXoD/KB; nonce=; nopush,; rel=\"api-catalog\"",
+      "request": "h13.example.com&wid=10000082"
+    },
+    {
+      "timestamp": "2026-10-28T14:52:42Z",
+      "eventid": 1655,
+      "level": 4,
+      "source": "websites",
+      "msg": "HTTP security header content-security-policy changed on docs.example.com",
+      "cs1": "content-security-policy changed from:; default-src 'self' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src 'self' 'unsafe-inline' blob: *; img-src * 'self' blob: data:; connect-src *; font-src *; frame-src *; object-src 'none'; base-uri 'self' https://h225.example-18.net; form-action 'self' https://h225.example-18.net *; frame-ancestors https: ;; to:; default-src 'self' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src 'self' 'unsafe-inline' blob: *; img-src * 'self' blob: data:; connect-src *; font-src *; frame-src *; object-src 'none'; base-uri 'self' https://h225.example-18.net; form-action 'self' https://h225.example-18.net *; frame-ancestors https: ionic: capacitor: ;",
+      "request": "docs.example.com&wid=10000017"
+    },
+    {
+      "timestamp": "2026-10-28T15:12:58Z",
+      "eventid": 3311,
+      "level": 20,
+      "source": "ssl",
+      "msg": "TLS check \"CAA record\" is ok again on h226.h17.example.com on 192.0.2.6",
+      "request": "h226.h17.example.com&ip=192.0.2.6&serial=FCCDDF8F46C184E64CE1B749FA42C2200224&url=h226.h17.example.com"
+    },
+    {
+      "timestamp": "2026-10-28T16:29:14Z",
+      "eventid": 1559,
+      "level": 10,
+      "source": "asn",
+      "msg": "BGP prefix for 192.0.2.35 changed from 192.0.2.38/22 to 192.0.2.37/24",
+      "dst": "192.0.2.35"
+    },
+    {
+      "timestamp": "2026-10-28T16:29:58Z",
+      "eventid": 1553,
+      "level": 9,
+      "source": "asn",
+      "msg": "ASN name for 192.0.2.29 changed from OVH - OVH SAS, FR to OVH, FR",
+      "dst": "192.0.2.29"
+    },
+    {
+      "timestamp": "2026-10-28T16:30:17Z",
+      "eventid": 118,
+      "level": 60,
+      "source": "dns",
+      "msg": "Ip 192.0.2.42 added a url to its reverse dns: h227.h228.example-19.net",
+      "dst": "192.0.2.42"
+    },
+    {
+      "timestamp": "2026-10-28T16:32:40Z",
+      "eventid": 1553,
+      "level": 9,
+      "source": "asn",
+      "msg": "ASN name for 192.0.2.36 changed from OVH - OVH SAS, FR to OVH, FR",
+      "dst": "192.0.2.36"
+    },
+    {
+      "timestamp": "2026-10-29T01:44:39Z",
+      "eventid": 282,
+      "level": 81,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.35 (h139.example.com) with warnings",
+      "cs1": "Hosted at: IONOS SE in Germany; Warning: ftp has warnings",
+      "dst": "192.0.2.35"
+    },
+    {
+      "timestamp": "2026-10-29T01:52:12Z",
+      "eventid": 283,
+      "level": 91,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.19 (h84.example.com) with problems",
+      "cs1": "Hosted at: Neue Medien Muennich in Germany; Problem: SMB/RPC should not be accessible from the internet.; Problem: MySQL has problems; Warning: ftp has warnings",
+      "dst": "192.0.2.19"
+    },
+    {
+      "timestamp": "2026-10-29T08:28:14Z",
+      "eventid": 3313,
+      "level": 20,
+      "source": "websites",
+      "msg": "No longer a possible subdomain takeover: h84.example.com on 192.0.2.19 now serves a website of your own (example.com)",
+      "cs1": "Points to: 192.0.2.19; Certificate for: *.example-2.net, example-2.net; Website title: 301 Moved Permanently; Same page for a random name: 100%; HTTPS redirects to: http://h84.example.com/; Own domain: example.com",
+      "request": "h84.example.com&wip=192.0.2.19"
+    },
+    {
+      "timestamp": "2026-10-29T08:30:21Z",
+      "eventid": 3313,
+      "level": 20,
+      "source": "websites",
+      "msg": "No longer a possible subdomain takeover: old.example.com on 192.0.2.15 now serves a website of your own (example.com)",
+      "cs1": "Points to: 192.0.2.15; Certificate for: h119.h120.example-17.net; Same page for a random name: 100%; HTTPS redirects to: https://old.example.com/login.php; Own domain: example.com",
+      "request": "old.example.com&wip=192.0.2.15"
+    },
+    {
+      "timestamp": "2026-10-29T16:31:18Z",
+      "eventid": 1553,
+      "level": 9,
+      "source": "asn",
+      "msg": "ASN name for 192.0.2.12 changed from KRYSTAL, GB to KRYSTAL - Krystal Hosting Ltd, GB",
+      "dst": "192.0.2.12"
+    },
+    {
+      "timestamp": "2026-10-30T05:28:39Z",
+      "eventid": 283,
+      "level": 91,
+      "source": "hosts",
+      "msg": "Detected port changes on host 192.0.2.19 (h84.example.com) with problems",
+      "cs1": "Hosted at: Neue Medien Muennich in Germany; Problem: SMB/RPC should not be accessible from the internet.; Problem: MySQL has problems; Warning: ftp has warnings",
+      "dst": "192.0.2.19"
+    }
+  ]
+}

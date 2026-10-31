@@ -1,0 +1,6 @@
+splunk-add-on-ucc-framework==6.6.0
+splunk-appinspect==4.4.0
+pytest==8.4.2
+# Runtime libraries the add-on bundles (see package/lib/requirements.txt)
+urllib3<2
+PySocks==1.7.1
