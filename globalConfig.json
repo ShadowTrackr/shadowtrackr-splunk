@@ -4,6 +4,7 @@
             "tabs": [
                 {
                     "name": "account",
+                    "title": "Accounts",
                     "table": {
                         "actions": [
                             "edit",
@@ -14,6 +15,10 @@
                             {
                                 "label": "Name",
                                 "field": "name"
+                            },
+                            {
+                                "label": "API base URL",
+                                "field": "base_url"
                             }
                         ]
                     },
@@ -21,6 +26,9 @@
                         {
                             "type": "text",
                             "label": "Name",
+                            "field": "name",
+                            "help": "A unique name for this ShadowTrackr account.",
+                            "required": true,
                             "validators": [
                                 {
                                     "type": "regex",
@@ -29,49 +37,99 @@
                                 },
                                 {
                                     "type": "string",
-                                    "errorMsg": "Length of input name should be between 1 and 100",
+                                    "errorMsg": "Length of account name should be between 1 and 100",
                                     "minLength": 1,
                                     "maxLength": 100
                                 }
-                            ],
-                            "field": "name",
-                            "help": "A unique name for the account.",
-                            "required": true
+                            ]
                         },
                         {
                             "type": "text",
                             "label": "API key",
                             "field": "api_key",
-                            "help": "API key",
+                            "help": "Found in ShadowTrackr under Settings > API access. Requires a Business or Enterprise subscription.",
                             "required": true,
                             "encrypted": true,
                             "validators": [
                                 {
                                     "type": "string",
-                                    "errorMsg": "Length of API key should be between 1 and 50",
-                                    "minLength": 1,
-                                    "maxLength": 50
+                                    "errorMsg": "Length of API key should be between 16 and 256",
+                                    "minLength": 16,
+                                    "maxLength": 256
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "label": "API base URL",
+                            "field": "base_url",
+                            "defaultValue": "https://api.shadowtrackr.com/api/v4",
+                            "help": "Leave the default unless you test against a mock server. Plain http is only accepted for localhost and host.docker.internal.",
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Use an https:// URL (http:// is only allowed for localhost, 127.0.0.1 and host.docker.internal).",
+                                    "pattern": "^(https://[^\\s/]+|http://(localhost|127\\.0\\.0\\.1|host\\.docker\\.internal))(:\\d+)?(/[^\\s]*)?$"
+                                },
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Length of the URL should be between 8 and 512",
+                                    "minLength": 8,
+                                    "maxLength": 512
                                 }
                             ]
                         }
-                    ],
-                    "title": "Accounts"
+                    ]
+                },
+                {
+                    "type": "proxyTab"
                 },
                 {
                     "type": "loggingTab"
+                },
+                {
+                    "name": "advanced",
+                    "title": "Advanced",
+                    "entity": [
+                        {
+                            "type": "text",
+                            "label": "Request timeout (seconds)",
+                            "field": "request_timeout",
+                            "defaultValue": "60",
+                            "help": "Timeout for a single API request.",
+                            "required": false,
+                            "validators": [
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        5,
+                                        600
+                                    ],
+                                    "isInteger": true,
+                                    "errorMsg": "Enter a whole number between 5 and 600."
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             "title": "Configuration",
-            "description": "Set up your add-on"
+            "description": "Connect Splunk to your ShadowTrackr account"
         },
         "inputs": {
             "services": [
                 {
-                    "name": "events",
+                    "name": "shadowtrackr_events",
+                    "title": "ShadowTrackr Events",
+                    "inputHelperModule": "events_helper",
                     "entity": [
                         {
                             "type": "text",
                             "label": "Name",
+                            "field": "name",
+                            "help": "A unique name for the data input.",
+                            "required": true,
                             "validators": [
                                 {
                                     "type": "regex",
@@ -84,39 +142,17 @@
                                     "minLength": 1,
                                     "maxLength": 100
                                 }
-                            ],
-                            "field": "name",
-                            "help": "A unique name for the data input.",
-                            "required": true
-                        },
-                        {
-                            "type": "interval",
-                            "label": "Interval",
-                            "defaultValue": "300",
-                            "field": "interval",
-                            "options": {
-                                "range": [
-                                    10,
-                                    301
-                                ]
-                            },
-                            "help": "Time interval of the data input, in seconds.",
-                            "required": true
-                        },
-                        {
-                            "type": "index",
-                            "field": "index",
-                            "label": "Index"
+                            ]
                         },
                         {
                             "type": "singleSelect",
-                            "label": "Account to use",
+                            "label": "Account",
+                            "field": "account",
+                            "help": "ShadowTrackr account to collect events from.",
+                            "required": true,
                             "options": {
                                 "referenceName": "account"
                             },
-                            "help": "Account to use for this input.",
-                            "field": "account",
-                            "required": true,
                             "validators": [
                                 {
                                     "type": "string",
@@ -125,14 +161,72 @@
                                     "maxLength": 100
                                 }
                             ]
+                        },
+                        {
+                            "type": "interval",
+                            "label": "Interval",
+                            "field": "interval",
+                            "defaultValue": "300",
+                            "help": "How often to poll for new events, in seconds.",
+                            "required": true,
+                            "options": {
+                                "range": [
+                                    60,
+                                    86400
+                                ]
+                            }
+                        },
+                        {
+                            "type": "index",
+                            "label": "Index",
+                            "field": "index",
+                            "defaultValue": "shadowtrackr",
+                            "help": "Create this index before enabling the input. Update the shadowtrackr_index macro if you use another index.",
+                            "required": true
+                        },
+                        {
+                            "type": "text",
+                            "label": "Backfill (days)",
+                            "field": "backfill_days",
+                            "defaultValue": "7",
+                            "help": "How far back to collect events the first time this input runs.",
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        0,
+                                        90
+                                    ],
+                                    "isInteger": true,
+                                    "errorMsg": "Enter a whole number between 0 and 90."
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "label": "Overlap (minutes)",
+                            "field": "overlap_minutes",
+                            "defaultValue": "15",
+                            "help": "Each poll re-reads this many minutes before the last checkpoint to catch late events. Duplicates are filtered.",
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        0,
+                                        1440
+                                    ],
+                                    "isInteger": true,
+                                    "errorMsg": "Enter a whole number between 0 and 1440."
+                                }
+                            ]
                         }
-                    ],
-                    "inputHelperModule": "events_helper",
-                    "title": "events"
+                    ]
                 }
             ],
             "title": "Inputs",
-            "description": "Manage your data inputs",
+            "description": "Manage your ShadowTrackr data inputs",
             "table": {
                 "actions": [
                     "edit",
@@ -143,6 +237,10 @@
                     {
                         "label": "Name",
                         "field": "name"
+                    },
+                    {
+                        "label": "Account",
+                        "field": "account"
                     },
                     {
                         "label": "Interval",
@@ -163,12 +261,24 @@
                         "field": "name"
                     },
                     {
+                        "label": "Account",
+                        "field": "account"
+                    },
+                    {
                         "label": "Interval",
                         "field": "interval"
                     },
                     {
                         "label": "Index",
                         "field": "index"
+                    },
+                    {
+                        "label": "Backfill (days)",
+                        "field": "backfill_days"
+                    },
+                    {
+                        "label": "Overlap (minutes)",
+                        "field": "overlap_minutes"
                     },
                     {
                         "label": "Status",
@@ -195,6 +305,10 @@
         "version": "0.1.0",
         "displayName": "ShadowTrackr",
         "schemaVersion": "0.0.10",
+        "supportedPythonVersion": [
+            "3.9",
+            "3.13"
+        ],
         "supportedThemes": [
             "light",
             "dark"

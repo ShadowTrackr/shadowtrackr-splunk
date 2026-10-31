@@ -1,3 +1,4 @@
-splunktaucclib
-splunk-sdk
-solnlib
+splunktaucclib==8.2.0
+splunk-sdk==2.1.1
+# solnlib 8.x pulls in grpcio/protobuf (native binaries); 7.0.0 is the last pure-Python release
+solnlib==7.0.0
