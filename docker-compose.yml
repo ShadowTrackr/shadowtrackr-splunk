@@ -1,0 +1,29 @@
+services:
+  splunk:
+    image: ${SPLUNK_IMAGE}
+    platform: linux/amd64
+    container_name: splunk
+    hostname: splunk
+    ports:
+      - "8000:8000"   # Splunk Web
+      - "8089:8089"   # management API
+      - "8088:8088"   # HEC (for the webhook path later)
+    environment:
+      SPLUNK_START_ARGS: "--accept-license"
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD}
+      SPLUNK_HEC_TOKEN: ${SPLUNK_HEC_TOKEN}
+    volumes:
+      - ./splunk-dev/apps/shadowtrackr:/opt/splunk/etc/apps/shadowtrackr
+      - splunk-var:/opt/splunk/var
+      - splunk-etc-local:/opt/splunk/etc/system/local
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsk https://localhost:8089/services/server/info || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 40
+      start_period: 180s
+
+volumes:
+  splunk-var:
+  splunk-etc-local:

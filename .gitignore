@@ -1,0 +1,21 @@
+# Python environments (yours is "venv")
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Build output and packages
+output/
+*.tar.gz
+*.spl
+
+# Local Splunk dev data and secrets
+splunk-dev/
+.env
+*.pem
+secrets/
+
+# IDE and OS
+.idea/
+.DS_Store
