@@ -141,9 +141,19 @@ def make_handler(api_key, events):
     return Handler
 
 
+class MockServer(ThreadingHTTPServer):
+    daemon_threads = True
+
+    def server_bind(self):
+        # HTTPServer.server_bind() does a reverse DNS lookup (getfqdn) that
+        # can stall for a long time on some machines. We don't need it.
+        self.socket.bind(self.server_address)
+        self.server_address = self.socket.getsockname()
+        self.server_name, self.server_port = self.server_address[:2]
+
+
 def make_server(host="127.0.0.1", port=8081, api_key=DEFAULT_API_KEY, shift_to_now=False):
-    server = ThreadingHTTPServer((host, port), make_handler(api_key, load_events(shift_to_now)))
-    server.daemon_threads = True
+    server = MockServer((host, port), make_handler(api_key, load_events(shift_to_now)))
     return server
 
 
@@ -156,7 +166,7 @@ def main():
     args = parser.parse_args()
 
     server = make_server(args.host, args.port, args.api_key, args.shift_to_now)
-    print("Mock ShadowTrackr API on http://{}:{}{}  (API key: {})".format(args.host, args.port, API_PREFIX, args.api_key))
+    print("Mock ShadowTrackr API on http://{}:{}{}  (API key: {})".format(args.host, args.port, API_PREFIX, args.api_key), flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

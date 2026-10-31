@@ -4,6 +4,8 @@ services:
     platform: linux/amd64
     container_name: splunk
     hostname: splunk
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # reach the mock API on the host
     ports:
       - "8000:8000"   # Splunk Web
       - "8089:8089"   # management API
