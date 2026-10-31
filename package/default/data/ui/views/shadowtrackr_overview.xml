@@ -1,0 +1,361 @@
+<dashboard version="2" theme="dark">
+    <label>Overview</label>
+    <description>Events from your external attack surface, collected by the ShadowTrackr events input.</description>
+    <definition><![CDATA[
+{
+    "title": "ShadowTrackr Overview",
+    "description": "Events from your external attack surface, collected by the ShadowTrackr events input.",
+    "inputs": {
+        "input_time": {
+            "type": "input.timerange",
+            "title": "Time range",
+            "token": "global_time",
+            "options": {
+                "defaultValue": "-7d@h,now"
+            }
+        }
+    },
+    "defaults": {},
+    "visualizations": {
+        "viz_total": {
+            "type": "splunk.singlevalue",
+            "title": "Events",
+            "dataSources": {
+                "primary": "ds_total"
+            },
+            "options": {
+                "sparklineDisplay": "off"
+            }
+        },
+        "viz_problems": {
+            "type": "splunk.singlevalue",
+            "title": "Problems (level 90+)",
+            "dataSources": {
+                "primary": "ds_problems"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "majorColor": "#DC4E41"
+            }
+        },
+        "viz_warnings": {
+            "type": "splunk.singlevalue",
+            "title": "Warnings (level 80-89)",
+            "dataSources": {
+                "primary": "ds_warnings"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "majorColor": "#F1813F"
+            }
+        },
+        "viz_assets": {
+            "type": "splunk.singlevalue",
+            "title": "Assets with events",
+            "dataSources": {
+                "primary": "ds_assets"
+            },
+            "options": {
+                "sparklineDisplay": "off"
+            }
+        },
+        "viz_timeline": {
+            "type": "splunk.column",
+            "title": "Events over time by status",
+            "dataSources": {
+                "primary": "ds_timeline"
+            },
+            "options": {
+                "stackMode": "stacked",
+                "seriesColorsByField": {
+                    "problem": "#DC4E41",
+                    "warning": "#F1813F",
+                    "info": "#7B56DB"
+                }
+            }
+        },
+        "viz_category": {
+            "type": "splunk.bar",
+            "title": "Events by category",
+            "dataSources": {
+                "primary": "ds_category"
+            },
+            "options": {
+                "legendDisplay": "off"
+            }
+        },
+        "viz_latest": {
+            "type": "splunk.table",
+            "title": "Latest problems and warnings",
+            "dataSources": {
+                "primary": "ds_latest"
+            },
+            "options": {
+                "count": 10
+            }
+        },
+        "viz_top_assets": {
+            "type": "splunk.table",
+            "title": "Assets with the most problems and warnings",
+            "dataSources": {
+                "primary": "ds_top_assets"
+            },
+            "options": {
+                "count": 10
+            }
+        },
+        "viz_unclassified": {
+            "type": "splunk.table",
+            "title": "Event types not yet in the shadowtrackr_event_types lookup",
+            "description": "Add these to lookups/shadowtrackr_event_types.csv so they get a signature and CIM classification.",
+            "dataSources": {
+                "primary": "ds_unclassified"
+            },
+            "options": {
+                "count": 5
+            }
+        },
+        "viz_changes": {
+            "type": "splunk.bar",
+            "title": "Top changes",
+            "dataSources": {
+                "primary": "ds_changes"
+            },
+            "options": {
+                "legendDisplay": "off"
+            }
+        }
+    },
+    "dataSources": {
+        "ds_total": {
+            "type": "ds.search",
+            "name": "Total events",
+            "options": {
+                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" | stats count",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_problems": {
+            "type": "ds.search",
+            "name": "Problems",
+            "options": {
+                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" level>=90 | stats count",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_warnings": {
+            "type": "ds.search",
+            "name": "Warnings",
+            "options": {
+                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" level>=80 level<90 | stats count",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_assets": {
+            "type": "ds.search",
+            "name": "Assets with events",
+            "options": {
+                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" | stats dc(dest) as assets",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_timeline": {
+            "type": "ds.search",
+            "name": "Events over time",
+            "options": {
+                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" | timechart count by st_status",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_category": {
+            "type": "ds.search",
+            "name": "Events by category",
+            "options": {
+                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" | stats count by category | sort - count",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_latest": {
+            "type": "ds.search",
+            "name": "Latest problems and warnings",
+            "options": {
+                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" level>=80 | sort - _time | head 100 | eval time=strftime(_time, \"%Y-%m-%d %H:%M:%S\") | table time severity category dest message",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_top_assets": {
+            "type": "ds.search",
+            "name": "Assets with most problems",
+            "options": {
+                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" level>=80 | stats count as events max(level) as max_level latest(message) as latest_message by dest | sort - max_level - events | head 20",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_unclassified": {
+            "type": "ds.search",
+            "name": "Unclassified event types",
+            "options": {
+                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" NOT signature=* | stats count latest(message) as example_message by eventid category | sort - count",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_changes": {
+            "type": "ds.search",
+            "name": "Changes by type",
+            "options": {
+                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" eventtype=shadowtrackr_change | stats count by signature | sort - count | head 10",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        }
+    },
+    "layout": {
+        "type": "grid",
+        "options": {
+            "width": 1200
+        },
+        "globalInputs": [
+            "input_time"
+        ],
+        "structure": [
+            {
+                "item": "viz_total",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_problems",
+                "type": "block",
+                "position": {
+                    "x": 300,
+                    "y": 0,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_warnings",
+                "type": "block",
+                "position": {
+                    "x": 600,
+                    "y": 0,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_assets",
+                "type": "block",
+                "position": {
+                    "x": 900,
+                    "y": 0,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_timeline",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 110,
+                    "w": 800,
+                    "h": 320
+                }
+            },
+            {
+                "item": "viz_category",
+                "type": "block",
+                "position": {
+                    "x": 800,
+                    "y": 110,
+                    "w": 400,
+                    "h": 320
+                }
+            },
+            {
+                "item": "viz_latest",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 430,
+                    "w": 1200,
+                    "h": 400
+                }
+            },
+            {
+                "item": "viz_top_assets",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 830,
+                    "w": 700,
+                    "h": 400
+                }
+            },
+            {
+                "item": "viz_changes",
+                "type": "block",
+                "position": {
+                    "x": 700,
+                    "y": 830,
+                    "w": 500,
+                    "h": 400
+                }
+            },
+            {
+                "item": "viz_unclassified",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 1230,
+                    "w": 1200,
+                    "h": 250
+                }
+            }
+        ]
+    }
+}
+    ]]></definition>
+    <meta type="hiddenElements"><![CDATA[
+{
+    "hideEdit": false,
+    "hideOpenInSearch": false,
+    "hideExport": false
+}
+    ]]></meta>
+</dashboard>
