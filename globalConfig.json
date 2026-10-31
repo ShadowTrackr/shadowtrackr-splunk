@@ -192,7 +192,7 @@
     "meta": {
         "name": "shadowtrackr",
         "restRoot": "shadowtrackr",
-        "version": "0.0.0+3f9b1c0",
+        "version": "0.1.0",
         "displayName": "ShadowTrackr",
         "schemaVersion": "0.0.10",
         "supportedThemes": [

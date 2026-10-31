@@ -1,9 +1,10 @@
 APP ?= shadowtrackr
+VERSION ?= 0.1.0
 
 .PHONY: build test deploy up down restart logs inspect
 
 build:
-	ucc-gen build
+	ucc-gen build --ta-version $(VERSION)
 
 test:
 	pytest tests/
