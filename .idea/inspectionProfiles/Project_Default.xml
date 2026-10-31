@@ -1,0 +1,57 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="urllib3" />
+          <option value="netaddr" />
+          <option value="publicsuffix" />
+          <option value="publicsuffixlist" />
+          <option value="python-nmap" />
+          <option value="beautifulsoup4" />
+          <option value="requests" />
+          <option value="dnspython" />
+          <option value="psutil" />
+          <option value="numpy" />
+          <option value="html5lib" />
+          <option value="cloudscraper" />
+          <option value="cryptography" />
+          <option value="gmpy2" />
+          <option value="cffi" />
+          <option value="ndg-httpsclient" />
+          <option value="pyasn1" />
+          <option value="pyopenssl" />
+          <option value="validators" />
+          <option value="setproctitle" />
+          <option value="python-hosts" />
+          <option value="ldap3" />
+          <option value="pysummarization" />
+          <option value="unshortenit" />
+          <option value="termcolor" />
+          <option value="ipwhois" />
+          <option value="certstream" />
+          <option value="tld" />
+          <option value="python_Levenshtein" />
+          <option value="PyYAML" />
+          <option value="websocket-client" />
+          <option value="mmh3" />
+          <option value="python-masscan" />
+          <option value="paramiko" />
+          <option value="pycountry" />
+          <option value="unidecode" />
+          <option value="torpy" />
+          <option value="pathvalidate" />
+          <option value="censys" />
+          <option value="langcodes" />
+          <option value="pgpy_dtc" />
+          <option value="python-dateutil" />
+          <option value="pytz" />
+          <option value="ppdeep" />
+          <option value="lxml" />
+          <option value="python-Levenshtein" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
