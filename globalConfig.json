@@ -166,8 +166,8 @@
                             "type": "interval",
                             "label": "Interval",
                             "field": "interval",
-                            "defaultValue": "300",
-                            "help": "How often to poll for new events, in seconds.",
+                            "defaultValue": "900",
+                            "help": "How often to poll for new events, in seconds. 900 (15 minutes) is recommended.",
                             "required": true,
                             "options": {
                                 "range": [
@@ -208,7 +208,7 @@
                             "label": "Overlap (minutes)",
                             "field": "overlap_minutes",
                             "defaultValue": "15",
-                            "help": "Each poll re-reads this many minutes before the last checkpoint to catch late events. Duplicates are filtered.",
+                            "help": "Only used with ShadowTrackr API versions without event ids: each poll re-reads this many minutes to catch late events. Duplicates are filtered.",
                             "required": true,
                             "validators": [
                                 {

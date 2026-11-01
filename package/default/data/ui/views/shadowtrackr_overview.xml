@@ -9,9 +9,57 @@
         "input_time": {
             "type": "input.timerange",
             "title": "Time range",
-            "token": "global_time",
             "options": {
+                "token": "global_time",
                 "defaultValue": "-7d@h,now"
+            }
+        },
+        "input_level": {
+            "type": "input.dropdown",
+            "title": "Alerts",
+            "options": {
+                "token": "min_level",
+                "defaultValue": "90",
+                "items": [
+                    {
+                        "label": "Problems only (90+)",
+                        "value": "90"
+                    },
+                    {
+                        "label": "Problems and warnings (80+)",
+                        "value": "80"
+                    }
+                ]
+            }
+        },
+        "input_org": {
+            "type": "input.dropdown",
+            "title": "Organization",
+            "dataSources": {
+                "primary": "ds_orgs"
+            },
+            "options": {
+                "token": "org",
+                "defaultValue": "*",
+                "items": ">frame(label, value) | prepend(formattedStatics) | objects()"
+            },
+            "context": {
+                "formattedConfig": {
+                    "number": {
+                        "prefix": ""
+                    }
+                },
+                "formattedStatics": ">statics | formatByType(formattedConfig)",
+                "statics": [
+                    [
+                        "All"
+                    ],
+                    [
+                        "*"
+                    ]
+                ],
+                "label": ">primary | seriesByName(\"vendor_account\") | renameSeries(\"label\") | formatByType(formattedConfig)",
+                "value": ">primary | seriesByName(\"vendor_account\") | renameSeries(\"value\") | formatByType(formattedConfig)"
             }
         }
     },
@@ -86,33 +134,23 @@
         },
         "viz_latest": {
             "type": "splunk.table",
-            "title": "Latest problems and warnings",
+            "title": "Latest alerts",
             "dataSources": {
                 "primary": "ds_latest"
             },
+            "description": "Problems only, or problems and warnings, depending on the Alerts filter.",
             "options": {
                 "count": 10
             }
         },
         "viz_top_assets": {
             "type": "splunk.table",
-            "title": "Assets with the most problems and warnings",
+            "title": "Assets with the most alerts",
             "dataSources": {
                 "primary": "ds_top_assets"
             },
             "options": {
                 "count": 10
-            }
-        },
-        "viz_unclassified": {
-            "type": "splunk.table",
-            "title": "Event types not yet in the shadowtrackr_event_types lookup",
-            "description": "Add these to lookups/shadowtrackr_event_types.csv so they get a signature and CIM classification.",
-            "dataSources": {
-                "primary": "ds_unclassified"
-            },
-            "options": {
-                "count": 5
             }
         },
         "viz_changes": {
@@ -124,6 +162,17 @@
             "options": {
                 "legendDisplay": "off"
             }
+        },
+        "viz_unclassified": {
+            "type": "splunk.table",
+            "title": "Event types without a classification",
+            "description": "Normally empty: the app refreshes the event type catalogue from the API daily.",
+            "dataSources": {
+                "primary": "ds_unclassified"
+            },
+            "options": {
+                "count": 5
+            }
         }
     },
     "dataSources": {
@@ -131,7 +180,7 @@
             "type": "ds.search",
             "name": "Total events",
             "options": {
-                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" | stats count",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | stats count",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -142,7 +191,7 @@
             "type": "ds.search",
             "name": "Problems",
             "options": {
-                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" level>=90 | stats count",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | where level>=90 | stats count",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -153,7 +202,7 @@
             "type": "ds.search",
             "name": "Warnings",
             "options": {
-                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" level>=80 level<90 | stats count",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | where level>=80 AND level<90 | stats count",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -164,7 +213,7 @@
             "type": "ds.search",
             "name": "Assets with events",
             "options": {
-                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" | stats dc(dest) as assets",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | stats dc(dest) as assets",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -175,7 +224,7 @@
             "type": "ds.search",
             "name": "Events over time",
             "options": {
-                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" | timechart count by st_status",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | timechart count by st_status",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -186,7 +235,7 @@
             "type": "ds.search",
             "name": "Events by category",
             "options": {
-                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" | stats count by category | sort - count",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | eval st_category=coalesce(st_category, \"unclassified\") | stats count by st_category | sort - count",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -195,9 +244,9 @@
         },
         "ds_latest": {
             "type": "ds.search",
-            "name": "Latest problems and warnings",
+            "name": "Latest alerts",
             "options": {
-                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" level>=80 | sort - _time | head 100 | eval time=strftime(_time, \"%Y-%m-%d %H:%M:%S\") | table time severity category dest message",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | where level>=$min_level$ | sort - _time | head 100 | eval time=strftime(_time, \"%Y-%m-%d %H:%M:%S\") | table time severity vendor_account st_category dest message",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -206,20 +255,9 @@
         },
         "ds_top_assets": {
             "type": "ds.search",
-            "name": "Assets with most problems",
+            "name": "Assets with most alerts",
             "options": {
-                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" level>=80 | stats count as events max(level) as max_level latest(message) as latest_message by dest | sort - max_level - events | head 20",
-                "queryParameters": {
-                    "earliest": "$global_time.earliest$",
-                    "latest": "$global_time.latest$"
-                }
-            }
-        },
-        "ds_unclassified": {
-            "type": "ds.search",
-            "name": "Unclassified event types",
-            "options": {
-                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" NOT signature=* | stats count latest(message) as example_message by eventid category | sort - count",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | where level>=$min_level$ | stats count as events max(level) as max_level latest(message) as latest_message by dest | sort - max_level - events | head 20",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -230,10 +268,32 @@
             "type": "ds.search",
             "name": "Changes by type",
             "options": {
-                "query": "`shadowtrackr_index` sourcetype=\"shadowtrackr:events\" eventtype=shadowtrackr_change | stats count by signature | sort - count | head 10",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | search eventtype=shadowtrackr_change | stats count by signature | sort - count | head 10",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_unclassified": {
+            "type": "ds.search",
+            "name": "Unclassified event types",
+            "options": {
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | search NOT signature=* | stats count latest(message) as example_message by eventid category | sort - count",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_orgs": {
+            "type": "ds.search",
+            "name": "Organizations",
+            "options": {
+                "query": "`shadowtrackr_events` vendor_account=* | stats count by vendor_account | sort vendor_account",
+                "queryParameters": {
+                    "earliest": "-30d",
+                    "latest": "now"
                 }
             }
         }
@@ -244,7 +304,9 @@
             "width": 1200
         },
         "globalInputs": [
-            "input_time"
+            "input_time",
+            "input_level",
+            "input_org"
         ],
         "structure": [
             {
