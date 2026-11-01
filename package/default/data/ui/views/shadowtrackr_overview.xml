@@ -3,7 +3,7 @@
     <description>Events from your external attack surface, collected by the ShadowTrackr events input.</description>
     <definition><![CDATA[
 {
-    "title": "ShadowTrackr Overview",
+    "title": "Overview",
     "description": "Events from your external attack surface, collected by the ShadowTrackr events input.",
     "inputs": {
         "input_time": {
@@ -41,30 +41,43 @@
             "options": {
                 "token": "org",
                 "defaultValue": "*",
-                "items": ">frame(label, value) | prepend(formattedStatics) | objects()"
+                "items": ">frame(label, value) | objects()"
             },
             "context": {
+                "label": ">primary | seriesByName(\"label\") | renameSeries(\"label\") | formatByType(formattedConfig)",
+                "value": ">primary | seriesByName(\"value\") | renameSeries(\"value\") | formatByType(formattedConfig)",
                 "formattedConfig": {
                     "number": {
                         "prefix": ""
                     }
-                },
-                "formattedStatics": ">statics | formatByType(formattedConfig)",
-                "statics": [
-                    [
-                        "All"
-                    ],
-                    [
-                        "*"
-                    ]
-                ],
-                "label": ">primary | seriesByName(\"vendor_account\") | renameSeries(\"label\") | formatByType(formattedConfig)",
-                "value": ">primary | seriesByName(\"vendor_account\") | renameSeries(\"value\") | formatByType(formattedConfig)"
+                }
             }
         }
     },
     "defaults": {},
     "visualizations": {
+        "viz_logo": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/shadowtrackr/images/logo_tile.png",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.customUrl",
+                    "options": {
+                        "url": "https://shadowtrackr.com/usr/",
+                        "newTab": true
+                    }
+                }
+            ]
+        },
+        "viz_title": {
+            "type": "splunk.markdown",
+            "options": {
+                "markdown": "## ShadowTrackr\nExternal attack surface monitoring \u00b7 [Open ShadowTrackr](https://shadowtrackr.com/usr/) \u00b7 [Documentation](https://shadowtrackr.com/docs)"
+            }
+        },
         "viz_total": {
             "type": "splunk.singlevalue",
             "title": "Events",
@@ -77,24 +90,24 @@
         },
         "viz_problems": {
             "type": "splunk.singlevalue",
-            "title": "Problems (level 90+)",
+            "title": "\u25b2 Problems (level 90+)",
             "dataSources": {
                 "primary": "ds_problems"
             },
             "options": {
                 "sparklineDisplay": "off",
-                "majorColor": "#DC4E41"
+                "majorColor": "#d03b3b"
             }
         },
         "viz_warnings": {
             "type": "splunk.singlevalue",
-            "title": "Warnings (level 80-89)",
+            "title": "\u25a0 Warnings (level 80-89)",
             "dataSources": {
                 "primary": "ds_warnings"
             },
             "options": {
                 "sparklineDisplay": "off",
-                "majorColor": "#F1813F"
+                "majorColor": "#c98500"
             }
         },
         "viz_assets": {
@@ -109,17 +122,20 @@
         },
         "viz_timeline": {
             "type": "splunk.column",
-            "title": "Events over time by status",
+            "title": "Events over time",
             "dataSources": {
                 "primary": "ds_timeline"
             },
             "options": {
                 "stackMode": "stacked",
+                "legendDisplay": "top",
                 "seriesColorsByField": {
-                    "problem": "#DC4E41",
-                    "warning": "#F1813F",
-                    "info": "#7B56DB"
-                }
+                    "Problems": "#d03b3b",
+                    "Warnings": "#c98500",
+                    "Info": "#3987e5"
+                },
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide"
             }
         },
         "viz_category": {
@@ -129,7 +145,13 @@
                 "primary": "ds_category"
             },
             "options": {
-                "legendDisplay": "off"
+                "legendDisplay": "off",
+                "seriesColors": [
+                    "#3987e5"
+                ],
+                "dataValuesDisplay": "all",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide"
             }
         },
         "viz_latest": {
@@ -138,7 +160,7 @@
             "dataSources": {
                 "primary": "ds_latest"
             },
-            "description": "Problems only, or problems and warnings, depending on the Alerts filter.",
+            "description": "Problems only, or problems and warnings, depending on the Alerts filter. Click a row to see the event.",
             "options": {
                 "count": 10
             }
@@ -150,29 +172,30 @@
                 "primary": "ds_top_assets"
             },
             "options": {
-                "count": 10
+                "count": 9
             }
         },
         "viz_changes": {
-            "type": "splunk.bar",
+            "type": "splunk.table",
             "title": "Top changes",
             "dataSources": {
                 "primary": "ds_changes"
             },
             "options": {
-                "legendDisplay": "off"
+                "count": 10
             }
         },
         "viz_unclassified": {
             "type": "splunk.table",
             "title": "Event types without a classification",
-            "description": "Normally empty: the app refreshes the event type catalogue from the API daily.",
+            "description": "The app refreshes the event type catalogue from the API daily; types listed here are not in it yet.",
             "dataSources": {
                 "primary": "ds_unclassified"
             },
             "options": {
                 "count": 5
-            }
+            },
+            "hideWhenNoData": true
         }
     },
     "dataSources": {
@@ -224,7 +247,7 @@
             "type": "ds.search",
             "name": "Events over time",
             "options": {
-                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | timechart count by st_status",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | eval Status=case(level>=90, \"Problems\", level>=80, \"Warnings\", true(), \"Info\") | timechart count by Status | fillnull value=0 Problems Warnings Info | table _time Problems Warnings Info",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -235,7 +258,7 @@
             "type": "ds.search",
             "name": "Events by category",
             "options": {
-                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | eval st_category=coalesce(st_category, \"unclassified\") | stats count by st_category | sort - count",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | eval Category=coalesce(st_category, \"unclassified\") | stats count as Events by Category | sort - Events",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -246,7 +269,7 @@
             "type": "ds.search",
             "name": "Latest alerts",
             "options": {
-                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | where level>=$min_level$ | sort - _time | head 100 | eval time=strftime(_time, \"%Y-%m-%d %H:%M:%S\") | table time severity vendor_account st_category dest message",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | where level>=$min_level$ | sort - _time | head 100 | eval Status=case(level>=90, \"\u25b2 Problem\", level>=80, \"\u25a0 Warning\", true(), \"\u25cf Info\") | eval Time=strftime(_time, \"%Y-%m-%d %H:%M\") | rename dest AS Asset, signature AS Alert | table Time Status Asset Alert",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -257,7 +280,7 @@
             "type": "ds.search",
             "name": "Assets with most alerts",
             "options": {
-                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | where level>=$min_level$ | stats count as events max(level) as max_level latest(message) as latest_message by dest | sort - max_level - events | head 20",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | where level>=$min_level$ | stats count as Alerts max(level) as level latest(signature) as \"Latest alert\" by dest | sort - level - Alerts | head 20 | eval Status=case(level>=90, \"\u25b2 Problem\", level>=80, \"\u25a0 Warning\", true(), \"\u25cf Info\") | rename dest AS Asset | table Asset Status Alerts \"Latest alert\"",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -268,7 +291,7 @@
             "type": "ds.search",
             "name": "Changes by type",
             "options": {
-                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | search eventtype=shadowtrackr_change | stats count by signature | sort - count | head 10",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | search eventtype=shadowtrackr_change | stats count as Changes by signature | rename signature AS Change | sort - Changes | head 10",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -279,7 +302,7 @@
             "type": "ds.search",
             "name": "Unclassified event types",
             "options": {
-                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | search NOT signature=* | stats count latest(message) as example_message by eventid category | sort - count",
+                "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | search NOT signature=* | stats count as Events latest(message) as Example by eventid category | rename eventid AS \"Event id\", category AS Source | sort - Events",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -290,7 +313,7 @@
             "type": "ds.search",
             "name": "Organizations",
             "options": {
-                "query": "`shadowtrackr_events` vendor_account=* | stats count by vendor_account | sort vendor_account",
+                "query": "`shadowtrackr_events` vendor_account=* | stats count by vendor_account | eval label=vendor_account, value=vendor_account, order=1 | append [| makeresults | eval label=\"All organizations\", value=\"*\", order=0] | sort order label | table label value",
                 "queryParameters": {
                     "earliest": "-30d",
                     "latest": "now"
@@ -310,11 +333,31 @@
         ],
         "structure": [
             {
-                "item": "viz_total",
+                "item": "viz_logo",
                 "type": "block",
                 "position": {
                     "x": 0,
                     "y": 0,
+                    "w": 90,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_title",
+                "type": "block",
+                "position": {
+                    "x": 90,
+                    "y": 0,
+                    "w": 1110,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_total",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 90,
                     "w": 300,
                     "h": 110
                 }
@@ -324,7 +367,7 @@
                 "type": "block",
                 "position": {
                     "x": 300,
-                    "y": 0,
+                    "y": 90,
                     "w": 300,
                     "h": 110
                 }
@@ -334,7 +377,7 @@
                 "type": "block",
                 "position": {
                     "x": 600,
-                    "y": 0,
+                    "y": 90,
                     "w": 300,
                     "h": 110
                 }
@@ -344,7 +387,7 @@
                 "type": "block",
                 "position": {
                     "x": 900,
-                    "y": 0,
+                    "y": 90,
                     "w": 300,
                     "h": 110
                 }
@@ -354,7 +397,7 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 110,
+                    "y": 200,
                     "w": 800,
                     "h": 320
                 }
@@ -364,7 +407,7 @@
                 "type": "block",
                 "position": {
                     "x": 800,
-                    "y": 110,
+                    "y": 200,
                     "w": 400,
                     "h": 320
                 }
@@ -374,7 +417,7 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 430,
+                    "y": 520,
                     "w": 1200,
                     "h": 400
                 }
@@ -384,19 +427,19 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 830,
-                    "w": 700,
-                    "h": 400
+                    "y": 920,
+                    "w": 760,
+                    "h": 440
                 }
             },
             {
                 "item": "viz_changes",
                 "type": "block",
                 "position": {
-                    "x": 700,
-                    "y": 830,
-                    "w": 500,
-                    "h": 400
+                    "x": 760,
+                    "y": 920,
+                    "w": 440,
+                    "h": 440
                 }
             },
             {
@@ -404,7 +447,7 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 1230,
+                    "y": 1360,
                     "w": 1200,
                     "h": 250
                 }
