@@ -1,0 +1,10 @@
+eventid,st_cim_type,reason
+281,change,Host ports changed: is_change is false in the API catalogue
+282,change,Host ports changed (warnings): is_change is false in the API catalogue
+283,change,Host ports changed (problems): is_change is false in the API catalogue
+1416,change,TLS settings changed: is_change is false in the API catalogue
+1645,change,Website header added: is_change is false in the API catalogue
+1668,change,Website security grade changed: is_change is false in the API catalogue
+3304,availability,Website down: an outage rather than a change to the asset
+3306,vulnerability,CISA KEV: a vulnerability rather than a change to the asset
+3312,vulnerability,Possible subdomain takeover

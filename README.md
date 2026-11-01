@@ -43,9 +43,9 @@ Searches use these macros, so the index is set in one place:
 | `shadowtrackr_vulnerability` | `vulnerability`, `report` | CISA KEV, NCSC advisories, subdomain takeover, ... |
 | `shadowtrackr_webhook_alert` | `alert` | Results of ShadowTrackr alerts pushed by webhook |
 
-Event types are classified by the curated `shadowtrackr_event_types` lookup, with
-the catalogue from the API's `/event_types` (refreshed daily into the KV Store)
-as fallback.
+Event types are classified by the catalogue from the API's `/event_types`
+(refreshed daily into the KV Store). `shadowtrackr_event_type_overrides.csv`
+corrects the CIM type for a few event types.
 
 ## Development
 

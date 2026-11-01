@@ -1,8 +1,8 @@
 """Turn the API's /event_types catalogue into KV Store lookup records.
 
-The curated CSV lookup (lookups/shadowtrackr_event_types.csv) takes
-precedence at search time; this catalogue fills in every other event type so
-new types are classified without an app update.
+The catalogue is the source of signatures and categories at search time. A
+small CSV (lookups/shadowtrackr_event_type_overrides.csv) corrects the CIM
+classification where the catalogue's is_change heuristic is off.
 """
 
 from typing import Any, Dict, List
@@ -47,6 +47,7 @@ def to_records(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
                 "is_change": _bool_text(row.get("is_change")),
                 "default_level": default_level if isinstance(default_level, int) else "",
                 "aliases": ",".join(str(a) for a in aliases) if isinstance(aliases, list) else "",
+                "action": str(row.get("action") or ""),
             }
         )
     return records

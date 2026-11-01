@@ -9,12 +9,13 @@ def test_to_records_maps_api_rows(fixture_event_types):
         "_key": "1415",
         "eventid": 1415,
         "name": "ssllabs_renewed_cert_problems",
-        "title": "Ssllabs renewed cert problems",
+        "title": "Certificate renewed (problems)",
         "category": "certificate",
         "source": "ssl",
         "is_change": "true",
         "default_level": 91,
         "aliases": "",
+        "action": "modified",
     }
 
 
