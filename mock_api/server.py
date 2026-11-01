@@ -1,41 +1,75 @@
 #!/usr/bin/env python3
 """Mock ShadowTrackr v4 API serving redacted fixtures.
 
-It mimics the behaviour of the real API as observed in testing:
-  * POST /api/v4/<endpoint> with "Authorization: Bearer <key>"
-  * no key -> HTTP 401, wrong key -> HTTP 200 with an "error" field
-  * unknown endpoints -> HTML 404 page
-  * events: without start/stop the newest 1000, newest first; with start and
-    stop every event in the inclusive window, grouped by (source, eventid)
-    and sorted by time within each group
+By default it implements the v4 API as specified by the ShadowTrackr team
+(since_id paging, structured fields, /event_types, status codes, group keys).
+With --legacy it behaves like the API before those changes, so the app's
+fallback to time windows stays testable.
 
-Fault injection, for testing error handling, by API key:
-  mock-error-500   -> HTTP 500
-  mock-error-429   -> HTTP 429
-  mock-error-slow  -> sleeps 10 seconds before answering
-  mock-error-html  -> HTTP 200 with an HTML body
+v4 behaviour:
+  * POST /api/v4/<endpoint>, "Authorization: Bearer <key>"
+  * 401 for a missing or unknown key, 403 without API access or for an
+    organization outside the group, JSON 404 for unknown endpoints, 400 for
+    parameters that are not allowed
+  * events:
+      since_id/limit  ids > since_id ascending, limit default 1000, max 5000,
+                      next_since_id in the envelope
+      start + stop    the inclusive window, grouped by (source, eventid)
+      start only      everything from start, grouped the same way
+      no parameters   the newest 1000, newest first
+      min_level       level greater than the value
+      organization_id group keys only
+  * event_types with optional category / source / eventid filters
+  * organizations for group keys
+
+Legacy behaviour (--legacy): no ids or new fields, since_id ignored, a wrong
+key gives HTTP 200 with an "error", unknown endpoints give an HTML 404.
+
+API keys:
+  mock-api-key-0000000000    organization "Customer A"
+  mock-group-key-000000000   group key for "Customer A" and "Customer B"
+  mock-no-api-access         valid key without API access (403)
+  mock-error-500 / mock-error-429 / mock-error-slow / mock-error-html
+                             fault injection
+
+For live testing, POST /_mock/insert (no auth) with an event body appends it
+with the next id, e.g. to simulate a late insert with an old timestamp.
 
 Usage:
-  python3 mock_api/server.py [--port 8081] [--api-key KEY] [--shift-to-now]
-
---shift-to-now moves all fixture timestamps so the newest event is a few
-minutes old, which makes the fixtures useful for a live Splunk demo.
+  python3 mock_api/server.py [--port 8081] [--shift-to-now] [--legacy]
 """
 
 import argparse
+import copy
 import json
 import os
 import sys
+import threading
 import time
 from datetime import datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "tests", "fixtures")
 DEFAULT_API_KEY = "mock-api-key-0000000000"
+GROUP_API_KEY = "mock-group-key-000000000"
+NO_ACCESS_KEY = "mock-no-api-access"
 API_PREFIX = "/api/v4/"
 EVENTS_DEFAULT_LIMIT = 1000
+EVENTS_MAX_LIMIT = 5000
+
+ORGANIZATIONS = [{"oid": 1470062, "name": "Customer A", "custom_id": ""},
+                 {"oid": 1470063, "name": "Customer B", "custom_id": ""}]
+KEY_ORGS = {DEFAULT_API_KEY: {1470062}, GROUP_API_KEY: {1470062, 1470063}}
+
+LEGACY_KEYS = ("timestamp", "eventid", "level", "source", "msg", "cs1", "request", "dst", "fname")
+EVENT_PARAMS = {"since_id", "limit", "start", "stop", "update_only", "updates_only", "update",
+                "output_format", "min_level", "organization_id", "api_key"}
 
 NOT_FOUND_HTML = b"<!DOCTYPE html><html><head><title>404 Page not found</title></head><body>Not found</body></html>"
+
+
+class BadRequest(Exception):
+    pass
 
 
 def _parse_ts(value):
@@ -49,18 +83,29 @@ def _fmt_ts(dt):
     return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def load_events(shift_to_now=False):
-    with open(os.path.join(FIXTURES, "events.json"), encoding="utf-8") as f:
-        events = json.load(f)["data"]
+def _load(name):
+    with open(os.path.join(FIXTURES, name), encoding="utf-8") as f:
+        return json.load(f)["data"]
+
+
+def load_events(shift_to_now=False, legacy=False):
+    events = _load("events.json")
     if shift_to_now and events:
         newest = max(_parse_ts(e["timestamp"]) for e in events)
         delta = datetime.now(timezone.utc).replace(microsecond=0) - timedelta(minutes=5) - newest
         for e in events:
             e["timestamp"] = _fmt_ts(_parse_ts(e["timestamp"]) + delta)
+    if legacy:
+        events = [{k: e[k] for k in LEGACY_KEYS if k in e} for e in events]
     return events
 
 
+def _grouped(events):
+    return sorted(events, key=lambda e: (e["source"], e["eventid"], e["timestamp"]))
+
+
 def filter_events(events, body):
+    """Select events like the API does for start/stop or no parameters."""
     start, stop = body.get("start"), body.get("stop")
     if start and stop:
         try:
@@ -68,22 +113,67 @@ def filter_events(events, body):
         except ValueError:
             lo = hi = None
         if lo is not None:
-            selected = [e for e in events if lo <= _parse_ts(e["timestamp"]) <= hi]
-            return sorted(selected, key=lambda e: (e["source"], e["eventid"], e["timestamp"]))
+            return _grouped([e for e in events if lo <= _parse_ts(e["timestamp"]) <= hi])
     if start and not stop:
         try:
             lo = _parse_ts(start)
-            selected = [e for e in events if _parse_ts(e["timestamp"]) >= lo]
-            return sorted(selected, key=lambda e: (e["source"], e["eventid"], e["timestamp"]))
+            return _grouped([e for e in events if _parse_ts(e["timestamp"]) >= lo])
         except ValueError:
             pass
     newest = sorted(events, key=lambda e: e["timestamp"], reverse=True)
     return newest[:EVENTS_DEFAULT_LIMIT]
 
 
-def make_handler(api_key, events):
+def page_events(events, since_id, limit):
+    """since_id paging: ids above since_id, ascending, at most limit."""
+    page = sorted((e for e in events if e["id"] > since_id), key=lambda e: e["id"])[:limit]
+    return page, (page[-1]["id"] if page else since_id)
+
+
+def _int_param(body, name, default=None, minimum=None):
+    if name not in body:
+        return default
+    value = body[name]
+    if isinstance(value, str) and value.strip().lstrip("-").isdigit():
+        value = int(value)
+    if isinstance(value, bool) or not isinstance(value, int) or (minimum is not None and value < minimum):
+        raise BadRequest("Invalid value for {}".format(name))
+    return value
+
+
+class MockAPI:
+    def __init__(self, events, event_types, legacy=False):
+        self.events = events
+        self.event_types = event_types
+        self.legacy = legacy
+        self.lock = threading.Lock()
+
+    def insert(self, event):
+        with self.lock:
+            event = dict(event)
+            if not self.legacy:
+                event["id"] = max([e.get("id", 0) for e in self.events] + [0]) + 1
+                event.setdefault("organization", {"id": 1470062, "name": "Customer A"})
+            event.setdefault("timestamp", _fmt_ts(datetime.now(timezone.utc)))
+            self.events.append(event)
+            return event
+
+    def events_for(self, key, body):
+        orgs = KEY_ORGS.get(key, set())
+        if "organization_id" in body:
+            org_id = _int_param(body, "organization_id")
+            if key != GROUP_API_KEY:
+                raise BadRequest("organization_id requires a group key")
+            if org_id not in orgs:
+                return 403, "Organization not in this group"
+            orgs = {org_id}
+        with self.lock:
+            return 200, [e for e in self.events if e.get("organization", {}).get("id") in orgs]
+
+
+def make_handler(api, api_key):
     class Handler(BaseHTTPRequestHandler):
-        server_version = "ShadowTrackrMock/1.0"
+        server_version = "ShadowTrackrMock/2.0"
 
         def log_message(self, fmt, *args):
             sys.stderr.write("[mock] %s\n" % (fmt % args))
@@ -96,20 +186,41 @@ def make_handler(api_key, events):
             self.end_headers()
             self.wfile.write(body)
 
-        def _envelope(self, data=None, error=""):
-            data = data or []
+        def _envelope(self, data=None, error="", **extra):
+            data = data if data is not None else []
             results = "" if error else "{} results found".format(len(data))
-            return {"results": results, "error": error, "data": data}
+            return dict({"results": results, "error": error, "data": data}, **extra)
+
+        def _error(self, status, message):
+            if api.legacy and status != 401:
+                # The legacy API answers most errors with HTTP 200.
+                return self._send(200, self._envelope(error=message))
+            if api.legacy and message == "Invalid API key":
+                return self._send(200, self._envelope(error=message))
+            return self._send(status, self._envelope(error=message))
+
+        def _not_found(self):
+            if api.legacy:
+                return self._send(404, raw=NOT_FOUND_HTML, content_type="text/html")
+            return self._send(404, self._envelope(error="Unknown endpoint"))
 
         def do_GET(self):
-            self._send(404, raw=NOT_FOUND_HTML, content_type="text/html")
+            self._not_found()
 
         def do_POST(self):
             length = int(self.headers.get("Content-Length") or 0)
             raw_body = self.rfile.read(length) if length else b""
+            try:
+                body = json.loads(raw_body.decode("utf-8")) if raw_body else {}
+            except ValueError:
+                body = {}
+            if not isinstance(body, dict):
+                body = {}
 
+            if self.path == "/_mock/insert":
+                return self._send(200, api.insert(body))
             if not self.path.startswith(API_PREFIX):
-                return self._send(404, raw=NOT_FOUND_HTML, content_type="text/html")
+                return self._not_found()
             endpoint = self.path[len(API_PREFIX):].strip("/")
 
             auth = self.headers.get("Authorization", "")
@@ -119,24 +230,68 @@ def make_handler(api_key, events):
             if key == "mock-error-500":
                 return self._send(500, raw=b"Internal Server Error", content_type="text/plain")
             if key == "mock-error-429":
-                return self._send(429, raw=b"Too Many Requests", content_type="text/plain")
+                self.send_response(429)
+                self.send_header("Retry-After", "1")
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+                return None
             if key == "mock-error-html":
                 return self._send(200, raw=NOT_FOUND_HTML, content_type="text/html")
             if key == "mock-error-slow":
-                time.sleep(10)
-            elif key != api_key:
-                return self._send(200, self._envelope(error="Invalid API key"))
+                time.sleep(3)
+                key = DEFAULT_API_KEY
+            if key == NO_ACCESS_KEY:
+                return self._error(403, "API access is not enabled for this account")
+            if key == api_key and key not in KEY_ORGS:
+                key = DEFAULT_API_KEY
+            if key not in KEY_ORGS:
+                return self._error(401, "Invalid API key")
 
             try:
-                body = json.loads(raw_body.decode("utf-8")) if raw_body else {}
-            except ValueError:
-                body = {}
-            if not isinstance(body, dict):
-                body = {}
+                if endpoint == "events":
+                    return self._events(key, body)
+                if endpoint == "event_types" and not api.legacy:
+                    return self._event_types(body)
+                if endpoint == "organizations" and not api.legacy:
+                    if key != GROUP_API_KEY:
+                        return self._error(403, "Not a group API key")
+                    return self._send(200, {"results": "2 Organizations found", "error": "",
+                                            "data": {"active_organizations": 2, "organizations": ORGANIZATIONS}})
+            except BadRequest as e:
+                return self._error(400, str(e))
+            return self._not_found()
 
-            if endpoint == "events":
+        def _events(self, key, body):
+            if api.legacy:
+                with api.lock:
+                    events = list(api.events)
                 return self._send(200, self._envelope(filter_events(events, body)))
-            return self._send(404, raw=NOT_FOUND_HTML, content_type="text/html")
+
+            unknown = set(body) - EVENT_PARAMS
+            if unknown:
+                raise BadRequest("Unknown parameter: {}".format(", ".join(sorted(unknown))))
+            if key == GROUP_API_KEY and any(k in body for k in ("update_only", "updates_only", "update")):
+                raise BadRequest("update_only is not supported for group keys, use since_id")
+            status, events = api.events_for(key, body)
+            if status != 200:
+                return self._error(status, events)
+            min_level = _int_param(body, "min_level")
+            if min_level is not None:
+                events = [e for e in events if e["level"] > min_level]
+            if "since_id" in body:
+                since_id = _int_param(body, "since_id", minimum=0)
+                limit = _int_param(body, "limit", EVENTS_DEFAULT_LIMIT, minimum=1)
+                page, next_since_id = page_events(events, since_id, min(limit, EVENTS_MAX_LIMIT))
+                return self._send(200, self._envelope(page, next_since_id=next_since_id))
+            return self._send(200, self._envelope(filter_events(events, body)))
+
+        def _event_types(self, body):
+            rows = api.event_types
+            for field in ("category", "source", "eventid"):
+                if field in body:
+                    wanted = str(body[field]).lower()
+                    rows = [r for r in rows if str(r.get(field, "")).lower() == wanted]
+            return self._send(200, self._envelope(rows))
 
     return Handler
 
@@ -152,8 +307,10 @@ class MockServer(ThreadingHTTPServer):
         self.server_name, self.server_port = self.server_address[:2]
 
 
-def make_server(host="127.0.0.1", port=8081, api_key=DEFAULT_API_KEY, shift_to_now=False):
-    server = MockServer((host, port), make_handler(api_key, load_events(shift_to_now)))
+def make_server(host="127.0.0.1", port=8081, api_key=DEFAULT_API_KEY, shift_to_now=False, legacy=False):
+    api = MockAPI(load_events(shift_to_now, legacy), copy.deepcopy(_load("event_types.json")), legacy)
+    server = MockServer((host, port), make_handler(api, api_key))
+    server.api = api
     return server
 
 
@@ -163,10 +320,12 @@ def main():
     parser.add_argument("--port", type=int, default=8081)
     parser.add_argument("--api-key", default=os.environ.get("MOCK_API_KEY", DEFAULT_API_KEY))
     parser.add_argument("--shift-to-now", action="store_true", help="move fixture timestamps up to now")
+    parser.add_argument("--legacy", action="store_true", help="behave like the API before since_id paging")
     args = parser.parse_args()
 
-    server = make_server(args.host, args.port, args.api_key, args.shift_to_now)
-    print("Mock ShadowTrackr API on http://{}:{}{}  (API key: {})".format(args.host, args.port, API_PREFIX, args.api_key), flush=True)
+    server = make_server(args.host, args.port, args.api_key, args.shift_to_now, args.legacy)
+    print("Mock ShadowTrackr API{} on http://{}:{}{}  (API key: {}, group key: {})".format(
+        " (legacy)" if args.legacy else "", args.host, args.port, API_PREFIX, args.api_key, GROUP_API_KEY), flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

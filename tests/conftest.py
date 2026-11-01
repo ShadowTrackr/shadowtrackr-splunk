@@ -15,22 +15,62 @@ from mock_api import server as mock_server  # noqa: E402
 FIXTURES = os.path.join(ROOT, "tests", "fixtures")
 
 
-@pytest.fixture(scope="session")
-def fixture_events():
-    with open(os.path.join(FIXTURES, "events.json"), encoding="utf-8") as f:
+def _fixture(name):
+    with open(os.path.join(FIXTURES, name), encoding="utf-8") as f:
         return json.load(f)["data"]
 
 
 @pytest.fixture(scope="session")
-def mock_api():
-    """Run the mock API on a free port for the whole test session."""
-    srv = mock_server.make_server("127.0.0.1", 0)
+def fixture_events():
+    """Events as the v4 API returns them (with ids and structured fields)."""
+    return _fixture("events.json")
+
+
+@pytest.fixture(scope="session")
+def legacy_events(fixture_events):
+    """The same events as the API returned them before the v4 changes."""
+    return [{k: e[k] for k in mock_server.LEGACY_KEYS if k in e} for e in fixture_events]
+
+
+@pytest.fixture(scope="session")
+def fixture_event_types():
+    return _fixture("event_types.json")
+
+
+def _start(legacy):
+    srv = mock_server.make_server("127.0.0.1", 0, legacy=legacy)
     thread = threading.Thread(target=srv.serve_forever, daemon=True)
     thread.start()
     host, port = srv.server_address
-    yield "http://{}:{}/api/v4".format(host, port)
+    srv.url = "http://{}:{}/api/v4".format(host, port)
+    return srv
+
+
+@pytest.fixture
+def mock_server_v4():
+    """A fresh v4 mock per test, so tests can insert events."""
+    srv = _start(legacy=False)
+    yield srv
     srv.shutdown()
     srv.server_close()
+
+
+@pytest.fixture
+def mock_server_legacy():
+    srv = _start(legacy=True)
+    yield srv
+    srv.shutdown()
+    srv.server_close()
+
+
+@pytest.fixture
+def mock_api(mock_server_v4):
+    return mock_server_v4.url
+
+
+@pytest.fixture
+def mock_api_legacy(mock_server_legacy):
+    return mock_server_legacy.url
 
 
 @pytest.fixture

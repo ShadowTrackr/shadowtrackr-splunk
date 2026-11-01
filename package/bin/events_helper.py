@@ -1,18 +1,23 @@
 import json
 import logging
+import time
 from datetime import timedelta
 
 import import_declare_test  # noqa: F401  (adds lib/ to sys.path)
 from solnlib import conf_manager, log
 from solnlib.modular_input import checkpointer
+from solnlib.splunk_rest_client import SplunkRestClient
 from splunklib import modularinput as smi
 
-from shadowtrackr_lib.client import AuthError, ShadowTrackrClient, ShadowTrackrError, build_proxy_url
+from shadowtrackr_lib import event_types
+from shadowtrackr_lib.client import APIError, AuthError, ShadowTrackrClient, ShadowTrackrError, build_proxy_url
 from shadowtrackr_lib.events import EventCollector
 
 ADDON_NAME = "shadowtrackr"
 SOURCETYPE = "shadowtrackr:events"
 CHECKPOINT_COLLECTION = "shadowtrackr_checkpoints"
+EVENT_TYPE_COLLECTION = "shadowtrackr_event_type_catalog"
+EVENT_TYPE_CHECKPOINT = "event_type_catalog"
 DEFAULT_TIMEOUT = 60
 
 
@@ -64,6 +69,25 @@ def build_client(session_key: str, account_name: str) -> ShadowTrackrClient:
     return ShadowTrackrClient(**kwargs)
 
 
+def refresh_event_type_catalog(client, session_key, ckpt, logger) -> None:
+    """Refresh the event type lookup from /event_types once a day."""
+    state = ckpt.get(EVENT_TYPE_CHECKPOINT) or {}
+    if time.time() - float(state.get("refreshed", 0)) < event_types.REFRESH_INTERVAL_SECONDS:
+        return
+    try:
+        records = event_types.to_records(client.event_types())
+    except APIError as e:
+        # Older API versions have no /event_types; the curated lookup still works.
+        logger.info("Event type catalogue not available: %s", e)
+        records = []
+    if records:
+        data = SplunkRestClient(session_key, ADDON_NAME, owner="nobody").kvstore[EVENT_TYPE_COLLECTION].data
+        for i in range(0, len(records), 500):
+            data.batch_save(*records[i : i + 500])
+        logger.info("Refreshed %d event types", len(records))
+    ckpt.update(EVENT_TYPE_CHECKPOINT, {"refreshed": time.time()})
+
+
 def validate_input(definition: smi.ValidationDefinition):
     params = definition.parameters
     for field, low, high in (("backfill_days", 0, 90), ("overlap_minutes", 0, 1440)):
@@ -97,7 +121,7 @@ def stream_events(inputs: smi.InputDefinition, event_writer: smi.EventWriter):
                 event_writer.write_event(
                     smi.Event(
                         data=json.dumps(record, ensure_ascii=False, default=str),
-                        time=f"{timestamp:.3f}",
+                        time=f"{timestamp:.3f}" if timestamp is not None else None,
                         index=index,
                         sourcetype=SOURCETYPE,
                     )
@@ -114,6 +138,7 @@ def stream_events(inputs: smi.InputDefinition, event_writer: smi.EventWriter):
             )
             count = collector.run()
             log.events_ingested(logger, input_name, SOURCETYPE, count, index, account=account_name)
+            refresh_event_type_catalog(client, session_key, ckpt, logger)
             log.modular_input_end(logger, normalized_input_name)
         except AuthError as e:
             log.log_exception(

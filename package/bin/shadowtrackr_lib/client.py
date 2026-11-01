@@ -8,13 +8,16 @@ the envelope has to be checked as well as the status code.
 
 import json
 import time
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Tuple
 from urllib.parse import quote
 
 import urllib3
 
 USER_AGENT = "shadowtrackr-splunk"
 DEFAULT_BASE_URL = "https://api.shadowtrackr.com/api/v4"
+
+# Never wait longer than this for a Retry-After header within one run.
+MAX_RETRY_AFTER = 300
 
 # Errors in the envelope that mean the key or subscription is the problem.
 # Retrying these will not help.
@@ -32,9 +35,22 @@ class AuthError(ShadowTrackrError):
 class TransientError(ShadowTrackrError):
     """A temporary failure (network, timeout, 429 or 5xx) worth retrying."""
 
+    def __init__(self, message: str, retry_after: Optional[float] = None):
+        super().__init__(message)
+        self.retry_after = retry_after
+
 
 class APIError(ShadowTrackrError):
     """Any other error reported by the API or an unexpected response."""
+
+
+def _parse_retry_after(value: Optional[str]) -> Optional[float]:
+    """Parse a Retry-After header given in seconds. HTTP dates are ignored."""
+    try:
+        seconds = float(value)
+    except (TypeError, ValueError):
+        return None
+    return seconds if seconds >= 0 else None
 
 
 def build_proxy_url(settings: Dict[str, Any]) -> Optional[str]:
@@ -90,23 +106,36 @@ class ShadowTrackrClient:
         self._sleep = sleep
         self._http = _pool_manager(proxy_url)
 
-    def post(self, endpoint: str, body: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
-        """POST to an endpoint and return the "data" list.
+    def request(self, endpoint: str, body: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """POST to an endpoint and return the whole response envelope.
 
-        Transient failures are retried with exponential backoff. Other errors
-        raise immediately.
+        Transient failures are retried with exponential backoff, or after the
+        server's Retry-After delay when it sends one. Other errors raise
+        immediately.
         """
         attempt = 0
         while True:
             try:
                 return self._post_once(endpoint, body or {})
-            except TransientError:
+            except TransientError as e:
                 attempt += 1
                 if attempt > self.max_retries:
                     raise
-                self._sleep(self.backoff * (2 ** (attempt - 1)))
+                delay = self.backoff * (2 ** (attempt - 1))
+                if e.retry_after is not None:
+                    delay = min(max(delay, e.retry_after), MAX_RETRY_AFTER)
+                self._sleep(delay)
 
-    def _post_once(self, endpoint: str, body: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def post(self, endpoint: str, body: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+        """POST to an endpoint and return the "data" list."""
+        data = self.request(endpoint, body).get("data")
+        if data is None:
+            return []
+        if not isinstance(data, list):
+            raise APIError("Unexpected 'data' type from {}: {}".format(endpoint, type(data).__name__))
+        return data
+
+    def _post_once(self, endpoint: str, body: Dict[str, Any]) -> Dict[str, Any]:
         url = "{}/{}".format(self.base_url, endpoint)
         try:
             resp = self._http.request(
@@ -130,11 +159,16 @@ class ShadowTrackrClient:
 
         status = resp.status
         if status == 429 or status >= 500:
-            raise TransientError("HTTP {} from {}".format(status, endpoint))
+            raise TransientError(
+                "HTTP {} from {}".format(status, endpoint),
+                retry_after=_parse_retry_after(resp.headers.get("Retry-After")),
+            )
 
         payload = self._decode(resp.data)
         error = payload.get("error") if isinstance(payload, dict) else None
 
+        # 401: no, unknown or revoked key. 403: API access not enabled, or an
+        # organization outside the group. Both need the user to fix the setup.
         if status in (401, 403):
             raise AuthError(error or "HTTP {} from {}".format(status, endpoint))
         if payload is None or not isinstance(payload, dict):
@@ -145,18 +179,13 @@ class ShadowTrackrClient:
                 )
             )
         if error:
+            # Older API versions report a bad key with HTTP 200.
             if any(m in error.lower() for m in _AUTH_ERROR_MARKERS):
                 raise AuthError(error)
-            raise APIError("{}: {}".format(endpoint, error))
+            raise APIError("{}: {} (HTTP {})".format(endpoint, error, status))
         if status >= 400:
             raise APIError("HTTP {} from {}".format(status, endpoint))
-
-        data = payload.get("data")
-        if data is None:
-            return []
-        if not isinstance(data, list):
-            raise APIError("Unexpected 'data' type from {}: {}".format(endpoint, type(data).__name__))
-        return data
+        return payload
 
     @staticmethod
     def _decode(raw: bytes) -> Any:
@@ -172,3 +201,25 @@ class ShadowTrackrClient:
         grouped by event type rather than sorted by time. Callers sort.
         """
         return self.post("events", {"start": start, "stop": stop})
+
+    def events_latest(self) -> List[Dict[str, Any]]:
+        """Return the newest events (at most 1000), newest first."""
+        return self.post("events", {})
+
+    def events_since(self, since_id: int, limit: int) -> Tuple[List[Dict[str, Any]], Optional[int]]:
+        """Return events with id > since_id, ascending by id, and next_since_id.
+
+        next_since_id is None when the API does not support id paging.
+        """
+        envelope = self.request("events", {"since_id": since_id, "limit": limit})
+        data = envelope.get("data") or []
+        if not isinstance(data, list):
+            raise APIError("Unexpected 'data' type from events: {}".format(type(data).__name__))
+        next_since_id = envelope.get("next_since_id")
+        if isinstance(next_since_id, bool) or not isinstance(next_since_id, int):
+            next_since_id = None
+        return data, next_since_id
+
+    def event_types(self) -> List[Dict[str, Any]]:
+        """Return the event type catalogue (eventid, name, category, ...)."""
+        return self.post("event_types", {})

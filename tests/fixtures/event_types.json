@@ -1,0 +1,465 @@
+{
+  "results": "57 results found",
+  "error": "",
+  "data": [
+    {
+      "eventid": 101,
+      "source": "dns",
+      "name": "server_found_for_dns_name_ipv4",
+      "category": "dns",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 118,
+      "source": "dns",
+      "name": "url_added_to_reverse_dns_of_ip",
+      "category": "dns",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 120,
+      "source": "dns",
+      "name": "server_found_for_dns_name_ipv6",
+      "category": "dns",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 155,
+      "source": "ctname",
+      "name": "url_discovered_in_certificate_transparency_logs",
+      "category": "discovery",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 156,
+      "source": "ctname",
+      "name": "url_discovered_in_certificate_transparency_logs",
+      "category": "discovery",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 218,
+      "source": "ports",
+      "name": "port_opened",
+      "category": "host",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 219,
+      "source": "ports",
+      "name": "port_closed",
+      "category": "host",
+      "default_level": null,
+      "is_change": true,
+      "aliases": [
+        "port_removed"
+      ]
+    },
+    {
+      "eventid": 278,
+      "source": "hosts",
+      "name": "url_discovered_and_suggested_from_host",
+      "category": "discovery",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 279,
+      "source": "hosts",
+      "name": "host_found_with_warnings",
+      "category": "host",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 280,
+      "source": "hosts",
+      "name": "host_found_with_problems",
+      "category": "host",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 281,
+      "source": "hosts",
+      "name": "port_changes_detected_on_host",
+      "category": "host",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 282,
+      "source": "hosts",
+      "name": "port_changes_detected_on_host_with_warnings",
+      "category": "host",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 283,
+      "source": "hosts",
+      "name": "port_changes_detected_on_host_with_problems",
+      "category": "host",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 285,
+      "source": "hosts",
+      "name": "host_looks_like_a_honeypot_vulnerability_findings_suppressed",
+      "category": "host",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1301,
+      "source": "ssl",
+      "name": "certificate_found",
+      "category": "certificate",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1346,
+      "source": "ssl",
+      "name": "certificate_issuer_changed",
+      "category": "certificate",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 1349,
+      "source": "ssl",
+      "name": "certificate_expires_within_a_week",
+      "category": "certificate",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1350,
+      "source": "ssl",
+      "name": "certificate_expires_in_two_weeks",
+      "category": "certificate",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1358,
+      "source": "ssl",
+      "name": "certificate_expires_in_three_weeks",
+      "category": "certificate",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1359,
+      "source": "ssl",
+      "name": "certificate_expired",
+      "category": "certificate",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1390,
+      "source": "ssl",
+      "name": "url_discovered_and_suggested_from_certificate",
+      "category": "discovery",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1392,
+      "source": "ssl",
+      "name": "ip_discovered_and_added_from_certificate",
+      "category": "discovery",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1410,
+      "source": "ssl",
+      "name": "url_discovered_and_suggested_from_certificate",
+      "category": "discovery",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1411,
+      "source": "ssl",
+      "name": "certificate_found_with_warnings",
+      "category": "certificate",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1412,
+      "source": "ssl",
+      "name": "certificate_found_with_problems",
+      "category": "certificate",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1413,
+      "source": "ssl",
+      "name": "certificate_renewed",
+      "category": "certificate",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 1415,
+      "source": "ssl",
+      "name": "ssllabs_renewed_cert_problems",
+      "category": "certificate",
+      "default_level": 91,
+      "is_change": true
+    },
+    {
+      "eventid": 1416,
+      "source": "ssl",
+      "name": "tls_settings_changed",
+      "category": "certificate",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 1551,
+      "source": "asn",
+      "name": "asn_found_for_ip",
+      "category": "network",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1553,
+      "source": "asn",
+      "name": "asn_name_changed",
+      "category": "network",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 1559,
+      "source": "asn",
+      "name": "bgp_prefix_changed",
+      "category": "network",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 1645,
+      "source": "websites",
+      "name": "new_http_header_field_on_website",
+      "category": "website",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 1646,
+      "source": "websites",
+      "name": "http_header_value_changed",
+      "category": "website",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 1648,
+      "source": "websites",
+      "name": "software_detected_on_website",
+      "category": "website",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 1649,
+      "source": "websites",
+      "name": "software_removed_from_website",
+      "category": "website",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 1655,
+      "source": "websites",
+      "name": "http_header_changed",
+      "category": "website",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 1657,
+      "source": "websites",
+      "name": "website_found_on_host",
+      "category": "website",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1663,
+      "source": "websites",
+      "name": "website_found_at_cloud_provider",
+      "category": "website",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1664,
+      "source": "websites",
+      "name": "url_discovered_and_suggested_from_website",
+      "category": "discovery",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1668,
+      "source": "websites",
+      "name": "website_security_grade_changed",
+      "category": "website",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 1683,
+      "source": "websites",
+      "name": "ip_discovered_and_added_from_website",
+      "category": "discovery",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1801,
+      "source": "whois",
+      "name": "whois_record_found",
+      "category": "domain",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 1826,
+      "source": "whois",
+      "name": "whois_record_renewed",
+      "category": "domain",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 1840,
+      "source": "rdap",
+      "name": "rdap_record_found",
+      "category": "domain",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 3001,
+      "source": "phish",
+      "name": "phishy_lookalike_domain_detected",
+      "category": "phishing",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 3005,
+      "source": "phish",
+      "name": "phishy_lookalike_domain_changed",
+      "category": "phishing",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 3101,
+      "source": "hibp",
+      "name": "e_mail_address_found_in_data_breaches",
+      "category": "breach",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 3304,
+      "source": "reachability",
+      "name": "website_is_down",
+      "category": "availability",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 3306,
+      "source": "cisa",
+      "name": "actively_exploited_cve_cisa_kev_may_affect_assets",
+      "category": "vulnerability",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 3307,
+      "source": "ncsc",
+      "name": "ncsc_advisory_may_affect_assets",
+      "category": "vulnerability",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 3308,
+      "source": "websites",
+      "name": "security_header_check_no_longer_passes",
+      "category": "website",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 3309,
+      "source": "websites",
+      "name": "security_header_check_passes_again",
+      "category": "website",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 3310,
+      "source": "ssl",
+      "name": "tls_check_status_worsened",
+      "category": "certificate",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 3311,
+      "source": "ssl",
+      "name": "tls_check_ok_again",
+      "category": "certificate",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 3312,
+      "source": "websites",
+      "name": "possible_subdomain_takeover",
+      "category": "website",
+      "default_level": null,
+      "is_change": false
+    },
+    {
+      "eventid": 3313,
+      "source": "websites",
+      "name": "no_longer_a_possible_subdomain_takeover",
+      "category": "website",
+      "default_level": null,
+      "is_change": true
+    },
+    {
+      "eventid": 3320,
+      "source": "dns",
+      "name": "dmarc_policy_weakened",
+      "category": "dns",
+      "default_level": 81,
+      "is_change": true
+    }
+  ]
+}
