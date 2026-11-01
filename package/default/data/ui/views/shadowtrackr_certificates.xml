@@ -1,0 +1,414 @@
+<dashboard version="2" theme="dark">
+    <label>Certificates</label>
+    <description>TLS certificates on your internet-facing assets: expiry, grades, issuers and weak configurations.</description>
+    <definition><![CDATA[
+{
+    "title": "Certificates",
+    "description": "TLS certificates on your internet-facing assets: expiry, grades, issuers and weak configurations.",
+    "inputs": {
+        "input_org": {
+            "type": "input.dropdown",
+            "title": "Organization",
+            "dataSources": {
+                "primary": "ds_orgs"
+            },
+            "options": {
+                "token": "org",
+                "defaultValue": "*",
+                "items": ">frame(label, value) | objects()"
+            },
+            "context": {
+                "label": ">primary | seriesByName(\"label\") | renameSeries(\"label\") | formatByType(formattedConfig)",
+                "value": ">primary | seriesByName(\"value\") | renameSeries(\"value\") | formatByType(formattedConfig)",
+                "formattedConfig": {
+                    "number": {
+                        "prefix": ""
+                    }
+                }
+            }
+        }
+    },
+    "defaults": {},
+    "visualizations": {
+        "viz_logo": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/shadowtrackr/images/logo_tile.png",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.customUrl",
+                    "options": {
+                        "url": "https://shadowtrackr.com/usr/",
+                        "newTab": true
+                    }
+                }
+            ]
+        },
+        "viz_title": {
+            "type": "splunk.markdown",
+            "options": {
+                "markdown": "## ShadowTrackr\nCertificates \u00b7 [Open ShadowTrackr](https://shadowtrackr.com/usr/) \u00b7 [Documentation](https://shadowtrackr.com/docs)"
+            }
+        },
+        "viz_total": {
+            "type": "splunk.singlevalue",
+            "title": "Certificates",
+            "dataSources": {
+                "primary": "ds_total"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_expired": {
+            "type": "splunk.singlevalue",
+            "title": "\u25b2 Expired",
+            "dataSources": {
+                "primary": "ds_expired"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off",
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 1,
+                        "value": "#c3c2b7"
+                    },
+                    {
+                        "from": 1,
+                        "to": 1000000000000000.0,
+                        "value": "#d03b3b"
+                    }
+                ]
+            }
+        },
+        "viz_week": {
+            "type": "splunk.singlevalue",
+            "title": "\u25b2 Expiring within 7 days",
+            "dataSources": {
+                "primary": "ds_week"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off",
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 1,
+                        "value": "#c3c2b7"
+                    },
+                    {
+                        "from": 1,
+                        "to": 1000000000000000.0,
+                        "value": "#d03b3b"
+                    }
+                ]
+            }
+        },
+        "viz_month": {
+            "type": "splunk.singlevalue",
+            "title": "\u25a0 Expiring within 30 days",
+            "dataSources": {
+                "primary": "ds_month"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off",
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 1,
+                        "value": "#c3c2b7"
+                    },
+                    {
+                        "from": 1,
+                        "to": 1000000000000000.0,
+                        "value": "#c98500"
+                    }
+                ]
+            }
+        },
+        "viz_grades": {
+            "type": "splunk.column",
+            "title": "Grades",
+            "dataSources": {
+                "primary": "ds_grades"
+            },
+            "options": {
+                "legendDisplay": "off",
+                "seriesColors": [
+                    "#3987e5"
+                ],
+                "dataValuesDisplay": "all",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide"
+            }
+        },
+        "viz_issuers": {
+            "type": "splunk.bar",
+            "title": "Top issuers",
+            "dataSources": {
+                "primary": "ds_issuers"
+            },
+            "options": {
+                "legendDisplay": "off",
+                "seriesColors": [
+                    "#3987e5"
+                ],
+                "dataValuesDisplay": "all",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide"
+            }
+        },
+        "viz_expiry_timeline": {
+            "type": "splunk.column",
+            "title": "Expiring in the next 90 days",
+            "dataSources": {
+                "primary": "ds_expiry_timeline"
+            },
+            "options": {
+                "legendDisplay": "off",
+                "seriesColors": [
+                    "#3987e5"
+                ],
+                "dataValuesDisplay": "all",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide"
+            }
+        },
+        "viz_renew": {
+            "type": "splunk.table",
+            "title": "Renew first",
+            "dataSources": {
+                "primary": "ds_renew"
+            },
+            "options": {
+                "count": 8
+            },
+            "description": "Expired and expiring within 30 days, soonest first."
+        },
+        "viz_weak": {
+            "type": "splunk.table",
+            "title": "Weak protocols and grades",
+            "dataSources": {
+                "primary": "ds_weak"
+            },
+            "options": {
+                "count": 8
+            },
+            "description": "Grade M means the certificate does not match the name; T means it is not trusted."
+        }
+    },
+    "dataSources": {
+        "ds_total": {
+            "type": "ds.search",
+            "name": "Certificates",
+            "options": {
+                "query": "| inputlookup shadowtrackr_certificates where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval days_left=floor((strptime(not_after, \"%Y-%m-%dT%H:%M:%SZ\") - now()) / 86400) | stats count"
+            }
+        },
+        "ds_expired": {
+            "type": "ds.search",
+            "name": "Expired",
+            "options": {
+                "query": "| inputlookup shadowtrackr_certificates where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval days_left=floor((strptime(not_after, \"%Y-%m-%dT%H:%M:%SZ\") - now()) / 86400) | where days_left<0 | stats count"
+            }
+        },
+        "ds_week": {
+            "type": "ds.search",
+            "name": "Expiring within 7 days",
+            "options": {
+                "query": "| inputlookup shadowtrackr_certificates where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval days_left=floor((strptime(not_after, \"%Y-%m-%dT%H:%M:%SZ\") - now()) / 86400) | where days_left>=0 AND days_left<=7 | stats count"
+            }
+        },
+        "ds_month": {
+            "type": "ds.search",
+            "name": "Expiring within 30 days",
+            "options": {
+                "query": "| inputlookup shadowtrackr_certificates where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval days_left=floor((strptime(not_after, \"%Y-%m-%dT%H:%M:%SZ\") - now()) / 86400) | where days_left>=0 AND days_left<=30 | stats count"
+            }
+        },
+        "ds_grades": {
+            "type": "ds.search",
+            "name": "Grades",
+            "options": {
+                "query": "| inputlookup shadowtrackr_certificates where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval days_left=floor((strptime(not_after, \"%Y-%m-%dT%H:%M:%SZ\") - now()) / 86400) | eval Grade=coalesce(grade, \"none\") | stats count as Certificates by Grade | eval order=case(Grade=\"A+\",1, Grade=\"A\",2, Grade=\"A-\",3, Grade=\"B\",4, Grade=\"C\",5, Grade=\"D\",6, Grade=\"E\",7, Grade=\"F\",8, Grade=\"T\",9, Grade=\"M\",10, true(),11) | sort order | table Grade Certificates"
+            }
+        },
+        "ds_issuers": {
+            "type": "ds.search",
+            "name": "Issuers",
+            "options": {
+                "query": "| inputlookup shadowtrackr_certificates where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval days_left=floor((strptime(not_after, \"%Y-%m-%dT%H:%M:%SZ\") - now()) / 86400) | eval Issuer=coalesce(issuer_o, issuer_cn, \"unknown\") | stats count as Certificates by Issuer | sort - Certificates | head 10"
+            }
+        },
+        "ds_expiry_timeline": {
+            "type": "ds.search",
+            "name": "Expiring in the next 90 days",
+            "options": {
+                "query": "| inputlookup shadowtrackr_certificates where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval days_left=floor((strptime(not_after, \"%Y-%m-%dT%H:%M:%SZ\") - now()) / 86400) | where days_left>=0 AND days_left<=90 | eval _time=strptime(not_after, \"%Y-%m-%dT%H:%M:%SZ\") | timechart span=1w count as Certificates"
+            }
+        },
+        "ds_renew": {
+            "type": "ds.search",
+            "name": "Renew first",
+            "options": {
+                "query": "| inputlookup shadowtrackr_certificates where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval days_left=floor((strptime(not_after, \"%Y-%m-%dT%H:%M:%SZ\") - now()) / 86400) | where days_left<=30 | sort days_left | eval Expiry=case(days_left<0, \"\u25b2 Expired\", days_left<=7, \"\u25b2 Within 7 days\", days_left<=30, \"\u25a0 Within 30 days\", true(), \"OK\") | eval Expires=strftime(strptime(not_after, \"%Y-%m-%dT%H:%M:%SZ\"), \"%Y-%m-%d\"), \"Days left\"=days_left | rename url AS URL, host AS Host, grade AS Grade, issuer_o AS Issuer | table Expiry URL Host Expires \"Days left\" Grade Issuer"
+            }
+        },
+        "ds_weak": {
+            "type": "ds.search",
+            "name": "Weak protocols and grades",
+            "options": {
+                "query": "| inputlookup shadowtrackr_certificates where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval days_left=floor((strptime(not_after, \"%Y-%m-%dT%H:%M:%SZ\") - now()) / 86400) | where isnotnull(weak_protocols) OR grade IN (\"F\", \"T\", \"M\", \"C\", \"D\", \"E\") | eval \"Weak protocols\"=mvjoin(weak_protocols, \", \"), Problems=mvjoin(problems, \"; \") | eval order=case(grade IN (\"F\", \"T\"), 1, isnotnull(weak_protocols), 2, grade IN (\"E\", \"D\", \"C\"), 3, true(), 4) | sort order URL | rename url AS URL, grade AS Grade | table URL Grade \"Weak protocols\" Problems"
+            }
+        },
+        "ds_orgs": {
+            "type": "ds.search",
+            "name": "Organizations",
+            "options": {
+                "query": "| inputlookup shadowtrackr_hosts | stats count by organization | rename organization AS org_name | eval label=org_name, value=org_name, order=1 | append [| makeresults | eval label=\"All organizations\", value=\"*\", order=0] | sort order label | table label value"
+            }
+        }
+    },
+    "layout": {
+        "type": "grid",
+        "options": {
+            "width": 1200
+        },
+        "globalInputs": [
+            "input_org"
+        ],
+        "structure": [
+            {
+                "item": "viz_logo",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "w": 90,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_title",
+                "type": "block",
+                "position": {
+                    "x": 90,
+                    "y": 0,
+                    "w": 1110,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_total",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 90,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_expired",
+                "type": "block",
+                "position": {
+                    "x": 300,
+                    "y": 90,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_week",
+                "type": "block",
+                "position": {
+                    "x": 600,
+                    "y": 90,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_month",
+                "type": "block",
+                "position": {
+                    "x": 900,
+                    "y": 90,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_grades",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 200,
+                    "w": 400,
+                    "h": 300
+                }
+            },
+            {
+                "item": "viz_issuers",
+                "type": "block",
+                "position": {
+                    "x": 400,
+                    "y": 200,
+                    "w": 400,
+                    "h": 300
+                }
+            },
+            {
+                "item": "viz_expiry_timeline",
+                "type": "block",
+                "position": {
+                    "x": 800,
+                    "y": 200,
+                    "w": 400,
+                    "h": 300
+                }
+            },
+            {
+                "item": "viz_renew",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 500,
+                    "w": 1200,
+                    "h": 420
+                }
+            },
+            {
+                "item": "viz_weak",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 920,
+                    "w": 1200,
+                    "h": 420
+                }
+            }
+        ]
+    }
+}
+    ]]></definition>
+    <meta type="hiddenElements"><![CDATA[
+{
+    "hideEdit": false,
+    "hideOpenInSearch": false,
+    "hideExport": false
+}
+    ]]></meta>
+</dashboard>

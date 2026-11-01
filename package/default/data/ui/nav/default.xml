@@ -1,5 +1,7 @@
 <nav search_view="search" color="#3987e5">
     <view name="shadowtrackr_overview" default="true"/>
+    <view name="shadowtrackr_vulnerabilities"/>
+    <view name="shadowtrackr_certificates"/>
     <view name="inputs"/>
     <view name="configuration"/>
     <view name="dashboard"/>

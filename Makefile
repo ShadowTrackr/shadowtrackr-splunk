@@ -4,6 +4,8 @@ VERSION ?= 0.1.0
 .PHONY: build test test-bundled deploy up down restart logs inspect index mock
 
 build:
+	# Tests import package/bin; never ship their __pycache__ (AppInspect rejects .pyc files).
+	find package -name __pycache__ -type d -prune -exec rm -rf {} +
 	ucc-gen build --ta-version $(VERSION)
 
 test:

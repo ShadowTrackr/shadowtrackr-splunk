@@ -85,7 +85,8 @@
                 "primary": "ds_total"
             },
             "options": {
-                "sparklineDisplay": "off"
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
             }
         },
         "viz_problems": {
@@ -96,7 +97,21 @@
             },
             "options": {
                 "sparklineDisplay": "off",
-                "majorColor": "#d03b3b"
+                "trendDisplay": "off",
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 1,
+                        "value": "#c3c2b7"
+                    },
+                    {
+                        "from": 1,
+                        "to": 1000000000000000.0,
+                        "value": "#d03b3b"
+                    }
+                ]
             }
         },
         "viz_warnings": {
@@ -107,7 +122,21 @@
             },
             "options": {
                 "sparklineDisplay": "off",
-                "majorColor": "#c98500"
+                "trendDisplay": "off",
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 1,
+                        "value": "#c3c2b7"
+                    },
+                    {
+                        "from": 1,
+                        "to": 1000000000000000.0,
+                        "value": "#c98500"
+                    }
+                ]
             }
         },
         "viz_assets": {
@@ -117,7 +146,56 @@
                 "primary": "ds_assets"
             },
             "options": {
-                "sparklineDisplay": "off"
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_hosts": {
+            "type": "splunk.singlevalue",
+            "title": "Hosts",
+            "dataSources": {
+                "primary": "ds_hosts"
+            },
+            "options": {
+                "sparklineDisplay": "below",
+                "trendDisplay": "off",
+                "sparklineStrokeColor": "#3987e5"
+            }
+        },
+        "viz_websites": {
+            "type": "splunk.singlevalue",
+            "title": "Websites",
+            "dataSources": {
+                "primary": "ds_websites"
+            },
+            "options": {
+                "sparklineDisplay": "below",
+                "trendDisplay": "off",
+                "sparklineStrokeColor": "#3987e5"
+            }
+        },
+        "viz_certs": {
+            "type": "splunk.singlevalue",
+            "title": "Certificates",
+            "dataSources": {
+                "primary": "ds_certs"
+            },
+            "options": {
+                "sparklineDisplay": "below",
+                "trendDisplay": "off",
+                "sparklineStrokeColor": "#3987e5"
+            }
+        },
+        "viz_cves": {
+            "type": "splunk.singlevalue",
+            "title": "CVE findings",
+            "dataSources": {
+                "primary": "ds_cves"
+            },
+            "options": {
+                "sparklineDisplay": "below",
+                "trendDisplay": "off",
+                "sparklineStrokeColor": "#3987e5"
             }
         },
         "viz_timeline": {
@@ -160,10 +238,10 @@
             "dataSources": {
                 "primary": "ds_latest"
             },
-            "description": "Problems only, or problems and warnings, depending on the Alerts filter. Click a row to see the event.",
             "options": {
                 "count": 10
-            }
+            },
+            "description": "Problems only, or problems and warnings, depending on the Alerts filter. Click a row to see the event."
         },
         "viz_top_assets": {
             "type": "splunk.table",
@@ -188,13 +266,13 @@
         "viz_unclassified": {
             "type": "splunk.table",
             "title": "Event types without a classification",
-            "description": "The app refreshes the event type catalogue from the API daily; types listed here are not in it yet.",
             "dataSources": {
                 "primary": "ds_unclassified"
             },
             "options": {
                 "count": 5
             },
+            "description": "The app refreshes the event type catalogue from the API daily; types listed here are not in it yet.",
             "hideWhenNoData": true
         }
     },
@@ -237,6 +315,50 @@
             "name": "Assets with events",
             "options": {
                 "query": "`shadowtrackr_events` | where \"$org$\"=\"*\" OR vendor_account=\"$org$\" | stats dc(dest) as assets",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_hosts": {
+            "type": "ds.search",
+            "name": "Hosts",
+            "options": {
+                "query": "`shadowtrackr_inventory_summary` status=ok type=hosts | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=12h | stats latest(present) as present by _time, input, organization | timechart span=12h sum(present) as \"Hosts\"",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_websites": {
+            "type": "ds.search",
+            "name": "Websites",
+            "options": {
+                "query": "`shadowtrackr_inventory_summary` status=ok type=websites | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=12h | stats latest(present) as present by _time, input, organization | timechart span=12h sum(present) as \"Websites\"",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_certs": {
+            "type": "ds.search",
+            "name": "Certificates",
+            "options": {
+                "query": "`shadowtrackr_inventory_summary` status=ok type=certificates | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=12h | stats latest(present) as present by _time, input, organization | timechart span=12h sum(present) as \"Certificates\"",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_cves": {
+            "type": "ds.search",
+            "name": "CVEs",
+            "options": {
+                "query": "`shadowtrackr_inventory_summary` status=ok type=cves | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=12h | stats latest(present) as present by _time, input, organization | timechart span=12h sum(present) as \"CVE findings\"",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -313,7 +435,7 @@
             "type": "ds.search",
             "name": "Organizations",
             "options": {
-                "query": "`shadowtrackr_events` vendor_account=* | stats count by vendor_account | eval label=vendor_account, value=vendor_account, order=1 | append [| makeresults | eval label=\"All organizations\", value=\"*\", order=0] | sort order label | table label value",
+                "query": "`shadowtrackr_events` vendor_account=* | stats count by vendor_account | rename vendor_account AS org_name | eval label=org_name, value=org_name, order=1 | append [| makeresults | eval label=\"All organizations\", value=\"*\", order=0] | sort order label | table label value",
                 "queryParameters": {
                     "earliest": "-30d",
                     "latest": "now"
@@ -393,11 +515,51 @@
                 }
             },
             {
-                "item": "viz_timeline",
+                "item": "viz_hosts",
                 "type": "block",
                 "position": {
                     "x": 0,
                     "y": 200,
+                    "w": 300,
+                    "h": 120
+                }
+            },
+            {
+                "item": "viz_websites",
+                "type": "block",
+                "position": {
+                    "x": 300,
+                    "y": 200,
+                    "w": 300,
+                    "h": 120
+                }
+            },
+            {
+                "item": "viz_certs",
+                "type": "block",
+                "position": {
+                    "x": 600,
+                    "y": 200,
+                    "w": 300,
+                    "h": 120
+                }
+            },
+            {
+                "item": "viz_cves",
+                "type": "block",
+                "position": {
+                    "x": 900,
+                    "y": 200,
+                    "w": 300,
+                    "h": 120
+                }
+            },
+            {
+                "item": "viz_timeline",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 320,
                     "w": 800,
                     "h": 320
                 }
@@ -407,7 +569,7 @@
                 "type": "block",
                 "position": {
                     "x": 800,
-                    "y": 200,
+                    "y": 320,
                     "w": 400,
                     "h": 320
                 }
@@ -417,7 +579,7 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 520,
+                    "y": 640,
                     "w": 1200,
                     "h": 400
                 }
@@ -427,7 +589,7 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 920,
+                    "y": 1040,
                     "w": 760,
                     "h": 440
                 }
@@ -437,7 +599,7 @@
                 "type": "block",
                 "position": {
                     "x": 760,
-                    "y": 920,
+                    "y": 1040,
                     "w": 440,
                     "h": 440
                 }
@@ -447,7 +609,7 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 1360,
+                    "y": 1480,
                     "w": 1200,
                     "h": 250
                 }

@@ -1,0 +1,460 @@
+<dashboard version="2" theme="dark">
+    <label>Vulnerabilities &amp; software</label>
+    <description>CVEs and software that ShadowTrackr found on your internet-facing assets, from the inventory lookups.</description>
+    <definition><![CDATA[
+{
+    "title": "Vulnerabilities & software",
+    "description": "CVEs and software that ShadowTrackr found on your internet-facing assets, from the inventory lookups.",
+    "inputs": {
+        "input_cvss": {
+            "type": "input.dropdown",
+            "title": "Minimum CVSS",
+            "options": {
+                "token": "min_cvss",
+                "defaultValue": "0",
+                "items": [
+                    {
+                        "label": "All",
+                        "value": "0"
+                    },
+                    {
+                        "label": "4+ (medium)",
+                        "value": "4"
+                    },
+                    {
+                        "label": "7+ (high)",
+                        "value": "7"
+                    },
+                    {
+                        "label": "9+ (critical)",
+                        "value": "9"
+                    }
+                ]
+            }
+        },
+        "input_exploited": {
+            "type": "input.dropdown",
+            "title": "Exploited",
+            "options": {
+                "token": "exploited",
+                "defaultValue": "true()",
+                "items": [
+                    {
+                        "label": "All CVEs",
+                        "value": "true()"
+                    },
+                    {
+                        "label": "Known exploited only",
+                        "value": "exploited=1"
+                    }
+                ]
+            }
+        },
+        "input_org": {
+            "type": "input.dropdown",
+            "title": "Organization",
+            "dataSources": {
+                "primary": "ds_orgs"
+            },
+            "options": {
+                "token": "org",
+                "defaultValue": "*",
+                "items": ">frame(label, value) | objects()"
+            },
+            "context": {
+                "label": ">primary | seriesByName(\"label\") | renameSeries(\"label\") | formatByType(formattedConfig)",
+                "value": ">primary | seriesByName(\"value\") | renameSeries(\"value\") | formatByType(formattedConfig)",
+                "formattedConfig": {
+                    "number": {
+                        "prefix": ""
+                    }
+                }
+            }
+        },
+        "input_time": {
+            "type": "input.timerange",
+            "title": "Trend period",
+            "options": {
+                "token": "global_time",
+                "defaultValue": "-7d@h,now"
+            }
+        }
+    },
+    "defaults": {},
+    "visualizations": {
+        "viz_logo": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/shadowtrackr/images/logo_tile.png",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.customUrl",
+                    "options": {
+                        "url": "https://shadowtrackr.com/usr/",
+                        "newTab": true
+                    }
+                }
+            ]
+        },
+        "viz_title": {
+            "type": "splunk.markdown",
+            "options": {
+                "markdown": "## ShadowTrackr\nVulnerabilities and software \u00b7 [Open ShadowTrackr](https://shadowtrackr.com/usr/) \u00b7 [Documentation](https://shadowtrackr.com/docs)"
+            }
+        },
+        "viz_cves": {
+            "type": "splunk.singlevalue",
+            "title": "CVEs",
+            "dataSources": {
+                "primary": "ds_cves"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_critical": {
+            "type": "splunk.singlevalue",
+            "title": "\u25b2 Critical (CVSS 9+)",
+            "dataSources": {
+                "primary": "ds_critical"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off",
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 1,
+                        "value": "#c3c2b7"
+                    },
+                    {
+                        "from": 1,
+                        "to": 1000000000000000.0,
+                        "value": "#d03b3b"
+                    }
+                ]
+            }
+        },
+        "viz_exploited": {
+            "type": "splunk.singlevalue",
+            "title": "\u26a0 Known exploited",
+            "dataSources": {
+                "primary": "ds_exploited"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off",
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 1,
+                        "value": "#c3c2b7"
+                    },
+                    {
+                        "from": 1,
+                        "to": 1000000000000000.0,
+                        "value": "#d03b3b"
+                    }
+                ]
+            }
+        },
+        "viz_assets": {
+            "type": "splunk.singlevalue",
+            "title": "Affected assets",
+            "dataSources": {
+                "primary": "ds_assets"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_severity": {
+            "type": "splunk.column",
+            "title": "CVEs by severity",
+            "dataSources": {
+                "primary": "ds_severity"
+            },
+            "options": {
+                "legendDisplay": "off",
+                "seriesColors": [
+                    "#3987e5"
+                ],
+                "dataValuesDisplay": "all",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide"
+            }
+        },
+        "viz_trend": {
+            "type": "splunk.line",
+            "title": "CVE findings over time",
+            "dataSources": {
+                "primary": "ds_trend"
+            },
+            "options": {
+                "legendDisplay": "off",
+                "seriesColors": [
+                    "#3987e5"
+                ],
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide"
+            }
+        },
+        "viz_top_cves": {
+            "type": "splunk.table",
+            "title": "Top CVEs",
+            "dataSources": {
+                "primary": "ds_top_cves"
+            },
+            "options": {
+                "count": 10
+            },
+            "description": "Exploited first, then by CVSS. Click a row to open the CVE at NVD.",
+            "eventHandlers": [
+                {
+                    "type": "drilldown.customUrl",
+                    "options": {
+                        "url": "https://nvd.nist.gov/vuln/detail/$row.CVE.value$",
+                        "newTab": true
+                    }
+                }
+            ]
+        },
+        "viz_software": {
+            "type": "splunk.table",
+            "title": "Software with known CVEs",
+            "dataSources": {
+                "primary": "ds_software"
+            },
+            "options": {
+                "count": 9
+            }
+        },
+        "viz_asset_risk": {
+            "type": "splunk.table",
+            "title": "Assets with the most serious CVEs",
+            "dataSources": {
+                "primary": "ds_asset_risk"
+            },
+            "options": {
+                "count": 9
+            }
+        }
+    },
+    "dataSources": {
+        "ds_cves": {
+            "type": "ds.search",
+            "name": "Distinct CVEs",
+            "options": {
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | stats dc(cve) as CVEs"
+            }
+        },
+        "ds_critical": {
+            "type": "ds.search",
+            "name": "Critical CVEs",
+            "options": {
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | where cvss>=9 | stats dc(cve) as Critical"
+            }
+        },
+        "ds_exploited": {
+            "type": "ds.search",
+            "name": "Exploited CVEs",
+            "options": {
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | where exploited=1 | stats dc(cve) as Exploited"
+            }
+        },
+        "ds_assets": {
+            "type": "ds.search",
+            "name": "Affected assets",
+            "options": {
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | stats dc(asset) as Assets"
+            }
+        },
+        "ds_severity": {
+            "type": "ds.search",
+            "name": "CVEs by severity",
+            "options": {
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | eval severity=coalesce(severity, \"unknown\") | stats dc(cve) as CVEs by severity | eval order=case(severity=\"critical\",1, severity=\"high\",2, severity=\"medium\",3, severity=\"low\",4, true(),5) | sort order | eval Severity=upper(substr(severity,1,1)).substr(severity,2) | table Severity CVEs"
+            }
+        },
+        "ds_trend": {
+            "type": "ds.search",
+            "name": "CVE findings over time",
+            "options": {
+                "query": "`shadowtrackr_inventory_summary` type=cves status=ok | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=12h | stats latest(present) as present by _time, input, organization | timechart span=12h sum(present) as \"CVE findings\"",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_top_cves": {
+            "type": "ds.search",
+            "name": "Top CVEs",
+            "options": {
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | stats max(cvss) as CVSS max(exploited) as exploited max(cisa_kev) as kev dc(asset) as Assets values(software) as Software by cve | eval Flags=trim(if(exploited=1, \"\u26a0 Exploited \", \"\").if(kev=1, \"\u25c6 CISA KEV\", \"\")) | sort - exploited - CVSS - Assets | rename cve AS CVE | table CVE CVSS Flags Assets Software"
+            }
+        },
+        "ds_software": {
+            "type": "ds.search",
+            "name": "Software with known CVEs",
+            "options": {
+                "query": "| inputlookup shadowtrackr_software where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where cve_count>0 | sort - exploited - max_cvss - asset_count | eval Flags=trim(if(exploited=1, \"\u26a0 Exploited \", \"\").if(cisa_kev=1, \"\u25c6 CISA KEV\", \"\")) | rename software AS Software, asset_count AS Assets, cve_count AS CVEs, max_cvss AS \"Max CVSS\" | table Software Assets CVEs \"Max CVSS\" Flags"
+            }
+        },
+        "ds_asset_risk": {
+            "type": "ds.search",
+            "name": "Assets with the most serious CVEs",
+            "options": {
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | stats max(cvss) as \"Max CVSS\" dc(cve) as CVEs sum(exploited) as Exploited by asset | sort - \"Max CVSS\" - Exploited - CVEs | rename asset AS Asset | table Asset \"Max CVSS\" CVEs Exploited"
+            }
+        },
+        "ds_orgs": {
+            "type": "ds.search",
+            "name": "Organizations",
+            "options": {
+                "query": "| inputlookup shadowtrackr_hosts | stats count by organization | rename organization AS org_name | eval label=org_name, value=org_name, order=1 | append [| makeresults | eval label=\"All organizations\", value=\"*\", order=0] | sort order label | table label value"
+            }
+        }
+    },
+    "layout": {
+        "type": "grid",
+        "options": {
+            "width": 1200
+        },
+        "globalInputs": [
+            "input_cvss",
+            "input_exploited",
+            "input_org",
+            "input_time"
+        ],
+        "structure": [
+            {
+                "item": "viz_logo",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "w": 90,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_title",
+                "type": "block",
+                "position": {
+                    "x": 90,
+                    "y": 0,
+                    "w": 1110,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_cves",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 90,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_critical",
+                "type": "block",
+                "position": {
+                    "x": 300,
+                    "y": 90,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_exploited",
+                "type": "block",
+                "position": {
+                    "x": 600,
+                    "y": 90,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_assets",
+                "type": "block",
+                "position": {
+                    "x": 900,
+                    "y": 90,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_severity",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 200,
+                    "w": 500,
+                    "h": 300
+                }
+            },
+            {
+                "item": "viz_trend",
+                "type": "block",
+                "position": {
+                    "x": 500,
+                    "y": 200,
+                    "w": 700,
+                    "h": 300
+                }
+            },
+            {
+                "item": "viz_top_cves",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 500,
+                    "w": 1200,
+                    "h": 420
+                }
+            },
+            {
+                "item": "viz_software",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 920,
+                    "w": 600,
+                    "h": 420
+                }
+            },
+            {
+                "item": "viz_asset_risk",
+                "type": "block",
+                "position": {
+                    "x": 600,
+                    "y": 920,
+                    "w": 600,
+                    "h": 420
+                }
+            }
+        ]
+    }
+}
+    ]]></definition>
+    <meta type="hiddenElements"><![CDATA[
+{
+    "hideEdit": false,
+    "hideOpenInSearch": false,
+    "hideExport": false
+}
+    ]]></meta>
+</dashboard>
