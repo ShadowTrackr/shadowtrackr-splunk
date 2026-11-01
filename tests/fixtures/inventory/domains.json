@@ -1,0 +1,41 @@
+{
+  "results": "1 results found",
+  "error": "",
+  "data": [
+    {
+      "domain": "example.com",
+      "tags": [],
+      "registrar": null,
+      "status": "clientTransferProhibited",
+      "nameservers": [
+        "h249.example-4.net",
+        "h250.example-4.net"
+      ],
+      "creation_date": "2003-08-08T00:00:00Z",
+      "expiration_date": "2027-08-08T00:00:00Z",
+      "updated_date": "2026-08-09T08:19:31Z",
+      "first_seen": "2026-10-08T03:46:58Z",
+      "last_seen": "2026-11-01T00:15:54Z",
+      "dnssec": "No",
+      "mailservers": [
+        "h251.example-4.net",
+        "h252.h253.h254.example-5.net",
+        "h255.h253.h254.example-5.net",
+        "h256.h253.h254.example-5.net",
+        "h253.h254.example-5.net",
+        "h257.h253.h254.example-5.net"
+      ],
+      "spf": "\"v=spf1 include:h258.example-6.net mx include:h259.example-5.net include:h258.example-7.net include:h260.h261.example-8.net -all\"",
+      "subdomains": [
+        "h262.h263.h5.example.com",
+        "h264.h265.h5.example.com",
+        "h266.h267.h5.example.com",
+        "h268.h269.h5.example.com",
+        "h270.h271.h5.example.com",
+        "h272.h273.h5.example.com",
+        "h274.h275.h5.example.com",
+        "h276.h277.h5.example.com"
+      ]
+    }
+  ]
+}

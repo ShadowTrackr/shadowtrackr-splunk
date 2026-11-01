@@ -24,7 +24,9 @@ v4 behaviour:
       organization_id group keys only
   * events carry organization only for group keys (as on live)
   * event_types with optional category / source / eventid filters
-  * organizations for group keys
+  * organizations for group keys (a normal key gets HTTP 200 with an error)
+  * inventory list endpoints (hosts, websites, ...) from tests/fixtures/inventory;
+    a group key must pass organization_id, Customer B gets a small slice
 
 Legacy behaviour (--legacy): no ids or new fields, since_id ignored, a wrong
 key gives HTTP 200 with an "error", unknown endpoints give an HTML 404.
@@ -92,6 +94,23 @@ def _load(name):
         return json.load(f)["data"]
 
 
+INVENTORY_ENDPOINTS = (
+    "hosts", "websites", "urls", "domains", "subnets", "certificates", "dns", "mailservers", "software",
+    "vulnerabilities", "cves_assets", "cloud_providers", "remote_login_services", "blacklisted_assets",
+    "exposed_email_addresses", "suggestions", "phishy_domains", "suppliers", "internet_standards",
+)
+
+
+def load_inventory():
+    inventory = {}
+    for endpoint in INVENTORY_ENDPOINTS:
+        try:
+            inventory[endpoint] = _load(os.path.join("inventory", endpoint + ".json"))
+        except FileNotFoundError:
+            inventory[endpoint] = []
+    return inventory
+
+
 def load_events(shift_to_now=False, legacy=False):
     events = _load("events.json")
     if shift_to_now and events:
@@ -151,9 +170,10 @@ def org_for(event):
 
 
 class MockAPI:
-    def __init__(self, events, event_types, legacy=False):
+    def __init__(self, events, event_types, legacy=False, inventory=None):
         self.events = events
         self.event_types = event_types
+        self.inventory = inventory if inventory is not None else load_inventory()
         self.legacy = legacy
         self.lock = threading.Lock()
 
@@ -266,9 +286,12 @@ def make_handler(api, api_key):
                     return self._event_types(body)
                 if endpoint == "organizations" and not api.legacy:
                     if key != GROUP_API_KEY:
-                        return self._error(403, "Not a group API key")
+                        # As on live: HTTP 200 with an error for a normal key.
+                        return self._send(200, self._envelope(error="Error: No groupcode provided"))
                     return self._send(200, {"results": "2 Organizations found", "error": "",
                                             "data": {"active_organizations": 2, "organizations": ORGANIZATIONS}})
+                if endpoint in INVENTORY_ENDPOINTS:
+                    return self._inventory(key, endpoint, body)
             except BadRequest as e:
                 return self._error(400, str(e))
             return self._not_found()
@@ -304,6 +327,21 @@ def make_handler(api, api_key):
                 newest = sorted(events, key=lambda e: e["timestamp"], reverse=True)[:limit]
                 return self._send(200, self._envelope(newest, latest_id=latest_id))
             return self._send(200, self._envelope(filter_events(events, body)))
+
+        def _inventory(self, key, endpoint, body):
+            """List endpoints. A group key must name an organization_id (else no data, as on live)."""
+            rows = api.inventory.get(endpoint, [])
+            if key != GROUP_API_KEY:
+                return self._send(200, self._envelope(rows))
+            if "organization_id" not in body:
+                return self._send(200, self._envelope([]))
+            org_id = _int_param(body, "organization_id")
+            org = next((o for o in ORGANIZATIONS if o["oid"] == org_id), None)
+            if org is None:
+                return self._error(403, "Organization not in this group")
+            # Customer B gets a small slice of the same fixtures.
+            rows = rows if org is ORGANIZATIONS[0] else rows[:3]
+            return self._send(200, self._envelope(rows, organization={"id": org["oid"], "name": org["name"]}))
 
         def _event_types(self, body):
             rows = api.event_types

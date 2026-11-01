@@ -40,12 +40,14 @@ GENERIC_LABELS = {"www", "mail", "api", "admin", "docs", "app", "dev", "test", "
 DOC_V4_NETS = ("192.0.2.", "198.51.100.", "203.0.113.")
 # Public domains that must stay readable (deep links into the ShadowTrackr GUI).
 PRESERVE_DOMAINS = {"shadowtrackr.com"}
+# Free-text fields copied from the customer's own websites.
+TITLE_KEYS = {"http_title", "https_title"}
 # Keys whose values are never customer data.
 KEEP_KEYS = {"timestamp", "source", "id", "eventid", "level", "asset_type", "action", "status", "state",
              "cvss", "cvss_severity", "attribute", "grade", "previous_grade", "protocol", "port"}
 
 HOST_RE = re.compile(
-    r"(?<![\w-])(?<![\w-]\.)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?!(?:%s)(?![\w-]))[a-z]{2,24}(?![\w-])"
+    r"(?<![\w-])(?<![\w-]\.)(?:[a-z0-9_](?:[a-z0-9_-]{0,61}[a-z0-9])?\.)+(?!(?:%s)(?![\w-]))[a-z]{2,24}(?![\w-])"
     % "|".join(NOT_TLDS),
     re.IGNORECASE,
 )
@@ -67,6 +69,10 @@ class Redactor:
     def __init__(self, primary_domain, rng):
         self.rng = rng
         self.primary = primary_domain
+        # The customer's brand (e.g. "acme" for acme.com) also appears outside
+        # hostnames, in page titles and descriptions.
+        label = primary_domain.split(".")[0]
+        self.brand_re = re.compile(re.escape(label), re.IGNORECASE) if len(label) >= 4 else None
         self.domains = {primary_domain: "example.com"}
         self.labels = {}
         self.ipv4 = {}
@@ -148,11 +154,15 @@ class Redactor:
         value = IPV6_RE.sub(self.ip6, value)
         value = IPV4_RE.sub(self.ip4, value)
         value = HOST_RE.sub(self.host, value)
+        if self.brand_re:
+            value = self.brand_re.sub("example", value)
         return value
 
     def value(self, value, key=None):
         if key in KEEP_KEYS:
             return value
+        if key in TITLE_KEYS and isinstance(value, str) and value:
+            return "Example page title"
         if isinstance(value, str):
             return self.text(value)
         if isinstance(value, list):

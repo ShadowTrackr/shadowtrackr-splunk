@@ -1,0 +1,55 @@
+{
+  "results": "7 results found",
+  "error": "",
+  "data": [
+    {
+      "name": "Vrije Universiteit Amsterdam",
+      "type": "ISP",
+      "first_seen": "2026-10-06T03:36:55Z",
+      "last_seen": "2026-10-31T06:05:33Z",
+      "assets": []
+    },
+    {
+      "name": "Surf B.V.",
+      "type": "ISP,Domain registrar,Certificate issuer",
+      "first_seen": "2026-10-06T03:36:55Z",
+      "last_seen": "2026-10-31T06:05:33Z",
+      "assets": []
+    },
+    {
+      "name": "Surf B.V.",
+      "type": "ISP,Domain registrar,Certificate issuer",
+      "first_seen": "2026-10-06T03:36:55Z",
+      "last_seen": "2026-10-31T06:05:33Z",
+      "assets": []
+    },
+    {
+      "name": "Akamai Technologies, Inc.",
+      "type": "ISP",
+      "first_seen": "2026-10-06T03:36:55Z",
+      "last_seen": "2026-10-31T06:05:33Z",
+      "assets": []
+    },
+    {
+      "name": "Surf B.V.",
+      "type": "ISP,Domain registrar,Certificate issuer",
+      "first_seen": "2026-10-06T03:36:55Z",
+      "last_seen": "2026-10-31T06:05:33Z",
+      "assets": []
+    },
+    {
+      "name": "INTERBUSINESS",
+      "type": "ISP",
+      "first_seen": "2026-10-06T03:36:55Z",
+      "last_seen": "2026-10-31T06:05:33Z",
+      "assets": []
+    },
+    {
+      "name": "Surf B.V.",
+      "type": "ISP,Domain registrar,Certificate issuer",
+      "first_seen": "2026-10-06T03:36:55Z",
+      "last_seen": "2026-10-31T06:05:33Z",
+      "assets": []
+    }
+  ]
+}

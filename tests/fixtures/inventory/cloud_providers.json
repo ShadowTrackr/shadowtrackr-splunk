@@ -1,0 +1,108 @@
+{
+  "results": "8 results found",
+  "error": "",
+  "data": [
+    {
+      "cloud_provider": "Cloudflare",
+      "first_seen": "2026-10-08T03:41:27Z",
+      "last_seen": "2026-11-01T01:31:09Z",
+      "urls": [
+        "events.example.com",
+        "h178.example.com",
+        "h179.example.com",
+        "h179.example.com",
+        "blog.example.com",
+        "blog.example.com",
+        "www.example.com",
+        "example.com"
+      ],
+      "assets": 11
+    },
+    {
+      "cloud_provider": "Fastly",
+      "first_seen": "2026-10-08T03:51:48Z",
+      "last_seen": "2026-11-01T01:17:15Z",
+      "urls": [
+        "h180.example.com",
+        "h181.h182.example-2.net"
+      ],
+      "assets": 2
+    },
+    {
+      "cloud_provider": "GMail",
+      "first_seen": "2026-10-08T03:46:39Z",
+      "last_seen": "2026-11-01T01:19:11Z",
+      "urls": [
+        "h183.h184.example.com"
+      ],
+      "assets": 1
+    },
+    {
+      "cloud_provider": "Sendgrid",
+      "first_seen": "2026-10-08T03:46:40Z",
+      "last_seen": "2026-11-01T01:19:11Z",
+      "urls": [
+        "h185.h184.example.com",
+        "h186.h184.example.com"
+      ],
+      "assets": 2
+    },
+    {
+      "cloud_provider": "Amazon",
+      "first_seen": "2026-10-08T04:49:36Z",
+      "last_seen": "2026-10-31T08:24:03Z",
+      "urls": [
+        "h187.example.com"
+      ],
+      "assets": 1
+    },
+    {
+      "cloud_provider": "Cloudflare",
+      "first_seen": "2026-10-08T03:45:18Z",
+      "last_seen": "2026-10-31T22:53:58Z",
+      "urls": [
+        "h188.h189.example.com",
+        "h190.example.com",
+        "h191.h192.example.com",
+        "h193.example.com",
+        "h194.h189.example.com",
+        "h195.h196.h189.example.com",
+        "h197.h189.example.com",
+        "h198.example.com"
+      ],
+      "assets": 262
+    },
+    {
+      "cloud_provider": "Fastly",
+      "first_seen": "2026-10-09T04:19:21Z",
+      "last_seen": "2026-10-31T11:26:18Z",
+      "urls": [
+        "h180.example.com",
+        "h180.example.com",
+        "h180.example.com",
+        "h180.example.com",
+        "h180.example.com",
+        "h180.example.com",
+        "h180.example.com",
+        "h180.example.com"
+      ],
+      "assets": 11
+    },
+    {
+      "cloud_provider": "Microsoft Public Cloud",
+      "first_seen": "2026-10-08T04:07:23Z",
+      "last_seen": "2026-11-01T00:20:33Z",
+      "urls": [
+        "h199.h200.example.com",
+        "h201.h202.example.com",
+        "h203.h200.example.com",
+        "h195.h204.h200.example.com",
+        "h195.h205.h200.example.com",
+        "h206.h200.example.com",
+        "h207.h200.example.com",
+        "h195.h208.h200.example.com"
+      ],
+      "assets": 259
+    }
+  ]
+}

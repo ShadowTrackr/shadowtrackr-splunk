@@ -1,0 +1,13 @@
+{
+  "results": "1 results found",
+  "error": "",
+  "data": [
+    {
+      "ip": "192.0.2.40",
+      "first_seen": "2026-10-20T00:00:00Z",
+      "last_seen": "2026-10-31T00:00:00Z",
+      "blacklist": "Spamhaus ZEN",
+      "desc": "Listed for spam"
+    }
+  ]
+}

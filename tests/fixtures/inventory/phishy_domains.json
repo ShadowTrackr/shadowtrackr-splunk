@@ -1,0 +1,223 @@
+{
+  "results": "3 results found",
+  "error": "",
+  "data": [
+    {
+      "phishy_url": "example-16.net",
+      "original_url": "example.com",
+      "registrar": "OVH, SAS",
+      "isp": "OVH SAS",
+      "city": "Roubaix",
+      "country": "France",
+      "nameservers": [
+        "h377.example-17.net",
+        "h378.example-17.net"
+      ],
+      "mailservers": [
+        "h379.mail.example-17.net",
+        "h380.mail.example-17.net"
+      ],
+      "whois": {
+        "domain_name": "example-16.net",
+        "registrar": "OVH, SAS",
+        "whoisserver": "h381.example-18.net",
+        "referral_url": null,
+        "updated_date": "2026-02-01",
+        "creation_date": "2000-02-17",
+        "expiration_date": "2028-02-17",
+        "status": "clientDeleteProhibited, clientTransferProhibited",
+        "emails": [
+          "user5@example.org"
+        ],
+        "dnssec": "signedDelegation",
+        "name": "REDACTED FOR PRIVACY",
+        "org": "REDACTED FOR PRIVACY",
+        "address": "REDACTED FOR PRIVACY",
+        "city": "REDACTED FOR PRIVACY",
+        "state": "REDACTED FOR PRIVACY",
+        "zipcode": "REDACTED FOR PRIVACY",
+        "country": "FR",
+        "domain": "example-16.net",
+        "whois_server": "h381.example-18.net",
+        "status_raw": "clientDeleteProhibited https://example-19.net/epp#clientDeleteProhibited, clientTransferProhibited https://example-19.net/epp#clientTransferProhibited",
+        "nameservers": [
+          "h377.example-17.net",
+          "h378.example-17.net",
+          "h378.example-17.net",
+          "h377.example-17.net"
+        ],
+        "whois_raw": "   Domain Name: example-16.net\n   Registry Domain ID: 20005674_DOMAIN_COM-VRSN\n   Registrar WHOIS Server: h381.example-18.net\n   Registrar URL: http://www.example-18.net\n   Updated Date: 2026-02-01T07:21:01Z\n   Creation Date: 2000-02-17T01:03:26Z\n   Registry Expiry Date: 2028-02-17T01:03:25Z\n   Registrar: OVH sas\n   Registrar IANA ID: 433\n   Registrar Abuse Contact Email: user5@example.org\n   Registrar Abuse Contact Phone: +33.972101007\n   Domain Status: clientDeleteProhibited https://example-19.net/epp#clientDeleteProhibited\n   Domain Status: clientTransferProhibited https://example-19.net/epp#clientTransferProhibited\n   Name Server: h377.example-17.net\n   Name Server: h378.example-17.net\n   DNSSEC: signedDelegation\n   DNSSEC DS Data: 23566 8 2 48C232CFB61D7F6576A9F769301A25E2D414ABE6CE2CB096BB03EC9597AA6110\n   URL of the ICANN Whois Inaccuracy Complaint Form: https://www.example-19.net/wicf/\n>>> Last update of whois database: 2026-10-31T05:36:16Z <<<\n\nFor more information on Whois status codes, please visit https://example-19.net/epp\n\nNOTICE: The expiration date displayed in this record is the date the\nregistrar's sponsorship of the domain name registration in the registry is\ncurrently set to expire. This date does not necessarily reflect the expiration\ndate of the domain name registrant's agreement with the sponsoring\nregistrar.  Users may consult the sponsoring registrar's Whois database to\nview the registrar's reported date of expiration for this registration.\n\nTERMS OF USE: You are not authorized to access or query our Whois\ndatabase through the use of electronic processes that are high-volume and\nautomated except as reasonably necessary to register domain names or\nmodify existing registrations; the Data in VeriSign Global Registry\nServices' (\"VeriSign\") Whois database is provided by VeriSign for\ninformation purposes only, and to assist persons in obtaining information\nabout or related to a domain name registration record. VeriSign does not\nguarantee its accuracy. By submitting a Whois query, you agree to abide\nby the following terms of use: You agree that you may use this Data only\nfor lawful purposes and that under no circumstances will you use this Data\nto: (1) allow, enable, or otherwise support the transmission of mass\nunsolicited, commercial advertising or solicitations via e-mail, telephone,\nor facsimile; or (2) enable high volume, automated, electronic processes\nthat apply to VeriSign (or its computer systems). The compilation,\nrepackaging, dissemination or other use of this Data is expressly\nprohibited without the prior written consent of VeriSign. You agree not to\nuse electronic processes that are automated and high-volume to access or\nquery the Whois database except as reasonably necessary to register\ndomain names or modify existing registrations. VeriSign reserves the right\nto restrict your access to the Whois database in its sole discretion to ensure\noperational stability.  VeriSign may restrict or terminate your access to the\nWhois database for failure to abide by these terms of use. VeriSign\nreserves the right to modify these terms at any time.\n\nThe Registry database contains ONLY .COM, .NET, .EDU domains and\nRegistrars.\nDomain Name: example-16.net\nRegistry Domain ID: REDACTED FOR PRIVACY\nRegistrar WHOIS Server: h381.example-18.net\nRegistrar URL: https://example-18.net\nUpdated Date: 2026-02-01T07:21:01Z\nCreation Date: 2000-02-17T01:03:26Z\nRegistrar Registration Expiration Date: 2028-02-17T01:03:25+01:00\nRegistrar: OVH, SAS\nRegistrar IANA ID: 433\nRegistrar Abuse Contact Email: user5@example.org\nRegistrar Abuse Contact Phone: +33.972101007\nDomain Status: clientDeleteProhibited https://example-19.net/epp#clientDeleteProhibited\nDomain Status: clientTransferProhibited https://example-19.net/epp#clientTransferProhibited\nRegistry Registrant ID: REDACTED FOR PRIVACY\nRegistrant Name: REDACTED FOR PRIVACY\nRegistrant Organization: REDACTED FOR PRIVACY\nRegistrant Street: REDACTED FOR PRIVACY\nRegistrant City: REDACTED FOR PRIVACY\nRegistrant State/Province: REDACTED FOR PRIVACY\nRegistrant Postal Code: REDACTED FOR PRIVACY\nRegistrant Country: FR\nRegistrant Phone: REDACTED FOR PRIVACY\nRegistrant Phone Ext: REDACTED FOR PRIVACY\nRegistrant Fax: REDACTED FOR PRIVACY\nRegistrant Fax Ext: REDACTED FOR PRIVACY\nRegistrant Email: REDACTED FOR PRIVACY - Send message to contact by visiting https://example-20.net/en/lp/request-ovhcloud-registered-domain/\nRegistry Admin ID: REDACTED FOR PRIVACY\nAdmin Name: REDACTED FOR PRIVACY\nAdmin Organization: REDACTED FOR PRIVACY\nAdmin Street: REDACTED FOR PRIVACY\nAdmin City: REDACTED FOR PRIVACY\nAdmin State/Province: REDACTED FOR PRIVACY\nAdmin Postal Code: REDACTED FOR PRIVACY\nAdmin Country: FR\nAdmin Phone: REDACTED FOR PRIVACY\nAdmin Phone Ext: REDACTED FOR PRIVACY\nAdmin Fax: REDACTED FOR PRIVACY\nAdmin Fax Ext: REDACTED FOR PRIVACY\nAdmin Email: REDACTED FOR PRIVACY - Send message to contact by visiting https://example-20.net/en/lp/request-ovhcloud-registered-domain/\nRegistry Tech ID: REDACTED FOR PRIVACY\nTech Name: REDACTED FOR PRIVACY\nTech Organization: REDACTED FOR PRIVACY\nTech Street: REDACTED FOR PRIVACY\nTech City: REDACTED FOR PRIVACY\nTech State/Province: REDACTED FOR PRIVACY\nTech Postal Code: REDACTED FOR PRIVACY\nTech Country: FR\nTech Phone: REDACTED FOR PRIVACY\nTech Phone Ext: REDACTED FOR PRIVACY\nTech Fax: REDACTED FOR PRIVACY\nTech Fax Ext: REDACTED FOR PRIVACY\nTech Email: REDACTED FOR PRIVACY - Send message to contact by visiting https://example-20.net/en/lp/request-ovhcloud-registered-domain/\nName Server: h378.example-17.net\nName Server: h377.example-17.net\nDNSSEC: signedDelegation\nURL of the ICANN WHOIS Data Problem Reporting System:\nhttp://h382.example-21.net/\n>>> Last update of WHOIS database: 2026-02-01T07:21:12Z <<<\n\nFor more information on Whois status codes, please visit https://example-19.net/epp \n\n###############################################################################\n#\n# Welcome to the OVH WHOIS Server.\n#\n# whois server  : h381.example-18.net       check server  : h383.example-18.net\n#\n# The data in this Whois is at your disposal  with the aim of supplying you the\n# information only,  that is helping you  in the obtaining  of  the information\n# about  or  related to a domain name registration record.   OVH Sas  make this\n# information available \"as is\", and  do not  guarantee its accuracy.  By using\n# Whois,  you agree that you will use these data  only for  legal  purposes and\n# that,  under no circumstances will you use this data to:  (1) Allow,  enable,\n# or  otherwise  support  the  transmission  of  mass  unsolicited,  commercial\n# advertisement  or  roughly  or  requests  via the  individual mail (courier),\n# the E-mail (SPAM), by telephone or by fax. (2) Enable high volume, automated,\n# electronic  processes  that  apply  to  OVH  Sas   (or its computer systems).\n# The copy,   the compilation,   the re-packaging,   the dissemination   or the\n# other  use  of  the Whois base  is  expressly  forbidden  without  the  prior\n# written consent of  OVH.  Domain  ownership  disputes should be settled using\n# ICANN's Uniform Dispute Resolution Policy: http://www.example-19.net/udrp/udrp.htm\n# We reserve the right  to  modify  these  terms  at  any  time.  By submitting\n# this query,  you agree to  abide by these terms.  OVH Sas  reserves the right\n# to  terminate  your  access  to  the  OVH Sas  Whois  database  in  its  sole\n# discretion,   including   without   limitation,   for  excessive  querying of\n# the Whois database  or  for  failure  to  otherwise  abide  by  this  policy.\n#\n# L'outil du Whois  est  \u00e0  votre  disposition  dans  le  but  de  vous fournir\n# l'information  seulement,  c'est-\u00e0-dire  vous   aider   dans  l'obtention  de\n# l'information  sur ou li\u00e9 \u00e0 un  rapport  d'enregistrement  de nom de domaine.\n# OVH Sas rend  cette information disponible  \"comme est,\"  et  ne garanti pas\n# son exactitude. En utilisant  notre outil  Whois, vous  reconnaissez que vous\n# emploierez ces donn\u00e9es seulement pour  des buts l\u00e9gaux et ne pas utiliser cet\n# outil dans les buts suivant: (1) la transmission de publicit\u00e9 non sollicit\u00e9e,\n# commerciale massive ou en gros ou des sollicitations via courrier individuel,\n# le courrier \u00e9lectronique (c'est-\u00e0-dire SPAM),  par  t\u00e9l\u00e9phone ou par fax. (2)\n# l'utilisation d'un grand volume,  automatis\u00e9  des processus \u00e9lectroniques qui\n# soulignent ou chargent ce syst\u00e8me de base de donn\u00e9es  Whois  vous fournissant\n# cette  information.   La  copie   de  tout  ou  partie,   la compilation,  le\n# re-emballage,  la diss\u00e9mination ou d'autre utilisation de la base Whois  sont\n# express\u00e9ment interdits sans consentement \u00e9crit ant\u00e9rieur de OVH. Un d\u00e9saccord\n# sur la possession d'un nom de domaine peut \u00eatre r\u00e9solu en suivant la  Uniform\n# Dispute  Resolution  Policy  de  l'ICANN:  http://www.example-19.net/udrp/udrp.htm\n# Nous nous  r\u00e9servons  le  droit  de  modifier  ces  termes  \u00e0 tout moment. En\n# soumettant une requ\u00eate au Whois vous consentez \u00e0 vous soumettre \u00e0 ces termes.\n\n# local time : 2026-10-31T05:36:24Z\n# gmt time : 2026-10-31T05:36:24Z\n# last modify : 2026-02-01T07:21:12Z\n\n",
+        "error": ""
+      },
+      "web": {
+        "http_status_code": "",
+        "http_real_ip": "",
+        "http_title": "",
+        "https_status_code": "",
+        "https_real_ip": "",
+        "https_title": "",
+        "https_error": "",
+        "https_status": 0,
+        "http_error": "",
+        "http_status": 0
+      },
+      "cert": null,
+      "score": 28,
+      "tags": "",
+      "spf": "",
+      "dmarc": "",
+      "first_seen": "2026-10-08T18:23:47Z",
+      "last_seen": "2026-10-31T05:38:14Z",
+      "babydomain": false,
+      "whois_nameservers_not_used": false,
+      "whois_no_dnssec": false,
+      "https_redirected_to_org_url": false,
+      "domain_txt_verified": false
+    },
+    {
+      "phishy_url": "example-22.net",
+      "original_url": "example.com",
+      "registrar": "REGRU-RU",
+      "isp": "\"Domain names registrar example-23.net\", Ltd",
+      "city": "Moscow",
+      "country": "Russia",
+      "nameservers": [
+        "ns1.example-23.net",
+        "ns2.example-23.net"
+      ],
+      "mailservers": [
+        ""
+      ],
+      "whois": {
+        "domain_name": "example-22.net",
+        "registrar": "REGRU-RU",
+        "creation_date": "2025-02-26",
+        "expiration_date": "2027-02-26",
+        "status": "active",
+        "emails": [],
+        "org": null,
+        "domain": "example-22.net",
+        "updated_date": "",
+        "dnssec": "",
+        "whois_server": "",
+        "status_raw": "REGISTERED, DELEGATED, VERIFIED",
+        "nameservers": [
+          "ns1.example-23.net.",
+          "ns2.example-23.net."
+        ],
+        "whois_raw": "% TCI Whois Service. Terms of use:\n% https://example-24.net/documents/example-25.net (in Russian)\n% https://example-24.net/documents/example-26.net (in Russian)\n\ndomain:        example-22.net\nnserver:       ns1.example-23.net.\nnserver:       ns2.example-23.net.\nstate:         REGISTERED, DELEGATED, VERIFIED\nperson:        Private Person\nregistrar:     REGRU-RU\nadmin-contact: http://www.example-23.net/whois/admin_contact\ncreated:       2025-02-26T06:42:38Z\npaid-till:     2027-02-26T06:42:38Z\nfree-date:     2027-03-29\nsource:        TCI\n\nLast updated on 2026-10-31T05:43:01Z\n\n",
+        "error": "",
+        "address": null,
+        "city": null,
+        "country": null,
+        "name": null,
+        "referral_url": null,
+        "state": null,
+        "zipcode": null
+      },
+      "web": {
+        "http_status_code": 200,
+        "http_real_ip": "",
+        "http_title": "",
+        "https_status_code": "",
+        "https_real_ip": "",
+        "https_title": "",
+        "https_error": "",
+        "https_status": 0,
+        "http_error": 200,
+        "http_status": 0
+      },
+      "cert": {
+        "san": "example-22.net,www.example-22.net",
+        "cn": "example-22.net",
+        "issuersubject": "CN=YR2,O=Let's Encrypt,C=US",
+        "issuer": "YR2",
+        "issuerorg": "Let's Encrypt",
+        "serialnumber": "5ea1882704db8f1c39d77d8004f4b2744c4a644341",
+        "notafter": "2027-01-14T00:22:17Z",
+        "notbefore": "2026-10-16T00:22:18Z"
+      },
+      "score": 52,
+      "tags": "",
+      "spf": "",
+      "dmarc": "",
+      "first_seen": "2026-10-31T05:46:52Z",
+      "last_seen": "2026-10-31T05:46:52Z",
+      "babydomain": false,
+      "whois_nameservers_not_used": false,
+      "whois_no_dnssec": false,
+      "https_redirected_to_org_url": false,
+      "domain_txt_verified": false
+    },
+    {
+      "phishy_url": "example-27.net",
+      "original_url": "example.com",
+      "registrar": "DOMAINPEOPLE, INC.",
+      "isp": "SoftLayer",
+      "city": "Montreal",
+      "country": "Canada",
+      "nameservers": [
+        "h384.h385.example-28.net",
+        "h386.h385.example-28.net"
+      ],
+      "mailservers": [
+        "mail.example-27.net"
+      ],
+      "whois": {
+        "domain_name": "example-27.net",
+        "registrar": "DOMAINPEOPLE, INC.",
+        "whoisserver": "h381.example-29.net",
+        "referral_url": null,
+        "updated_date": "2026-07-29",
+        "creation_date": "1996-11-05",
+        "expiration_date": "2027-11-04",
+        "status": "clientTransferProhibited",
+        "emails": [
+          "user6@example.org",
+          "user6@example.org"
+        ],
+        "dnssec": "unsigned",
+        "name": "REDACTED FOR PRIVACY",
+        "org": "REDACTED FOR PRIVACY",
+        "address": "REDACTED FOR PRIVACY",
+        "city": "REDACTED FOR PRIVACY",
+        "state": "TX",
+        "zipcode": "REDACTED FOR PRIVACY",
+        "country": "US",
+        "domain": "example-27.net",
+        "whois_server": "h381.example-29.net",
+        "status_raw": "clientTransferProhibited https://example-19.net/epp#clientTransferProhibited, clientTransferProhibited https://www.example-19.net/epp#clientTransferProhibited",
+        "nameservers": [
+          "h384.h385.example-28.net",
+          "h386.h385.example-28.net"
+        ],
+        "whois_raw": "   Domain Name: example-27.net\n   Registry Domain ID: 98648_DOMAIN_COM-VRSN\n   Registrar WHOIS Server: h381.example-29.net\n   Registrar URL: http://www.example-29.net\n   Updated Date: 2026-07-29T22:23:00Z\n   Creation Date: 1996-11-05T05:00:00Z\n   Registry Expiry Date: 2027-11-04T05:00:00Z\n   Registrar: DomainPeople, Inc.\n   Registrar IANA ID: 65\n   Registrar Abuse Contact Email: user6@example.org\n   Registrar Abuse Contact Phone: +1.8664678929\n   Domain Status: clientTransferProhibited https://example-19.net/epp#clientTransferProhibited\n   Name Server: h384.h385.example-28.net\n   Name Server: h386.h385.example-28.net\n   DNSSEC: unsigned\n   URL of the ICANN Whois Inaccuracy Complaint Form: https://www.example-19.net/wicf/\n>>> Last update of whois database: 2026-10-31T05:39:31Z <<<\n\nFor more information on Whois status codes, please visit https://example-19.net/epp\n\nNOTICE: The expiration date displayed in this record is the date the\nregistrar's sponsorship of the domain name registration in the registry is\ncurrently set to expire. This date does not necessarily reflect the expiration\ndate of the domain name registrant's agreement with the sponsoring\nregistrar.  Users may consult the sponsoring registrar's Whois database to\nview the registrar's reported date of expiration for this registration.\n\nTERMS OF USE: You are not authorized to access or query our Whois\ndatabase through the use of electronic processes that are high-volume and\nautomated except as reasonably necessary to register domain names or\nmodify existing registrations; the Data in VeriSign Global Registry\nServices' (\"VeriSign\") Whois database is provided by VeriSign for\ninformation purposes only, and to assist persons in obtaining information\nabout or related to a domain name registration record. VeriSign does not\nguarantee its accuracy. By submitting a Whois query, you agree to abide\nby the following terms of use: You agree that you may use this Data only\nfor lawful purposes and that under no circumstances will you use this Data\nto: (1) allow, enable, or otherwise support the transmission of mass\nunsolicited, commercial advertising or solicitations via e-mail, telephone,\nor facsimile; or (2) enable high volume, automated, electronic processes\nthat apply to VeriSign (or its computer systems). The compilation,\nrepackaging, dissemination or other use of this Data is expressly\nprohibited without the prior written consent of VeriSign. You agree not to\nuse electronic processes that are automated and high-volume to access or\nquery the Whois database except as reasonably necessary to register\ndomain names or modify existing registrations. VeriSign reserves the right\nto restrict your access to the Whois database in its sole discretion to ensure\noperational stability.  VeriSign may restrict or terminate your access to the\nWhois database for failure to abide by these terms of use. VeriSign\nreserves the right to modify these terms at any time.\n\nThe Registry database contains ONLY .COM, .NET, .EDU domains and\nRegistrars.\n\n\nDomain Name: example-27.net\nRegistry Domain ID: 98648_DOMAIN_COM-VRSN\nRegistrar WHOIS Server: h381.example-29.net\nRegistrar URL: www.example-29.net\nUpdated Date: 2026-07-29T22:23:00.00Z\nCreation Date: 1996-11-05T05:00:00.00Z\nRegistrar Registration Expiration Date: 2027-11-04T05:00:00.00Z\nRegistrar: DOMAINPEOPLE, INC.\nRegistrar IANA ID: 65\nDomain Status: clientTransferProhibited https://www.example-19.net/epp#clientTransferProhibited\nRegistrant Name: REDACTED FOR PRIVACY\nRegistrant Organization: REDACTED FOR PRIVACY\nRegistrant Street: REDACTED FOR PRIVACY\nRegistrant Street: \nRegistrant City: REDACTED FOR PRIVACY\nRegistrant State/Province: TX\nRegistrant Postal Code: REDACTED FOR PRIVACY\nRegistrant Country: US\nRegistrant Phone: REDACTED FOR PRIVACY\nRegistrant Phone Ext: \nRegistrant Fax: REDACTED FOR PRIVACY\nRegistrant Email: https://example-30.net/contact/507d64fa-1cd9-419a-818a-a9ff6fe169db\nAdmin Name: REDACTED FOR PRIVACY\nAdmin Organization: REDACTED FOR PRIVACY\nAdmin Street: REDACTED FOR PRIVACY\nAdmin Street: \nAdmin City: REDACTED FOR PRIVACY\nAdmin State/Province: REDACTED FOR PRIVACY\nAdmin Postal Code: REDACTED FOR PRIVACY\nAdmin Country: REDACTED FOR PRIVACY\nAdmin Phone: REDACTED FOR PRIVACY\nAdmin Phone Ext: \nAdmin Fax: REDACTED FOR PRIVACY\nAdmin Email: REDACTED FOR PRIVACY\nTech Name: REDACTED FOR PRIVACY\nTech Organization: REDACTED FOR PRIVACY\nTech Street: REDACTED FOR PRIVACY\nTech Street: \nTech City: REDACTED FOR PRIVACY\nTech State/Province: REDACTED FOR PRIVACY\nTech Postal Code: REDACTED FOR PRIVACY\nTech Country: REDACTED FOR PRIVACY\nTech Phone: REDACTED FOR PRIVACY\nTech Phone Ext: \nTech Fax: REDACTED FOR PRIVACY\nTech Email: REDACTED FOR PRIVACY\nName Server: h384.h385.example-28.net\nName Server: h386.h385.example-28.net\nDNSSEC: unsigned\nRegistrar Abuse Contact Email: user6@example.org\nRegistrar Abuse Contact Phone: +1.3124530785\nURL of the ICANN WHOIS Data Problem Reporting System: HTTPS://example-19.net/WICF\n>>> Last update of WHOIS database: 2026-10-31T05:39:39.00Z <<<\n\nFor more information on Whois status codes, please visit https://example-19.net/epp\n\n\nThe data in this whois database is provided to you for information\npurposes only, that is, to assist you in obtaining information about or\nrelated to a domain name registration record. We make this information\navailable \"as is,\" and do not guarantee its accuracy. By submitting a\nwhois query, you agree that you will use this data only for lawful\npurposes and that, under no circumstances will you use this data to: (1)\nenable high volume, automated, electronic processes that stress or load\nthis whois database system providing you this information; or (2) allow,\nenable, or otherwise support the transmission of mass unsolicited,\ncommercial advertising or solicitations via direct mail, electronic\nmail, or by telephone. The compilation, repackaging, dissemination or\nother use of this data is expressly prohibited without prior written\nconsent from us.  \n\nWe reserve the right to modify these terms at any time. By submitting \nthis query, you agree to abide by these terms.\nVersion 6.3 4/3/2002\n",
+        "error": ""
+      },
+      "web": {
+        "http_status_code": "",
+        "http_real_ip": "",
+        "http_title": "",
+        "https_status_code": "",
+        "https_real_ip": "",
+        "https_title": "",
+        "https_error": "",
+        "https_status": 0,
+        "http_error": "",
+        "http_status": 0
+      },
+      "cert": null,
+      "score": 27,
+      "tags": "",
+      "spf": "\"v=spf1 include:h387.example-28.net ~all\"",
+      "dmarc": "",
+      "first_seen": "2026-10-08T18:29:58Z",
+      "last_seen": "2026-10-31T05:41:02Z",
+      "babydomain": false,
+      "whois_nameservers_not_used": false,
+      "whois_no_dnssec": false,
+      "https_redirected_to_org_url": false,
+      "domain_txt_verified": false
+    }
+  ]
+}

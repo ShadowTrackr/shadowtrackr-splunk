@@ -1,0 +1,181 @@
+{
+  "results": "25 results found",
+  "error": "",
+  "data": [
+    {
+      "url": "example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:19:11Z",
+      "pay_level_domain": true
+    },
+    {
+      "url": "h397.h398.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:17:15Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h399.h7.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:18:25Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h400.h7.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:16:13Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h306.h10.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:20:17Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h401.h7.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:23:10Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h402.h7.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:25:11Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h403.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:29:16Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h404.h230.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:27:09Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "grafana.h405.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:30:12Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h406.h200.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:34:12Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h407.app.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h205.h200.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:35:14Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h408.app.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h409.h234.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:36:08Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h410.h411.h5.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:37:07Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h412.h413.h5.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:38:06Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h414.h415.h5.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:38:11Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h416.h5.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:39:15Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h417.h418.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:47:16Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h419.h420.h5.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:43:09Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h421.h422.h5.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:52:10Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h423.h424.h5.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:43:10Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h425.h426.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:50:12Z",
+      "pay_level_domain": false
+    },
+    {
+      "url": "h427.example.com",
+      "tags": [],
+      "first_seen": "2026-11-01T03:46:35Z",
+      "last_seen": "2026-11-01T01:48:08Z",
+      "pay_level_domain": false
+    }
+  ]
+}

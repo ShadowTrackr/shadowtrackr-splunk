@@ -1,0 +1,20 @@
+{
+  "results": "2 results found",
+  "error": "",
+  "data": [
+    {
+      "url": "vpn.example.com",
+      "ip": "192.0.2.30",
+      "type": "rdp",
+      "first_seen": "2026-10-10T08:00:00Z",
+      "last_seen": "2026-10-31T08:00:00Z"
+    },
+    {
+      "url": "192.0.2.31",
+      "ip": "192.0.2.31",
+      "type": "ssh",
+      "first_seen": "2026-10-12T08:00:00Z",
+      "last_seen": "2026-10-31T08:00:00Z"
+    }
+  ]
+}

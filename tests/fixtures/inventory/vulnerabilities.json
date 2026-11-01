@@ -1,0 +1,944 @@
+{
+  "results": "25 results found",
+  "error": "",
+  "data": [
+    {
+      "software": "Elm 0.19",
+      "assets": [
+        "h292.h329.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T08:08:31Z",
+      "cves": [
+        {
+          "cve": "CVE-2003-0966",
+          "cvss_score": 0,
+          "severity": null,
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2001-1174",
+          "cvss_score": 0,
+          "severity": null,
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-1999-1184",
+          "cvss_score": 0,
+          "severity": null,
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "Grafana 9.0.1",
+      "assets": [
+        "grafana.h200.example.com",
+        "grafana.h202.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-25T12:48:43Z",
+      "cves": [
+        {
+          "cve": "CVE-2026-27879",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-28375",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-21727",
+          "cvss_score": 3,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2025-12141",
+          "cvss_score": 1,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2025-4123",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": true,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2025-1088",
+          "cvss_score": 2,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2024-8118",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": true,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2024-1442",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "MariaDB 10.11.14",
+      "assets": [
+        "192.0.2.10"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-29T01:52:13Z",
+      "cves": [
+        {
+          "cve": "CVE-2026-44168",
+          "cvss_score": 8,
+          "severity": "HIGH",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-44173",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-44170",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-44171",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-3494",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-48163",
+          "cvss_score": 8,
+          "severity": "HIGH",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-48165",
+          "cvss_score": 8,
+          "severity": "HIGH",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-49261",
+          "cvss_score": 10,
+          "severity": "CRITICAL",
+          "exploited": false,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "MathJax 2.7.9",
+      "assets": [
+        "h284.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T15:09:47Z",
+      "cves": [
+        {
+          "cve": "CVE-2023-39663",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": false,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "Next.js 14.2.24",
+      "assets": [
+        "192.0.2.58",
+        "h212.example.com",
+        "www.h212.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T08:05:32Z",
+      "cves": [
+        {
+          "cve": "CVE-2026-27980",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-44572",
+          "cvss_score": 3,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-44582",
+          "cvss_score": 3,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-44573",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-44577",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-44576",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-44578",
+          "cvss_score": 8,
+          "severity": "HIGH",
+          "exploited": true,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-44580",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "Next.js 16.3.8",
+      "assets": [
+        "docs.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-28T14:52:42Z",
+      "cves": [
+        {
+          "cve": "CVE-2026-94482",
+          "cvss_score": 8,
+          "severity": "HIGH",
+          "exploited": false,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "Nginx 1.18.0",
+      "assets": [
+        "192.0.2.58",
+        "h212.example.com",
+        "www.h212.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T09:21:54Z",
+      "cves": [
+        {
+          "cve": "CVE-2025-23419",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": true,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2022-41742",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": true,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2022-41741",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": true,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2021-3618",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": true,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2021-23017",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "OpenSSH 7.6 p1 4ubuntu0.5",
+      "assets": [
+        "192.0.2.14",
+        "192.0.2.12"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-26T19:04:37Z",
+      "cves": [
+        {
+          "cve": "CVE-2026-60002",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-60001",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-60000",
+          "cvss_score": 3,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59996",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59999",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59997",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59998",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59995",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "OpenSSH 7.6 p1 4ubuntu0.7",
+      "assets": [
+        "192.0.2.1",
+        "192.0.2.9",
+        "192.0.2.41"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-27T22:32:01Z",
+      "cves": [
+        {
+          "cve": "CVE-2026-60002",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-60001",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-60000",
+          "cvss_score": 3,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59996",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59999",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59997",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59998",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59995",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "OpenSSH 8.0",
+      "assets": [
+        "192.0.2.11",
+        "192.0.2.57"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-27T23:58:54Z",
+      "cves": [
+        {
+          "cve": "CVE-2026-60002",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-60001",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-60000",
+          "cvss_score": 3,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59996",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59999",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59997",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59998",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59995",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "OpenSSH 8.9 p1 3ubuntu0.18",
+      "assets": [
+        "192.0.2.24",
+        "192.0.2.8",
+        "192.0.2.7",
+        "192.0.2.15",
+        "192.0.2.58"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T03:14:53Z",
+      "cves": [
+        {
+          "cve": "CVE-2026-60002",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-60001",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-60000",
+          "cvss_score": 3,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59996",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59999",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59997",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59998",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59995",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "OpenSSH 9.6 p1 3ubuntu13.18",
+      "assets": [
+        "192.0.2.10"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-29T01:52:12Z",
+      "cves": [
+        {
+          "cve": "CVE-2026-106552",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-106553",
+          "cvss_score": 2,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-106555",
+          "cvss_score": 2,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-106582",
+          "cvss_score": 3,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-106584",
+          "cvss_score": 2,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-106585",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-106586",
+          "cvss_score": 2,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-106587",
+          "cvss_score": 3,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "OpenSSH 9.6 p1 3ubuntu13.20",
+      "assets": [
+        "192.0.2.10"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T05:36:31Z",
+      "cves": [
+        {
+          "cve": "CVE-2026-60002",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-60001",
+          "cvss_score": 6,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-60000",
+          "cvss_score": 3,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59996",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59999",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59997",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59998",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2026-59995",
+          "cvss_score": 4,
+          "severity": "MEDIUM",
+          "exploited": false,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "Prototype 1.7.3",
+      "assets": [
+        "192.0.2.16",
+        "h286.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-30T04:34:43Z",
+      "cves": [
+        {
+          "cve": "CVE-2020-27511",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": false,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "TLS Certificate (CVE-2012-5081)",
+      "assets": [
+        "events.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T18:38:30Z",
+      "cves": [
+        {
+          "cve": "CVE-2012-5081",
+          "cvss_score": 0,
+          "severity": null,
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "TLS Certificate (CVE-2016-6883)",
+      "assets": [
+        "events.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T18:38:30Z",
+      "cves": [
+        {
+          "cve": "CVE-2016-6883",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "TLS Certificate (CVE-2017-13098)",
+      "assets": [
+        "events.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T18:38:30Z",
+      "cves": [
+        {
+          "cve": "CVE-2017-13098",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "TLS Certificate (CVE-2017-13099)",
+      "assets": [
+        "events.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T18:38:30Z",
+      "cves": [
+        {
+          "cve": "CVE-2017-13099",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "TLS Certificate (CVE-2017-17382)",
+      "assets": [
+        "events.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T18:38:30Z",
+      "cves": [
+        {
+          "cve": "CVE-2017-17382",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "TLS Certificate (CVE-2017-17428)",
+      "assets": [
+        "events.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T18:38:30Z",
+      "cves": [
+        {
+          "cve": "CVE-2017-17428",
+          "cvss_score": 5,
+          "severity": "MEDIUM",
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "TLS Certificate (CVE-2017-6168)",
+      "assets": [
+        "events.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T18:38:30Z",
+      "cves": [
+        {
+          "cve": "CVE-2017-6168",
+          "cvss_score": 7,
+          "severity": "HIGH",
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "TLS Certificate BEAST",
+      "assets": [
+        "h187.example.com",
+        "monitoring.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T08:18:51Z",
+      "cves": [
+        {
+          "cve": "CVE-2011-3389",
+          "cvss_score": 0,
+          "severity": null,
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "TLS Certificate LUCKY13",
+      "assets": [
+        "h262.h263.h5.example.com",
+        "h264.h265.h5.example.com",
+        "h266.h267.h5.example.com",
+        "h268.h269.h5.example.com",
+        "h270.h271.h5.example.com",
+        "h272.h273.h5.example.com",
+        "h274.h275.h5.example.com",
+        "h276.h277.h5.example.com"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-25T22:53:57Z",
+      "cves": [
+        {
+          "cve": "CVE-2013-0169",
+          "cvss_score": 0,
+          "severity": null,
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "TLS Certificate Renegotiation DoS",
+      "assets": [
+        "192.0.2.11:2096",
+        "192.0.2.57:2096"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-31T08:04:43Z",
+      "cves": [
+        {
+          "cve": "CVE-2011-1473",
+          "cvss_score": 0,
+          "severity": null,
+          "exploited": true,
+          "cisa": false
+        }
+      ]
+    },
+    {
+      "software": "Ubuntu 24.04",
+      "assets": [
+        "192.0.2.10"
+      ],
+      "first_seen": "2026-11-01T03:46:53Z",
+      "last_seen": "2026-10-29T01:52:13Z",
+      "cves": [
+        {
+          "cve": "CVE-2025-15480",
+          "cvss_score": 2,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        },
+        {
+          "cve": "CVE-2025-14551",
+          "cvss_score": 2,
+          "severity": "LOW",
+          "exploited": false,
+          "cisa": false
+        }
+      ]
+    }
+  ]
+}

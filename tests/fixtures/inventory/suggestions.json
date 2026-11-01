@@ -1,0 +1,114 @@
+{
+  "results": "18 results found",
+  "error": "",
+  "data": [
+    {
+      "type": "url",
+      "content": "example-31.net",
+      "found": "2026-10-08T04:20:27Z",
+      "related_to": "192.0.2.57"
+    },
+    {
+      "type": "url",
+      "content": "h388.h389.example-31.net",
+      "found": "2026-10-08T04:20:27Z",
+      "related_to": "192.0.2.57"
+    },
+    {
+      "type": "url",
+      "content": "example-32.net",
+      "found": "2026-10-08T04:36:46Z",
+      "related_to": "h284.example.com"
+    },
+    {
+      "type": "url",
+      "content": "h284.h390.h391.h392.h393.example-32.net",
+      "found": "2026-10-08T04:36:46Z",
+      "related_to": "h284.example.com"
+    },
+    {
+      "type": "url",
+      "content": "www.h284.h390.h391.h392.h393.example-32.net",
+      "found": "2026-10-08T04:36:48Z",
+      "related_to": "h284.example.com"
+    },
+    {
+      "type": "url",
+      "content": "example-9.net",
+      "found": "2026-10-08T04:36:50Z",
+      "related_to": "h284.example.com"
+    },
+    {
+      "type": "url",
+      "content": "h283.example-9.net",
+      "found": "2026-10-08T04:36:50Z",
+      "related_to": "h284.example.com"
+    },
+    {
+      "type": "url",
+      "content": "example-33.net",
+      "found": "2026-10-08T04:41:28Z",
+      "related_to": "admin.h202.example.com"
+    },
+    {
+      "type": "url",
+      "content": "h191.h394.example-33.net",
+      "found": "2026-10-08T04:41:28Z",
+      "related_to": "admin.h202.example.com"
+    },
+    {
+      "type": "url",
+      "content": "admin.h394.example-33.net",
+      "found": "2026-10-08T04:41:29Z",
+      "related_to": "admin.h202.example.com"
+    },
+    {
+      "type": "url",
+      "content": "h395.h394.example-33.net",
+      "found": "2026-10-08T04:41:30Z",
+      "related_to": "admin.h202.example.com"
+    },
+    {
+      "type": "url",
+      "content": "h396.h394.example-33.net",
+      "found": "2026-10-08T04:41:31Z",
+      "related_to": "admin.h202.example.com"
+    },
+    {
+      "type": "url",
+      "content": "example-11.net",
+      "found": "2026-10-08T04:49:43Z",
+      "related_to": "old.example.com"
+    },
+    {
+      "type": "url",
+      "content": "h322.example-11.net",
+      "found": "2026-10-08T04:49:43Z",
+      "related_to": "old.example.com"
+    },
+    {
+      "type": "url",
+      "content": "example-34.net",
+      "found": "2026-10-08T05:48:44Z",
+      "related_to": "app.example.com"
+    },
+    {
+      "type": "url",
+      "content": "h390.example-34.net",
+      "found": "2026-10-08T05:48:44Z",
+      "related_to": "app.example.com"
+    },
+    {
+      "type": "url",
+      "content": "example-13.net",
+      "found": "2026-10-28T16:30:17Z",
+      "related_to": "192.0.2.38"
+    },
+    {
+      "type": "url",
+      "content": "h323.h324.example-13.net",
+      "found": "2026-10-28T16:30:17Z",
+      "related_to": "192.0.2.38"
+    }
+  ]
+}

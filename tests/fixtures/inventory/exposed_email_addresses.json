@@ -1,0 +1,55 @@
+{
+  "results": "4 results found",
+  "error": "",
+  "data": [
+    {
+      "email": "user1@example.org",
+      "first_seen": "2026-10-08T13:30:58Z",
+      "last_seen": "2026-10-08T13:30:58Z",
+      "websites": [
+        "example.com"
+      ],
+      "breaches": []
+    },
+    {
+      "email": "user2@example.org",
+      "first_seen": "2026-10-08T03:46:39Z",
+      "last_seen": "2026-10-08T03:46:39Z",
+      "websites": [
+        "example.com"
+      ],
+      "breaches": [
+        {
+          "name": "Eye4Fraud",
+          "breached": "2023-01-25"
+        },
+        {
+          "name": "Epik",
+          "breached": "2021-09-13"
+        },
+        {
+          "name": "LeadHunter",
+          "breached": "2020-03-04"
+        }
+      ]
+    },
+    {
+      "email": "user3@example.org",
+      "first_seen": "2026-10-08T13:30:58Z",
+      "last_seen": "2026-10-08T13:30:58Z",
+      "websites": [
+        "example.com"
+      ],
+      "breaches": []
+    },
+    {
+      "email": "user4@example.org",
+      "first_seen": "2026-10-20T02:52:19Z",
+      "last_seen": "2026-10-20T02:52:19Z",
+      "websites": [
+        "246.165"
+      ],
+      "breaches": []
+    }
+  ]
+}

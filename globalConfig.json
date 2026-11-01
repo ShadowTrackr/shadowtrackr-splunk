@@ -223,6 +223,185 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "name": "shadowtrackr_inventory",
+                    "title": "ShadowTrackr Inventory",
+                    "inputHelperModule": "inventory_helper",
+                    "entity": [
+                        {
+                            "type": "text",
+                            "label": "Name",
+                            "field": "name",
+                            "help": "A unique name for the data input.",
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "errorMsg": "Input Name must begin with a letter and consist exclusively of alphanumeric characters and underscores.",
+                                    "pattern": "^[a-zA-Z]\\w*$"
+                                },
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Length of input name should be between 1 and 100",
+                                    "minLength": 1,
+                                    "maxLength": 100
+                                }
+                            ]
+                        },
+                        {
+                            "type": "singleSelect",
+                            "label": "Account",
+                            "field": "account",
+                            "help": "ShadowTrackr account to sync the inventory from. Group (MSSP) keys sync every organization.",
+                            "required": true,
+                            "options": {
+                                "referenceName": "account"
+                            },
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Length of account name should be between 1 and 100",
+                                    "minLength": 1,
+                                    "maxLength": 100
+                                }
+                            ]
+                        },
+                        {
+                            "type": "interval",
+                            "label": "Interval",
+                            "field": "interval",
+                            "defaultValue": "43200",
+                            "help": "How often to sync the inventory, in seconds. 43200 (12 hours) is recommended.",
+                            "required": true,
+                            "options": {
+                                "range": [
+                                    3600,
+                                    604800
+                                ]
+                            }
+                        },
+                        {
+                            "type": "index",
+                            "label": "Index",
+                            "field": "index",
+                            "defaultValue": "shadowtrackr",
+                            "help": "Index for the per-run summary counts. The inventory itself is stored in KV Store lookups.",
+                            "required": true
+                        },
+                        {
+                            "type": "multipleSelect",
+                            "label": "Inventory types",
+                            "field": "types",
+                            "defaultValue": "hosts|websites|urls|domains|subnets|certificates|dns|mailservers|software|cves|cloud_providers|remote_login_services|blacklisted_assets|exposed_emails|suggestions|phishy_domains|suppliers|internet_standards",
+                            "required": true,
+                            "help": "Each type is stored in its own lookup, e.g. shadowtrackr_hosts.",
+                            "options": {
+                                "delimiter": "|",
+                                "items": [
+                                    {
+                                        "value": "hosts",
+                                        "label": "Hosts"
+                                    },
+                                    {
+                                        "value": "websites",
+                                        "label": "Websites"
+                                    },
+                                    {
+                                        "value": "urls",
+                                        "label": "URLs"
+                                    },
+                                    {
+                                        "value": "domains",
+                                        "label": "Domains"
+                                    },
+                                    {
+                                        "value": "subnets",
+                                        "label": "Subnets"
+                                    },
+                                    {
+                                        "value": "certificates",
+                                        "label": "Certificates"
+                                    },
+                                    {
+                                        "value": "dns",
+                                        "label": "DNS records"
+                                    },
+                                    {
+                                        "value": "mailservers",
+                                        "label": "Mail servers"
+                                    },
+                                    {
+                                        "value": "software",
+                                        "label": "Software"
+                                    },
+                                    {
+                                        "value": "cves",
+                                        "label": "Vulnerabilities (CVE per asset)"
+                                    },
+                                    {
+                                        "value": "cloud_providers",
+                                        "label": "Cloud providers"
+                                    },
+                                    {
+                                        "value": "remote_login_services",
+                                        "label": "Remote login services"
+                                    },
+                                    {
+                                        "value": "blacklisted_assets",
+                                        "label": "Blacklisted assets"
+                                    },
+                                    {
+                                        "value": "exposed_emails",
+                                        "label": "Exposed email addresses"
+                                    },
+                                    {
+                                        "value": "suggestions",
+                                        "label": "Suggestions"
+                                    },
+                                    {
+                                        "value": "phishy_domains",
+                                        "label": "Phishy domains"
+                                    },
+                                    {
+                                        "value": "suppliers",
+                                        "label": "Suppliers"
+                                    },
+                                    {
+                                        "value": "internet_standards",
+                                        "label": "Internet standards checks"
+                                    }
+                                ]
+                            },
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "errorMsg": "Select at least one inventory type",
+                                    "minLength": 1,
+                                    "maxLength": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "label": "Retention (days)",
+                            "field": "retention_days",
+                            "defaultValue": "30",
+                            "required": true,
+                            "help": "Rows that ShadowTrackr no longer reports are kept, marked st_present=0, for this many days.",
+                            "validators": [
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        1,
+                                        365
+                                    ],
+                                    "isInteger": true,
+                                    "errorMsg": "Enter a whole number between 1 and 365."
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             "title": "Inputs",
@@ -279,6 +458,14 @@
                     {
                         "label": "Overlap (minutes)",
                         "field": "overlap_minutes"
+                    },
+                    {
+                        "label": "Inventory types",
+                        "field": "types"
+                    },
+                    {
+                        "label": "Retention (days)",
+                        "field": "retention_days"
                     },
                     {
                         "label": "Status",

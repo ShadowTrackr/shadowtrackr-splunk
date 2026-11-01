@@ -1,0 +1,13 @@
+{
+  "results": "1 results found",
+  "error": "",
+  "data": [
+    {
+      "mailserver": "mx1.example.com",
+      "url": "example.com",
+      "ip": "192.0.2.25",
+      "first_seen": "2026-10-08T03:41:10Z",
+      "last_seen": "2026-10-31T03:41:10Z"
+    }
+  ]
+}

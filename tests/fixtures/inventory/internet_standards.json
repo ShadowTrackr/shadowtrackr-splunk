@@ -1,0 +1,465 @@
+{
+  "results": "1 results found",
+  "error": "",
+  "data": [
+    {
+      "url": "example.com",
+      "checks": [
+        {
+          "title": "Modern address (IPv6)",
+          "checks": [
+            {
+              "title": "At least 2 working IPv6 nameservers for domain",
+              "passed": false,
+              "status": "required",
+              "done": true,
+              "note": "The AAAA records for the NS servers of this domain must exist and resolve to IPv6 addresses",
+              "data": [
+                {
+                  "nameserver": "h250.example-4.net",
+                  "ipv4": [
+                    "192.0.2.55"
+                  ],
+                  "ipv6": []
+                },
+                {
+                  "nameserver": "h249.example-4.net",
+                  "ipv4": [
+                    "192.0.2.56"
+                  ],
+                  "ipv6": []
+                }
+              ]
+            },
+            {
+              "title": "IPv6 nameservers all reachable over IPv6",
+              "passed": false,
+              "status": "required",
+              "done": true,
+              "note": "Every IPv6 address of this domain's nameservers must answer DNS queries over IPv6.",
+              "data": [
+                {
+                  "nameserver": "h250.example-4.net",
+                  "ipv4": [
+                    "192.0.2.55"
+                  ],
+                  "ipv6": []
+                },
+                {
+                  "nameserver": "h249.example-4.net",
+                  "ipv4": [
+                    "192.0.2.56"
+                  ],
+                  "ipv6": []
+                }
+              ]
+            },
+            {
+              "title": "At least one of your web servers has an IPv6 address.",
+              "passed": false,
+              "status": "required",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "url": "example.com",
+                  "ipv4": "192.0.2.19",
+                  "ipv6": ""
+                }
+              ]
+            },
+            {
+              "title": "All your web servers with an IPv6 address are reachable over IPv6.",
+              "passed": false,
+              "status": "required",
+              "done": true,
+              "note": "",
+              "data": []
+            },
+            {
+              "title": "Your website on IPv6 seems to be the same as your website on IPv4.",
+              "passed": false,
+              "status": "required",
+              "done": false,
+              "note": "We have no ipv6 version of the website on record",
+              "data": []
+            }
+          ]
+        },
+        {
+          "title": "DNSSEC",
+          "checks": [
+            {
+              "title": "DNSSEC existence",
+              "passed": false,
+              "status": "required",
+              "done": true,
+              "note": "Found SOA record for this domain, but no RRSIG record",
+              "data": []
+            },
+            {
+              "title": "DNSSEC validity",
+              "passed": false,
+              "status": "required",
+              "done": false,
+              "note": "This test did not run because no signed RRSIG record for the domain's SOA record was found",
+              "data": []
+            }
+          ]
+        },
+        {
+          "title": "Secure connection (HTTPS)",
+          "checks": [
+            {
+              "title": "HTTPS available",
+              "passed": true,
+              "status": "required",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "HTTPS existent": "yes"
+                }
+              ]
+            },
+            {
+              "title": "HTTPS redirect",
+              "passed": true,
+              "status": "required",
+              "done": true,
+              "note": "The redirect must be to the https:// version of the website on the same URL",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "HTTPS redirect": "yes"
+                }
+              ]
+            },
+            {
+              "title": "HTTP Compression",
+              "passed": false,
+              "status": "optional",
+              "done": true,
+              "note": "HTTP compression makes the secure connection with your web server vulnerable for the BREACH attack, but it is commonly used to make more efficient use of the available bandwidth. Consider the trade-offs: if you keep it enabled, verify whether the attack can be mitigated at application level",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "HTTP compression": "yes"
+                }
+              ]
+            },
+            {
+              "title": "HSTS",
+              "passed": true,
+              "status": "required",
+              "done": true,
+              "note": "The Strict-Transport-Security header must be present and have a minimal value of 31536000 (1 year) ",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "HSTS": "yes"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "TLS",
+          "checks": [
+            {
+              "title": "TLS Version",
+              "passed": true,
+              "status": "required",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "TLS Version": "TLS 1.2",
+                  "Security level": "sufficient"
+                },
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "TLS Version": "TLS 1.3",
+                  "Security level": "good"
+                }
+              ]
+            },
+            {
+              "title": "Ciphers (Algorithm selections)",
+              "passed": true,
+              "status": "required",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "Affected ciphers": "TLS_AES_256_GCM_SHA384",
+                  "Status": "good"
+                },
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "Affected ciphers": "TLS_AES_128_GCM_SHA256",
+                  "Status": "sufficient"
+                },
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "Affected ciphers": "ECDHE-ECDSA-AES128-GCM-SHA256",
+                  "Status": "sufficient"
+                },
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "Affected ciphers": "ECDHE-ECDSA-CHACHA20-POLY1305",
+                  "Status": "sufficient"
+                },
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "Affected ciphers": "TLS_CHACHA20_POLY1305_SHA256",
+                  "Status": "good"
+                },
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "Affected ciphers": "ECDHE-ECDSA-AES256-GCM-SHA384",
+                  "Status": "sufficient"
+                }
+              ]
+            },
+            {
+              "title": "Cipher order",
+              "passed": true,
+              "status": "required",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "First found affected cipher pair": "None"
+                }
+              ]
+            },
+            {
+              "title": "Key exchange parameters",
+              "passed": true,
+              "status": "required",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "Outdated parameters": "None",
+                  "Status": "good"
+                }
+              ]
+            },
+            {
+              "title": "Hash function for Key exchange",
+              "passed": true,
+              "status": "required",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "Outdated hash function": "None",
+                  "Status": "good"
+                }
+              ]
+            },
+            {
+              "title": "TLS compression",
+              "passed": true,
+              "status": "required",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "TLS compression": "no"
+                }
+              ]
+            },
+            {
+              "title": "Secure renegotiation",
+              "passed": true,
+              "status": "required",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "Secure renegotiation": "yes"
+                }
+              ]
+            },
+            {
+              "title": "Client-initiated renegotiation",
+              "passed": true,
+              "status": "required",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "Client-initiated renegotiation": "no"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Certificate",
+          "checks": [
+            {
+              "title": "Trust chain of certificate",
+              "passed": false,
+              "status": "required",
+              "done": false,
+              "note": "",
+              "data": []
+            },
+            {
+              "title": "Public key of certificate",
+              "passed": false,
+              "status": "required",
+              "done": false,
+              "note": "",
+              "data": []
+            },
+            {
+              "title": "Signature of certificate",
+              "passed": false,
+              "status": "required",
+              "done": false,
+              "note": "",
+              "data": []
+            },
+            {
+              "title": "Domain name on certificate",
+              "passed": false,
+              "status": "required",
+              "done": false,
+              "note": "",
+              "data": []
+            },
+            {
+              "title": "CAA for domain",
+              "passed": false,
+              "status": "recommended",
+              "done": true,
+              "note": "No CAA records found for this domain, so every certificate authority in the world is allowed to issue a certificate for it.",
+              "data": [
+                {
+                  "Source": "TLS scan of 192.0.2.19",
+                  "CAA record": "none",
+                  "Meaning": "the TLS scan found no CAA record"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "DANE",
+          "checks": [
+            {
+              "title": "DANE existence",
+              "passed": false,
+              "status": "optional",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "Domain": "h375.h376.example.com",
+                  "DANE TLSA record existent": "no"
+                }
+              ]
+            },
+            {
+              "title": "DANE validity",
+              "passed": false,
+              "status": "optional",
+              "done": false,
+              "note": "This check is not done because no TLSA records where found",
+              "data": []
+            }
+          ]
+        },
+        {
+          "title": "HTTP security headers ",
+          "checks": [
+            {
+              "title": "X-Frame-Options",
+              "passed": false,
+              "status": "optional",
+              "done": true,
+              "note": "X-Frame-Options not implemented",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "X-Frame-Options value": "none"
+                }
+              ]
+            },
+            {
+              "title": "X-Content-Type-Options",
+              "passed": false,
+              "status": "recommended",
+              "done": true,
+              "note": "X-Content-Type-Options not implemented",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "X-Content-Type-Options value": "none"
+                }
+              ]
+            },
+            {
+              "title": "Content-Security-Policy",
+              "passed": false,
+              "status": "recommended",
+              "done": true,
+              "note": "CSP header not implemented",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "CSP value": "none"
+                }
+              ]
+            },
+            {
+              "title": "Referrer-Policy existence",
+              "passed": false,
+              "status": "optional",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "Referrer-Policy value": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Other",
+          "checks": [
+            {
+              "title": "Security.txt",
+              "passed": false,
+              "status": "recommended",
+              "done": true,
+              "note": "",
+              "data": [
+                {
+                  "Web server IP address": "192.0.2.19",
+                  "Findings": "not found"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

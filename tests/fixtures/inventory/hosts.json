@@ -1,0 +1,2299 @@
+{
+  "results": "25 results found",
+  "error": "",
+  "data": [
+    {
+      "ip": "192.0.2.24",
+      "tags": [
+        "Remote login"
+      ],
+      "problems": [],
+      "warnings": [
+        "Multiple software vulnerabilities (High)"
+      ],
+      "problem": false,
+      "warning": true,
+      "tcp": [
+        {
+          "port": 22,
+          "protocol": "tcp",
+          "service": "ssh",
+          "service_description": "Secure Shell Login",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 3000,
+          "protocol": "tcp",
+          "service": "ppp",
+          "service_description": "remoteware-cl, hbci, User-level ppp daemon, or chili!soft asp, HBCI, RemoteWare Client",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        22,
+        80,
+        443,
+        3000
+      ],
+      "city": "Limburg an der Lahn",
+      "country": "Germany",
+      "latitude": 50.3986,
+      "longitude": 8.07958,
+      "asn": 16276,
+      "asn_name": "OVH - OVH SAS, FR",
+      "asn_country": "FR",
+      "asn_allocated": "2001-02-15",
+      "prefix": "192.0.2.25/17",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2000-10-11",
+      "isp": "OVH SAS",
+      "organization": "",
+      "reverse_dns": [],
+      "websites": [
+        "192.0.2.24",
+        "192.0.2.24:3000",
+        "h278.h279.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h278.h279.example.com",
+          "content": "192.0.2.24"
+        }
+      ],
+      "vulnerable": true,
+      "software": [
+        "OpenSSH 8.9 p1 3ubuntu0.18",
+        "Ubuntu"
+      ],
+      "first_seen": "2026-10-08T04:19:34Z",
+      "last_seen": "2026-10-31T04:24:50Z"
+    },
+    {
+      "ip": "192.0.2.26",
+      "tags": [],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [],
+      "udp": [],
+      "ports": [],
+      "city": "Limburg an der Lahn",
+      "country": "Germany",
+      "latitude": 50.3986,
+      "longitude": 8.07958,
+      "asn": 16276,
+      "asn_name": "OVH - OVH SAS, FR",
+      "asn_country": "FR",
+      "asn_allocated": "2001-02-15",
+      "prefix": "192.0.2.25/17",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2000-10-11",
+      "isp": "OVH SAS",
+      "organization": "",
+      "reverse_dns": [],
+      "websites": [],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h280.example.com",
+          "content": "192.0.2.26"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T03:52:07Z",
+      "last_seen": "2026-10-31T05:03:52Z"
+    },
+    {
+      "ip": "192.0.2.1",
+      "tags": [
+        "Remote login",
+        "Database"
+      ],
+      "problems": [],
+      "warnings": [
+        "Multiple software vulnerabilities (High)"
+      ],
+      "problem": false,
+      "warning": true,
+      "tcp": [
+        {
+          "port": 22,
+          "protocol": "tcp",
+          "service": "ssh",
+          "service_description": "Secure Shell Login",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        22,
+        80,
+        443
+      ],
+      "city": "Limburg an der Lahn",
+      "country": "Germany",
+      "latitude": 50.3986,
+      "longitude": 8.07958,
+      "asn": 16276,
+      "asn_name": "OVH - OVH SAS, FR",
+      "asn_country": "FR",
+      "asn_allocated": "2001-02-15",
+      "prefix": "192.0.2.27/17",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "1993-02-18",
+      "isp": "OVH SAS",
+      "organization": "",
+      "reverse_dns": [],
+      "websites": [
+        "192.0.2.1",
+        "h1.dev.example.com",
+        "h281.h1.dev.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h281.h1.dev.example.com",
+          "content": "192.0.2.1"
+        },
+        {
+          "record_type": "A",
+          "url": "h1.dev.example.com",
+          "content": "192.0.2.1"
+        }
+      ],
+      "vulnerable": true,
+      "software": [
+        "Ubuntu",
+        "OpenSSH 7.6 p1 4ubuntu0.7"
+      ],
+      "first_seen": "2026-10-08T04:11:24Z",
+      "last_seen": "2026-10-31T03:36:49Z"
+    },
+    {
+      "ip": "192.0.2.28",
+      "tags": [],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [],
+      "udp": [],
+      "ports": [],
+      "city": "Limburg an der Lahn",
+      "country": "Germany",
+      "latitude": 50.3847,
+      "longitude": 8.0475,
+      "asn": 16276,
+      "asn_name": "OVH - OVH SAS, FR",
+      "asn_country": "FR",
+      "asn_allocated": "2001-02-15",
+      "prefix": "192.0.2.27/17",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "1993-02-18",
+      "isp": "OVH SAS",
+      "organization": "",
+      "reverse_dns": [],
+      "websites": [],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h282.dev.example.com",
+          "content": "192.0.2.28"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T05:30:37Z",
+      "last_seen": "2026-10-30T01:47:11Z"
+    },
+    {
+      "ip": "192.0.2.14",
+      "tags": [
+        "Remote login",
+        "Database"
+      ],
+      "problems": [],
+      "warnings": [
+        "Multiple software vulnerabilities (High)"
+      ],
+      "problem": false,
+      "warning": true,
+      "tcp": [
+        {
+          "port": 22,
+          "protocol": "tcp",
+          "service": "ssh",
+          "service_description": "Secure Shell Login",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        22,
+        80,
+        443
+      ],
+      "city": "Limburg an der Lahn",
+      "country": "Germany",
+      "latitude": 50.3847,
+      "longitude": 8.0475,
+      "asn": 16276,
+      "asn_name": "OVH - OVH SAS, FR",
+      "asn_country": "FR",
+      "asn_allocated": "2001-02-15",
+      "prefix": "192.0.2.27/17",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "1993-02-18",
+      "isp": "OVH SAS",
+      "organization": "",
+      "reverse_dns": [],
+      "websites": [
+        "192.0.2.14",
+        "h281.test.h1.dev.example.com",
+        "test.h1.dev.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h281.test.h1.dev.example.com",
+          "content": "192.0.2.14"
+        },
+        {
+          "record_type": "A",
+          "url": "test.h1.dev.example.com",
+          "content": "192.0.2.14"
+        }
+      ],
+      "vulnerable": true,
+      "software": [
+        "OpenSSH 7.6 p1 4ubuntu0.5",
+        "Ubuntu"
+      ],
+      "first_seen": "2026-10-08T04:17:02Z",
+      "last_seen": "2026-10-31T03:41:05Z"
+    },
+    {
+      "ip": "192.0.2.11",
+      "tags": [
+        "Remote login",
+        "Starttls",
+        "Pqc"
+      ],
+      "problems": [],
+      "warnings": [
+        "Weak security on port: 21 (tcp/ftp)",
+        "Multiple software vulnerabilities (High)"
+      ],
+      "problem": false,
+      "warning": true,
+      "tcp": [
+        {
+          "port": 21,
+          "protocol": "tcp",
+          "service": "ftp",
+          "service_description": "File Transfer [Control]",
+          "state_description": "STARTTLS supported, but not required",
+          "state": "warning"
+        },
+        {
+          "port": 25,
+          "protocol": "tcp",
+          "service": "smtp",
+          "service_description": "Simple Mail Transfer",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 110,
+          "protocol": "tcp",
+          "service": "pop3",
+          "service_description": "PostOffice V.3, Post Office Protocol - Version 3",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 143,
+          "protocol": "tcp",
+          "service": "imap",
+          "service_description": "Interim Mail Access Protocol v2, Internet Message Access Protocol",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 465,
+          "protocol": "tcp",
+          "service": "smtps",
+          "service_description": "submissions, igmpv3lite, urd, smtp protocol over TLS/SSL (was ssmtp), URL Rendesvous Directory for SSM, IGMP over UDP for SSM, URL Rendezvous Directory for SSM, Message Submission over TLS protocol",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 587,
+          "protocol": "tcp",
+          "service": "submission",
+          "service_description": "Message Submission",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        21,
+        25,
+        80,
+        110,
+        143,
+        443,
+        465,
+        587
+      ],
+      "city": "Amsterdam",
+      "country": "The Netherlands",
+      "latitude": 52.3716,
+      "longitude": 4.8883,
+      "asn": 12488,
+      "asn_name": "KRYSTAL - Krystal Hosting Ltd, GB",
+      "asn_country": "GB",
+      "asn_allocated": "2007-04-10",
+      "prefix": "192.0.2.29/22",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2019-01-10",
+      "isp": "Krystal Hosting Ltd",
+      "organization": "",
+      "reverse_dns": [
+        "h283.example-9.net"
+      ],
+      "websites": [
+        "192.0.2.11",
+        "192.0.2.11:2096",
+        "h284.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h284.example.com",
+          "content": "192.0.2.11"
+        }
+      ],
+      "vulnerable": true,
+      "software": [
+        "Dovecot",
+        "cPanel",
+        "Pure-FTPd",
+        "OpenSSH 8.0"
+      ],
+      "first_seen": "2026-10-08T04:36:51Z",
+      "last_seen": "2026-10-31T10:20:35Z"
+    },
+    {
+      "ip": "192.0.2.8",
+      "tags": [
+        "Remote login",
+        "Starttls"
+      ],
+      "problems": [],
+      "warnings": [
+        "Weak security on port: 21 (tcp/ftp)",
+        "Multiple software vulnerabilities (High)"
+      ],
+      "problem": false,
+      "warning": true,
+      "tcp": [
+        {
+          "port": 21,
+          "protocol": "tcp",
+          "service": "ftp",
+          "service_description": "File Transfer [Control]",
+          "state_description": "STARTTLS supported, but not required",
+          "state": "warning"
+        },
+        {
+          "port": 22,
+          "protocol": "tcp",
+          "service": "ssh",
+          "service_description": "Secure Shell Login",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 25,
+          "protocol": "tcp",
+          "service": "smtp",
+          "service_description": "Simple Mail Transfer",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 53,
+          "protocol": "tcp",
+          "service": "DNS",
+          "service_description": "Domain Name Server",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 106,
+          "protocol": "tcp",
+          "service": "pop3pw",
+          "service_description": "3com-tsmux, Eudora compatible PW changer, 3COM-TSMUX",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 110,
+          "protocol": "tcp",
+          "service": "pop3",
+          "service_description": "PostOffice V.3, Post Office Protocol - Version 3",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 143,
+          "protocol": "tcp",
+          "service": "imap",
+          "service_description": "Interim Mail Access Protocol v2, Internet Message Access Protocol",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [
+        {
+          "port": "53",
+          "protocol": "udp",
+          "service": "DNS",
+          "service_description": "Domain Name Server",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "ports": [
+        21,
+        22,
+        25,
+        53,
+        80,
+        106,
+        110,
+        143
+      ],
+      "city": "Berlin",
+      "country": "Germany",
+      "latitude": 52.52,
+      "longitude": 13.405,
+      "asn": 8560,
+      "asn_name": "IONOS-AS - IONOS SE, DE",
+      "asn_country": "DE",
+      "asn_allocated": "1997-11-26",
+      "prefix": "192.0.2.30/22",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2015-12-18",
+      "isp": "IONOS SE",
+      "organization": "",
+      "reverse_dns": [
+        "h285.example-10.net"
+      ],
+      "websites": [
+        "192.0.2.8",
+        "192.0.2.8:8080",
+        "h286.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h286.example.com",
+          "content": "192.0.2.8"
+        }
+      ],
+      "vulnerable": true,
+      "software": [
+        "Dovecot",
+        "Postfix",
+        "ProFTPD",
+        "Ubuntu",
+        "OpenSSH 8.9 p1 3ubuntu0.18",
+        "Plesk 18.0.81"
+      ],
+      "first_seen": "2026-10-08T04:50:35Z",
+      "last_seen": "2026-10-31T05:34:19Z"
+    },
+    {
+      "ip": "192.0.2.31",
+      "tags": [
+        "Self-signed",
+        "Pqc"
+      ],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 9100,
+          "protocol": "tcp",
+          "service": "jetdirect",
+          "service_description": "Raw print port of network printers (HP JetDirect, PJL). Also the default port of Prometheus node_exporter. Neither should be reachable from the internet.",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        80,
+        443,
+        9100
+      ],
+      "city": "Berlin",
+      "country": "Germany",
+      "latitude": 52.52,
+      "longitude": 13.405,
+      "asn": 8560,
+      "asn_name": "IONOS-AS - IONOS SE, DE",
+      "asn_country": "DE",
+      "asn_allocated": "1997-11-26",
+      "prefix": "192.0.2.32/20",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "1996-03-07",
+      "isp": "NETKONECT",
+      "organization": "",
+      "reverse_dns": [
+        "h287.example-10.net"
+      ],
+      "websites": [
+        "192.0.2.31",
+        "h288.h211.example.com",
+        "h289.h211.example.com",
+        "h290.h211.example.com",
+        "h291.h211.example.com",
+        "h292.h211.example.com",
+        "h293.h211.example.com",
+        "grafana.h211.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h292.h211.example.com",
+          "content": "192.0.2.31"
+        },
+        {
+          "record_type": "A",
+          "url": "grafana.h211.example.com",
+          "content": "192.0.2.31"
+        },
+        {
+          "record_type": "A",
+          "url": "h294.h211.example.com",
+          "content": "192.0.2.31"
+        },
+        {
+          "record_type": "A",
+          "url": "h209.h211.example.com",
+          "content": "192.0.2.31"
+        },
+        {
+          "record_type": "A",
+          "url": "h289.h211.example.com",
+          "content": "192.0.2.31"
+        },
+        {
+          "record_type": "A",
+          "url": "h290.h211.example.com",
+          "content": "192.0.2.31"
+        },
+        {
+          "record_type": "A",
+          "url": "h291.h211.example.com",
+          "content": "192.0.2.31"
+        },
+        {
+          "record_type": "A",
+          "url": "h288.h211.example.com",
+          "content": "192.0.2.31"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T04:31:19Z",
+      "last_seen": "2026-10-31T05:41:12Z"
+    },
+    {
+      "ip": "192.0.2.3",
+      "tags": [
+        "Self-signed",
+        "Pqc"
+      ],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 4443,
+          "protocol": "tcp",
+          "service": "pharos",
+          "service_description": "",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 9100,
+          "protocol": "tcp",
+          "service": "jetdirect",
+          "service_description": "Raw print port of network printers (HP JetDirect, PJL). Also the default port of Prometheus node_exporter. Neither should be reachable from the internet.",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        80,
+        443,
+        4443,
+        9100
+      ],
+      "city": "Frankfurt am Main",
+      "country": "Germany",
+      "latitude": 50.1109,
+      "longitude": 8.68213,
+      "asn": 8560,
+      "asn_name": "IONOS-AS - IONOS SE, DE",
+      "asn_country": "DE",
+      "asn_allocated": "1997-11-26",
+      "prefix": "192.0.2.33/16",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "1998-09-10",
+      "isp": "IONOS SE",
+      "organization": "",
+      "reverse_dns": [
+        "h295.h296.h297.h298.example-10.net"
+      ],
+      "websites": [
+        "h262.h263.h5.example.com",
+        "h264.h265.h5.example.com",
+        "h266.h267.h5.example.com",
+        "h268.h269.h5.example.com",
+        "h270.h271.h5.example.com",
+        "h272.h273.h5.example.com",
+        "h274.h275.h5.example.com",
+        "h276.h277.h5.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h299.h5.example.com",
+          "content": "192.0.2.3"
+        },
+        {
+          "record_type": "A",
+          "url": "h300.h5.example.com",
+          "content": "192.0.2.3"
+        },
+        {
+          "record_type": "A",
+          "url": "h301.h5.example.com",
+          "content": "192.0.2.3"
+        },
+        {
+          "record_type": "A",
+          "url": "h302.h5.example.com",
+          "content": "192.0.2.3"
+        },
+        {
+          "record_type": "A",
+          "url": "h209.h5.example.com",
+          "content": "192.0.2.3"
+        },
+        {
+          "record_type": "A",
+          "url": "h303.h5.example.com",
+          "content": "192.0.2.3"
+        },
+        {
+          "record_type": "A",
+          "url": "h304.h5.example.com",
+          "content": "192.0.2.3"
+        },
+        {
+          "record_type": "A",
+          "url": "h11.h12.h5.example.com",
+          "content": "192.0.2.3"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T04:15:20Z",
+      "last_seen": "2026-10-31T03:38:30Z"
+    },
+    {
+      "ip": "192.0.2.6",
+      "tags": [
+        "Self-signed",
+        "Pqc"
+      ],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 9100,
+          "protocol": "tcp",
+          "service": "jetdirect",
+          "service_description": "Raw print port of network printers (HP JetDirect, PJL). Also the default port of Prometheus node_exporter. Neither should be reachable from the internet.",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        80,
+        443,
+        9100
+      ],
+      "city": "Frankfurt am Main",
+      "country": "Germany",
+      "latitude": 50.1109,
+      "longitude": 8.68213,
+      "asn": 8560,
+      "asn_name": "IONOS-AS - IONOS SE, DE",
+      "asn_country": "DE",
+      "asn_allocated": "1997-11-26",
+      "prefix": "192.0.2.34/16",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2001-03-07",
+      "isp": "IONOS SE",
+      "organization": "",
+      "reverse_dns": [
+        "h305.example-10.net"
+      ],
+      "websites": [
+        "192.0.2.6",
+        "h306.h10.example.com",
+        "h292.h157.example.com",
+        "h307.h10.example.com",
+        "h308.h10.example.com",
+        "h309.h10.example.com",
+        "h310.h10.example.com",
+        "h311.h10.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h312.h10.example.com",
+          "content": "192.0.2.6"
+        },
+        {
+          "record_type": "A",
+          "url": "h313.h10.example.com",
+          "content": "192.0.2.6"
+        },
+        {
+          "record_type": "A",
+          "url": "h314.h10.example.com",
+          "content": "192.0.2.6"
+        },
+        {
+          "record_type": "A",
+          "url": "h315.h10.example.com",
+          "content": "192.0.2.6"
+        },
+        {
+          "record_type": "A",
+          "url": "h316.h10.example.com",
+          "content": "192.0.2.6"
+        },
+        {
+          "record_type": "A",
+          "url": "h317.h10.example.com",
+          "content": "192.0.2.6"
+        },
+        {
+          "record_type": "A",
+          "url": "h318.h10.example.com",
+          "content": "192.0.2.6"
+        },
+        {
+          "record_type": "A",
+          "url": "h319.h10.example.com",
+          "content": "192.0.2.6"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T03:54:18Z",
+      "last_seen": "2026-10-31T03:22:51Z"
+    },
+    {
+      "ip": "192.0.2.23",
+      "tags": [
+        "Pqc"
+      ],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [],
+      "udp": [],
+      "ports": [],
+      "city": "Roubaix",
+      "country": "France",
+      "latitude": 50.6925,
+      "longitude": 3.17828,
+      "asn": 16276,
+      "asn_name": "OVH - OVH SAS, FR",
+      "asn_country": "FR",
+      "asn_allocated": "2001-02-15",
+      "prefix": "192.0.2.35/24",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2010-11-29",
+      "isp": "OVH SAS",
+      "organization": "",
+      "reverse_dns": [],
+      "websites": [
+        "192.0.2.23",
+        "h320.h321.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h247.h248.cdn.example-3.net",
+          "content": "192.0.2.23"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T05:51:26Z",
+      "last_seen": "2026-10-31T02:57:58Z"
+    },
+    {
+      "ip": "192.0.2.16",
+      "tags": [
+        "Remote login",
+        "Self-signed",
+        "Starttls"
+      ],
+      "problems": [],
+      "warnings": [
+        "Weak security on port: 21 (tcp/ftp)",
+        "Multiple software vulnerabilities (High)"
+      ],
+      "problem": false,
+      "warning": true,
+      "tcp": [
+        {
+          "port": 21,
+          "protocol": "tcp",
+          "service": "ftp",
+          "service_description": "File Transfer [Control]",
+          "state_description": "STARTTLS supported, but not required",
+          "state": "warning"
+        },
+        {
+          "port": 22,
+          "protocol": "tcp",
+          "service": "ssh",
+          "service_description": "Secure Shell Login",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 25,
+          "protocol": "tcp",
+          "service": "smtp",
+          "service_description": "Simple Mail Transfer",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 53,
+          "protocol": "tcp",
+          "service": "DNS",
+          "service_description": "Domain Name Server",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 106,
+          "protocol": "tcp",
+          "service": "pop3pw",
+          "service_description": "3com-tsmux, Eudora compatible PW changer, 3COM-TSMUX",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 110,
+          "protocol": "tcp",
+          "service": "pop3",
+          "service_description": "PostOffice V.3, Post Office Protocol - Version 3",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 143,
+          "protocol": "tcp",
+          "service": "imap",
+          "service_description": "Interim Mail Access Protocol v2, Internet Message Access Protocol",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        21,
+        22,
+        25,
+        53,
+        80,
+        106,
+        110,
+        143
+      ],
+      "city": "Strasbourg",
+      "country": "France",
+      "latitude": 48.5848,
+      "longitude": 7.7419,
+      "asn": 8972,
+      "asn_name": "GD-EMEA-DC-SXB1 - Host Europe GmbH, DE",
+      "asn_country": "DE",
+      "asn_allocated": "2001-10-12",
+      "prefix": "192.0.2.36/20",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2010-11-30",
+      "isp": "Host Europe GmbH",
+      "organization": "",
+      "reverse_dns": [
+        "h322.example-11.net"
+      ],
+      "websites": [
+        "192.0.2.16",
+        "old.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "old.example.com",
+          "content": "192.0.2.16"
+        }
+      ],
+      "vulnerable": true,
+      "software": [
+        "Postfix",
+        "OpenSSH 8.2 p1 4ubuntu0.13",
+        "Ubuntu",
+        "ProFTPD",
+        "Dovecot",
+        "Plesk 18.0.82"
+      ],
+      "first_seen": "2026-10-08T04:49:43Z",
+      "last_seen": "2026-10-31T05:08:20Z"
+    },
+    {
+      "ip": "192.0.2.13",
+      "tags": [
+        "Remote login"
+      ],
+      "problems": [],
+      "warnings": [
+        "Multiple software vulnerabilities (High)"
+      ],
+      "problem": false,
+      "warning": true,
+      "tcp": [
+        {
+          "port": 22,
+          "protocol": "tcp",
+          "service": "ssh",
+          "service_description": "Secure Shell Login",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        22,
+        80,
+        443
+      ],
+      "city": "Limburg an der Lahn",
+      "country": "Germany",
+      "latitude": 50.3986,
+      "longitude": 8.07958,
+      "asn": 16276,
+      "asn_name": "OVH - OVH SAS, FR",
+      "asn_country": "FR",
+      "asn_allocated": "2001-02-15",
+      "prefix": "192.0.2.37/16",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "1993-09-01",
+      "isp": "OVH SAS",
+      "organization": "",
+      "reverse_dns": [
+        "example-12.net"
+      ],
+      "websites": [
+        "192.0.2.13",
+        "admin.h202.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "admin.h202.example.com",
+          "content": "192.0.2.13"
+        }
+      ],
+      "vulnerable": true,
+      "software": [
+        "Ubuntu",
+        "OpenSSH 7.2 p2 4ubuntu2.8"
+      ],
+      "first_seen": "2026-10-08T04:36:49Z",
+      "last_seen": "2026-10-31T04:52:46Z"
+    },
+    {
+      "ip": "192.0.2.38",
+      "tags": [],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [
+        {
+          "port": 111,
+          "protocol": "tcp",
+          "service": "rpcbind",
+          "service_description": "sunrpc, portmapper, rpcbind, SUN Remote Procedure Call",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 10250,
+          "protocol": "tcp",
+          "service": "kubelet",
+          "service_description": "Kubernetes kubelet API. Only the control plane of the cluster needs to reach it.",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        111,
+        10250
+      ],
+      "city": "Limburg an der Lahn",
+      "country": "Germany",
+      "latitude": 50.3986,
+      "longitude": 8.07958,
+      "asn": 16276,
+      "asn_name": "OVH - OVH SAS, FR",
+      "asn_country": "FR",
+      "asn_allocated": "2001-02-15",
+      "prefix": "192.0.2.37/16",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "1993-09-01",
+      "isp": "OVH SAS",
+      "organization": "",
+      "reverse_dns": [
+        "h323.h324.example-13.net"
+      ],
+      "websites": [],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h325.h326.example.com",
+          "content": "192.0.2.38"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T05:51:22Z",
+      "last_seen": "2026-10-31T04:29:00Z"
+    },
+    {
+      "ip": "192.0.2.39",
+      "tags": [],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [],
+      "udp": [],
+      "ports": [],
+      "city": "London",
+      "country": "United Kingdom",
+      "latitude": 51.5081,
+      "longitude": -0.1278,
+      "asn": 16276,
+      "asn_name": "OVH - OVH SAS, FR",
+      "asn_country": "FR",
+      "asn_allocated": "2001-02-15",
+      "prefix": "192.0.2.40/16",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "1993-09-01",
+      "isp": "OVH SAS",
+      "organization": "",
+      "reverse_dns": [],
+      "websites": [],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h325.h321.example.com",
+          "content": "192.0.2.39"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T05:51:31Z",
+      "last_seen": "2026-10-31T03:15:51Z"
+    },
+    {
+      "ip": "192.0.2.41",
+      "tags": [
+        "Remote login"
+      ],
+      "problems": [],
+      "warnings": [
+        "Multiple software vulnerabilities (High)"
+      ],
+      "problem": false,
+      "warning": true,
+      "tcp": [
+        {
+          "port": 22,
+          "protocol": "tcp",
+          "service": "ssh",
+          "service_description": "Secure Shell Login",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        22
+      ],
+      "city": "London",
+      "country": "United Kingdom",
+      "latitude": 51.5081,
+      "longitude": -0.1278,
+      "asn": 16276,
+      "asn_name": "OVH - OVH SAS, FR",
+      "asn_country": "FR",
+      "asn_allocated": "2001-02-15",
+      "prefix": "192.0.2.40/16",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "1993-09-01",
+      "isp": "OVH SAS",
+      "organization": "",
+      "reverse_dns": [],
+      "websites": [],
+      "vulnerabilities": [
+        {
+          "name": "OpenSSH 7.6 p1 4ubuntu0.7",
+          "vulnerabilities": [
+            {
+              "cve": "CVE-2026-60002",
+              "cvss_score": 7.7,
+              "severity": "HIGH",
+              "shadowtrackr_cvss_score": 7.1,
+              "cisa": false,
+              "ncsc_number": "NCSC-2026-0321",
+              "ncsc_chance": "medium",
+              "ncsc_impact": "high",
+              "exploited": false
+            },
+            {
+              "cve": "CVE-2026-60001",
+              "cvss_score": 6.5,
+              "severity": "MEDIUM",
+              "shadowtrackr_cvss_score": 1.7,
+              "cisa": false,
+              "ncsc_number": "NCSC-2026-0321",
+              "ncsc_chance": "medium",
+              "ncsc_impact": "high",
+              "exploited": false
+            },
+            {
+              "cve": "CVE-2026-59996",
+              "cvss_score": 4.2,
+              "severity": "MEDIUM",
+              "shadowtrackr_cvss_score": 4.6,
+              "cisa": false,
+              "ncsc_number": "NCSC-2026-0321",
+              "ncsc_chance": "medium",
+              "ncsc_impact": "high",
+              "exploited": false
+            },
+            {
+              "cve": "CVE-2026-35388",
+              "cvss_score": 2.5,
+              "severity": "LOW",
+              "shadowtrackr_cvss_score": 0.2,
+              "cisa": false,
+              "ncsc_number": null,
+              "ncsc_chance": null,
+              "ncsc_impact": null,
+              "exploited": false
+            },
+            {
+              "cve": "CVE-2026-35386",
+              "cvss_score": 3.6,
+              "severity": "LOW",
+              "shadowtrackr_cvss_score": 0.4,
+              "cisa": false,
+              "ncsc_number": null,
+              "ncsc_chance": null,
+              "ncsc_impact": null,
+              "exploited": false
+            },
+            {
+              "cve": "CVE-2026-106589",
+              "cvss_score": 2.9,
+              "severity": "LOW",
+              "shadowtrackr_cvss_score": 0.5,
+              "cisa": false,
+              "ncsc_number": null,
+              "ncsc_chance": null,
+              "ncsc_impact": null,
+              "exploited": false
+            },
+            {
+              "cve": "CVE-2026-106588",
+              "cvss_score": 3.1,
+              "severity": "LOW",
+              "shadowtrackr_cvss_score": 0.6,
+              "cisa": false,
+              "ncsc_number": null,
+              "ncsc_chance": null,
+              "ncsc_impact": null,
+              "exploited": false
+            },
+            {
+              "cve": "CVE-2026-106587",
+              "cvss_score": 3.6,
+              "severity": "LOW",
+              "shadowtrackr_cvss_score": 0.4,
+              "cisa": false,
+              "ncsc_number": null,
+              "ncsc_chance": null,
+              "ncsc_impact": null,
+              "exploited": false
+            }
+          ]
+        }
+      ],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "ftp.example.com",
+          "content": "192.0.2.41"
+        }
+      ],
+      "vulnerable": true,
+      "software": [
+        "OpenSSH 7.6 p1 4ubuntu0.7",
+        "Ubuntu"
+      ],
+      "first_seen": "2026-10-31T04:35:11Z",
+      "last_seen": "2026-10-31T04:37:27Z"
+    },
+    {
+      "ip": "192.0.2.12",
+      "tags": [
+        "Remote login"
+      ],
+      "problems": [],
+      "warnings": [
+        "Multiple software vulnerabilities (High)"
+      ],
+      "problem": false,
+      "warning": true,
+      "tcp": [
+        {
+          "port": 22,
+          "protocol": "tcp",
+          "service": "ssh",
+          "service_description": "Secure Shell Login",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        22,
+        80,
+        443
+      ],
+      "city": "Saarbr\u00fccken",
+      "country": "Germany",
+      "latitude": 49.2405,
+      "longitude": 6.98474,
+      "asn": 16276,
+      "asn_name": "OVH - OVH SAS, FR",
+      "asn_country": "FR",
+      "asn_allocated": "2001-02-15",
+      "prefix": "192.0.2.42/16",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "1992-03-17",
+      "isp": "OVH SAS",
+      "organization": "",
+      "reverse_dns": [],
+      "websites": [
+        "192.0.2.12",
+        "h327.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h327.example.com",
+          "content": "192.0.2.12"
+        }
+      ],
+      "vulnerable": true,
+      "software": [
+        "Ubuntu",
+        "OpenSSH 7.6 p1 4ubuntu0.5"
+      ],
+      "first_seen": "2026-10-08T04:25:54Z",
+      "last_seen": "2026-10-31T03:30:00Z"
+    },
+    {
+      "ip": "192.0.2.43",
+      "tags": [
+        "Self-signed"
+      ],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 9100,
+          "protocol": "tcp",
+          "service": "jetdirect",
+          "service_description": "Raw print port of network printers (HP JetDirect, PJL). Also the default port of Prometheus node_exporter. Neither should be reachable from the internet.",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        80,
+        443,
+        9100
+      ],
+      "city": "Frankfurt am Main",
+      "country": "Germany",
+      "latitude": 50.1109,
+      "longitude": 8.68213,
+      "asn": 8560,
+      "asn_name": "IONOS-AS - IONOS SE, DE",
+      "asn_country": "DE",
+      "asn_allocated": "1997-11-26",
+      "prefix": "192.0.2.44/16",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2003-08-06",
+      "isp": "IONOS SE",
+      "organization": "",
+      "reverse_dns": [
+        "h328.example-10.net"
+      ],
+      "websites": [
+        "192.0.2.43",
+        "h292.h329.example.com",
+        "grafana.h329.example.com",
+        "h330.h329.example.com",
+        "h331.h329.example.com",
+        "h209.h329.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h292.h329.example.com",
+          "content": "192.0.2.43"
+        },
+        {
+          "record_type": "A",
+          "url": "grafana.h329.example.com",
+          "content": "192.0.2.43"
+        },
+        {
+          "record_type": "A",
+          "url": "h209.h329.example.com",
+          "content": "192.0.2.43"
+        },
+        {
+          "record_type": "A",
+          "url": "h330.h329.example.com",
+          "content": "192.0.2.43"
+        },
+        {
+          "record_type": "A",
+          "url": "h331.h329.example.com",
+          "content": "192.0.2.43"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T04:31:44Z",
+      "last_seen": "2026-10-31T05:38:55Z"
+    },
+    {
+      "ip": "192.0.2.45",
+      "tags": [
+        "Self-signed",
+        "Pqc"
+      ],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 9100,
+          "protocol": "tcp",
+          "service": "jetdirect",
+          "service_description": "Raw print port of network printers (HP JetDirect, PJL). Also the default port of Prometheus node_exporter. Neither should be reachable from the internet.",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        80,
+        443,
+        9100
+      ],
+      "city": "Berlin",
+      "country": "Germany",
+      "latitude": 52.52,
+      "longitude": 13.405,
+      "asn": 8560,
+      "asn_name": "IONOS-AS - IONOS SE, DE",
+      "asn_country": "DE",
+      "asn_allocated": "1997-11-26",
+      "prefix": "192.0.2.46/23",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2003-08-06",
+      "isp": "IONOS SE example-14.net",
+      "organization": "",
+      "reverse_dns": [
+        "h332.example-10.net"
+      ],
+      "websites": [
+        "192.0.2.45",
+        "h292.h333.example.com",
+        "grafana.h333.example.com",
+        "h334.h333.example.com",
+        "h209.h333.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h334.h333.example.com",
+          "content": "192.0.2.45"
+        },
+        {
+          "record_type": "A",
+          "url": "h292.h333.example.com",
+          "content": "192.0.2.45"
+        },
+        {
+          "record_type": "A",
+          "url": "grafana.h333.example.com",
+          "content": "192.0.2.45"
+        },
+        {
+          "record_type": "A",
+          "url": "h209.h333.example.com",
+          "content": "192.0.2.45"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T04:19:04Z",
+      "last_seen": "2026-10-31T04:27:46Z"
+    },
+    {
+      "ip": "192.0.2.47",
+      "tags": [],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [],
+      "udp": [],
+      "ports": [],
+      "city": "Berlin",
+      "country": "Germany",
+      "latitude": 52.5234,
+      "longitude": 13.3224,
+      "asn": 8560,
+      "asn_name": "IONOS-AS - IONOS SE, DE",
+      "asn_country": "DE",
+      "asn_allocated": "1997-11-26",
+      "prefix": "192.0.2.48/17",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2005-02-24",
+      "isp": "IONOS SE",
+      "organization": "",
+      "reverse_dns": [
+        "h335.example-10.net"
+      ],
+      "websites": [],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h336.h337.example.com",
+          "content": "192.0.2.47"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T05:52:04Z",
+      "last_seen": "2026-10-30T09:51:11Z"
+    },
+    {
+      "ip": "192.0.2.15",
+      "tags": [
+        "Remote login"
+      ],
+      "problems": [],
+      "warnings": [
+        "Multiple software vulnerabilities (High)"
+      ],
+      "problem": false,
+      "warning": true,
+      "tcp": [
+        {
+          "port": 22,
+          "protocol": "tcp",
+          "service": "ssh",
+          "service_description": "Secure Shell Login",
+          "state_description": "",
+          "state": "ok"
+        },
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        22,
+        80,
+        443
+      ],
+      "city": "Berlin",
+      "country": "Germany",
+      "latitude": 52.5234,
+      "longitude": 13.3224,
+      "asn": 8560,
+      "asn_name": "IONOS-AS - IONOS SE, DE",
+      "asn_country": "DE",
+      "asn_allocated": "1997-11-26",
+      "prefix": "192.0.2.48/17",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2005-02-24",
+      "isp": "IONOS SE",
+      "organization": "",
+      "reverse_dns": [
+        "h295.h296.h297.h338.example-10.net"
+      ],
+      "websites": [
+        "192.0.2.15",
+        "h339.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h339.example.com",
+          "content": "192.0.2.15"
+        }
+      ],
+      "vulnerable": true,
+      "software": [
+        "Ubuntu",
+        "OpenSSH 8.9 p1 3ubuntu0.18"
+      ],
+      "first_seen": "2026-10-08T05:52:59Z",
+      "last_seen": "2026-10-31T03:36:58Z"
+    },
+    {
+      "ip": "192.0.2.17",
+      "tags": [
+        "Self-signed",
+        "Pqc"
+      ],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 9100,
+          "protocol": "tcp",
+          "service": "jetdirect",
+          "service_description": "Raw print port of network printers (HP JetDirect, PJL). Also the default port of Prometheus node_exporter. Neither should be reachable from the internet.",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        80,
+        443,
+        9100
+      ],
+      "city": "Frankfurt am Main",
+      "country": "Germany",
+      "latitude": 50.1109,
+      "longitude": 8.68213,
+      "asn": 8560,
+      "asn_name": "IONOS-AS - IONOS SE, DE",
+      "asn_country": "DE",
+      "asn_allocated": "1997-11-26",
+      "prefix": "192.0.2.48/17",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2005-02-24",
+      "isp": "IONOS SE",
+      "organization": "",
+      "reverse_dns": [
+        "h295.h296.h297.h340.example-10.net"
+      ],
+      "websites": [
+        "192.0.2.17",
+        "h292.h221.example.com",
+        "h341.h342.h221.example.com",
+        "h343.h221.example.com",
+        "h343.h342.h221.example.com",
+        "h344.h221.example.com",
+        "h344.h342.h221.example.com",
+        "h342.h221.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h343.h221.example.com",
+          "content": "192.0.2.17"
+        },
+        {
+          "record_type": "A",
+          "url": "h345.h342.h221.example.com",
+          "content": "192.0.2.17"
+        },
+        {
+          "record_type": "A",
+          "url": "h209.h221.example.com",
+          "content": "192.0.2.17"
+        },
+        {
+          "record_type": "A",
+          "url": "h341.h342.h221.example.com",
+          "content": "192.0.2.17"
+        },
+        {
+          "record_type": "A",
+          "url": "grafana.h221.example.com",
+          "content": "192.0.2.17"
+        },
+        {
+          "record_type": "A",
+          "url": "h342.h221.example.com",
+          "content": "192.0.2.17"
+        },
+        {
+          "record_type": "A",
+          "url": "h292.h221.example.com",
+          "content": "192.0.2.17"
+        },
+        {
+          "record_type": "A",
+          "url": "h343.h342.h221.example.com",
+          "content": "192.0.2.17"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T04:20:12Z",
+      "last_seen": "2026-10-31T04:14:37Z"
+    },
+    {
+      "ip": "192.0.2.49",
+      "tags": [
+        "Self-signed"
+      ],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 9100,
+          "protocol": "tcp",
+          "service": "jetdirect",
+          "service_description": "Raw print port of network printers (HP JetDirect, PJL). Also the default port of Prometheus node_exporter. Neither should be reachable from the internet.",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        80,
+        443,
+        9100
+      ],
+      "city": "Berlin",
+      "country": "Germany",
+      "latitude": 52.5234,
+      "longitude": 13.3224,
+      "asn": 8560,
+      "asn_name": "IONOS-AS - IONOS SE, DE",
+      "asn_country": "DE",
+      "asn_allocated": "1997-11-26",
+      "prefix": "192.0.2.50/20",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2005-02-24",
+      "isp": "IONOS SE",
+      "organization": "",
+      "reverse_dns": [
+        "h346.example-10.net"
+      ],
+      "websites": [
+        "192.0.2.49",
+        "h292.h347.example.com",
+        "h348.h347.example.com",
+        "h349.h347.example.com",
+        "h350.h347.example.com",
+        "grafana.h347.example.com",
+        "h351.h347.example.com",
+        "h352.h347.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h292.h347.example.com",
+          "content": "192.0.2.49"
+        },
+        {
+          "record_type": "A",
+          "url": "h353.h347.example.com",
+          "content": "192.0.2.49"
+        },
+        {
+          "record_type": "A",
+          "url": "h354.h347.example.com",
+          "content": "192.0.2.49"
+        },
+        {
+          "record_type": "A",
+          "url": "h355.h347.example.com",
+          "content": "192.0.2.49"
+        },
+        {
+          "record_type": "A",
+          "url": "h356.h347.example.com",
+          "content": "192.0.2.49"
+        },
+        {
+          "record_type": "A",
+          "url": "h351.h347.example.com",
+          "content": "192.0.2.49"
+        },
+        {
+          "record_type": "A",
+          "url": "h352.h347.example.com",
+          "content": "192.0.2.49"
+        },
+        {
+          "record_type": "A",
+          "url": "h357.h347.example.com",
+          "content": "192.0.2.49"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T04:19:33Z",
+      "last_seen": "2026-10-31T03:36:19Z"
+    },
+    {
+      "ip": "192.0.2.51",
+      "tags": [
+        "Self-signed",
+        "Pqc"
+      ],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        80,
+        443
+      ],
+      "city": "Frankfurt am Main",
+      "country": "Germany",
+      "latitude": 50.1103,
+      "longitude": 8.7147,
+      "asn": 202053,
+      "asn_name": "UPCLOUD - UpCloud Ltd, FI",
+      "asn_country": "FI",
+      "asn_allocated": "2014-04-24",
+      "prefix": "192.0.2.52/21",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2005-02-16",
+      "isp": "UpCloud Ltd",
+      "organization": "",
+      "reverse_dns": [
+        "h358.h359.example-15.net"
+      ],
+      "websites": [
+        "192.0.2.51",
+        "app.example.com",
+        "h360.h361.example.com",
+        "grafana.h361.example.com",
+        "h362.h361.example.com",
+        "h363.h361.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h360.h361.example.com",
+          "content": "192.0.2.51"
+        },
+        {
+          "record_type": "A",
+          "url": "grafana.h361.example.com",
+          "content": "192.0.2.51"
+        },
+        {
+          "record_type": "A",
+          "url": "app.example.com",
+          "content": "192.0.2.51"
+        },
+        {
+          "record_type": "A",
+          "url": "h363.h361.example.com",
+          "content": "192.0.2.51"
+        },
+        {
+          "record_type": "A",
+          "url": "h364.h361.example.com",
+          "content": "192.0.2.51"
+        },
+        {
+          "record_type": "A",
+          "url": "h365.h361.example.com",
+          "content": "192.0.2.51"
+        },
+        {
+          "record_type": "A",
+          "url": "h362.h361.example.com",
+          "content": "192.0.2.51"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T05:48:35Z",
+      "last_seen": "2026-10-31T04:21:30Z"
+    },
+    {
+      "ip": "192.0.2.53",
+      "tags": [
+        "Self-signed",
+        "Pqc"
+      ],
+      "problems": [],
+      "warnings": [],
+      "problem": false,
+      "warning": false,
+      "tcp": [
+        {
+          "port": 80,
+          "protocol": "tcp",
+          "service": "http",
+          "service_description": "World Wide Web HTTP",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 443,
+          "protocol": "tcp",
+          "service": "https",
+          "service_description": "secure http (SSL)",
+          "state_description": "Connection accepted, but dropped immediately.",
+          "state": "tcpwrapped"
+        },
+        {
+          "port": 9100,
+          "protocol": "tcp",
+          "service": "jetdirect",
+          "service_description": "Raw print port of network printers (HP JetDirect, PJL). Also the default port of Prometheus node_exporter. Neither should be reachable from the internet.",
+          "state_description": "",
+          "state": "ok"
+        }
+      ],
+      "udp": [],
+      "ports": [
+        80,
+        443,
+        9100
+      ],
+      "city": "Berlin",
+      "country": "Germany",
+      "latitude": 52.52,
+      "longitude": 13.405,
+      "asn": 8560,
+      "asn_name": "IONOS-AS - IONOS SE, DE",
+      "asn_country": "DE",
+      "asn_allocated": "1997-11-26",
+      "prefix": "192.0.2.54/24",
+      "prefix_registry": "ripencc",
+      "prefix_allocated": "2005-08-10",
+      "isp": "IONOS SE example-14.net",
+      "organization": "",
+      "reverse_dns": [
+        "h366.example-10.net"
+      ],
+      "websites": [
+        "192.0.2.53",
+        "h292.h367.example.com",
+        "h368.h367.example.com",
+        "h369.h367.example.com",
+        "h370.h367.example.com",
+        "grafana.h367.example.com",
+        "h371.h367.example.com",
+        "h372.h367.example.com"
+      ],
+      "vulnerabilities": [],
+      "dns": [
+        {
+          "record_type": "A",
+          "url": "h292.h367.example.com",
+          "content": "192.0.2.53"
+        },
+        {
+          "record_type": "A",
+          "url": "grafana.h367.example.com",
+          "content": "192.0.2.53"
+        },
+        {
+          "record_type": "A",
+          "url": "h209.h367.example.com",
+          "content": "192.0.2.53"
+        },
+        {
+          "record_type": "A",
+          "url": "h372.h367.example.com",
+          "content": "192.0.2.53"
+        },
+        {
+          "record_type": "A",
+          "url": "h371.h367.example.com",
+          "content": "192.0.2.53"
+        },
+        {
+          "record_type": "A",
+          "url": "h373.h367.example.com",
+          "content": "192.0.2.53"
+        },
+        {
+          "record_type": "A",
+          "url": "h374.h367.example.com",
+          "content": "192.0.2.53"
+        },
+        {
+          "record_type": "A",
+          "url": "h370.h367.example.com",
+          "content": "192.0.2.53"
+        }
+      ],
+      "vulnerable": false,
+      "software": [],
+      "first_seen": "2026-10-08T04:24:44Z",
+      "last_seen": "2026-10-31T04:15:30Z"
+    }
+  ]
+}

@@ -1,5 +1,4 @@
 import json
-import logging
 import time
 from datetime import timedelta
 
@@ -9,64 +8,14 @@ from solnlib.modular_input import checkpointer
 from solnlib.splunk_rest_client import SplunkRestClient
 from splunklib import modularinput as smi
 
+from shadowtrackr_common import ADDON_NAME, CHECKPOINT_COLLECTION, build_client, logger_for_input, to_int
 from shadowtrackr_lib import event_types
-from shadowtrackr_lib.client import APIError, AuthError, ShadowTrackrClient, ShadowTrackrError, build_proxy_url
+from shadowtrackr_lib.client import APIError, AuthError, ShadowTrackrError
 from shadowtrackr_lib.events import EventCollector
 
-ADDON_NAME = "shadowtrackr"
 SOURCETYPE = "shadowtrackr:events"
-CHECKPOINT_COLLECTION = "shadowtrackr_checkpoints"
 EVENT_TYPE_COLLECTION = "shadowtrackr_event_type_catalog"
 EVENT_TYPE_CHECKPOINT = "event_type_catalog"
-DEFAULT_TIMEOUT = 60
-
-
-def logger_for_input(input_name: str) -> logging.Logger:
-    return log.Logs().get_logger(f"{ADDON_NAME.lower()}_{input_name}")
-
-
-def _conf(session_key: str, conf_name: str):
-    cfm = conf_manager.ConfManager(
-        session_key,
-        ADDON_NAME,
-        realm=f"__REST_CREDENTIAL__#{ADDON_NAME}#configs/conf-{conf_name}",
-    )
-    return cfm.get_conf(conf_name)
-
-
-def get_account(session_key: str, account_name: str) -> dict:
-    return _conf(session_key, "shadowtrackr_account").get(account_name)
-
-
-def get_settings(session_key: str) -> dict:
-    settings_conf = _conf(session_key, "shadowtrackr_settings")
-    settings = {}
-    for stanza in ("proxy", "advanced"):
-        try:
-            settings[stanza] = settings_conf.get(stanza) or {}
-        except conf_manager.ConfStanzaNotExistException:
-            settings[stanza] = {}
-    return settings
-
-
-def _int(value, default: int) -> int:
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return default
-
-
-def build_client(session_key: str, account_name: str) -> ShadowTrackrClient:
-    account = get_account(session_key, account_name)
-    settings = get_settings(session_key)
-    kwargs = {
-        "api_key": account.get("api_key"),
-        "timeout": _int(settings["advanced"].get("request_timeout"), DEFAULT_TIMEOUT),
-        "proxy_url": build_proxy_url(settings["proxy"]),
-    }
-    if account.get("base_url"):
-        kwargs["base_url"] = account["base_url"]
-    return ShadowTrackrClient(**kwargs)
 
 
 def refresh_event_type_catalog(client, session_key, ckpt, logger) -> None:
@@ -92,7 +41,7 @@ def validate_input(definition: smi.ValidationDefinition):
     params = definition.parameters
     for field, low, high in (("backfill_days", 0, 90), ("overlap_minutes", 0, 1440)):
         value = params.get(field)
-        if value is not None and not (low <= _int(value, -1) <= high):
+        if value is not None and not (low <= to_int(value, -1) <= high):
             raise ValueError(f"{field} must be a whole number between {low} and {high}")
 
 
@@ -133,8 +82,8 @@ def stream_events(inputs: smi.InputDefinition, event_writer: smi.EventWriter):
                 save_checkpoint=lambda state: ckpt.update(ckpt_key, state),
                 write_event=write,
                 logger=logger,
-                backfill=timedelta(days=_int(input_item.get("backfill_days"), 7)),
-                overlap=timedelta(minutes=_int(input_item.get("overlap_minutes"), 15)),
+                backfill=timedelta(days=to_int(input_item.get("backfill_days"), 7)),
+                overlap=timedelta(minutes=to_int(input_item.get("overlap_minutes"), 15)),
             )
             count = collector.run()
             log.events_ingested(logger, input_name, SOURCETYPE, count, index, account=account_name)
