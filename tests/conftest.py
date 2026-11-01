@@ -39,7 +39,7 @@ def fixture_event_types():
 
 def _start(legacy):
     srv = mock_server.make_server("127.0.0.1", 0, legacy=legacy)
-    thread = threading.Thread(target=srv.serve_forever, daemon=True)
+    thread = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.05}, daemon=True)
     thread.start()
     host, port = srv.server_address
     srv.url = "http://{}:{}/api/v4".format(host, port)
