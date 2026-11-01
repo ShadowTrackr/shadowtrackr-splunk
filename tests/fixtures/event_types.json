@@ -1,217 +1,302 @@
 {
-  "results": "57 results found",
+  "results": "59 results found",
   "error": "",
   "data": [
     {
       "eventid": 101,
       "source": "dns",
-      "name": "server_found_for_dns_name_ipv4",
+      "name": "dns_a_added_ip",
       "category": "dns",
-      "default_level": null,
-      "is_change": false
+      "default_level": 60,
+      "is_change": true,
+      "title": "DNS A record added (IPv4 address)",
+      "action": "created",
+      "aliases": [
+        "shodan_new_url"
+      ]
+    },
+    {
+      "eventid": 114,
+      "source": "dns",
+      "name": "dns_a_new_url",
+      "category": "dns",
+      "default_level": 60,
+      "is_change": false,
+      "title": "New URL found via DNS",
+      "action": null
     },
     {
       "eventid": 118,
       "source": "dns",
-      "name": "url_added_to_reverse_dns_of_ip",
+      "name": "dns_reverse_added",
       "category": "dns",
-      "default_level": null,
-      "is_change": true
+      "default_level": 60,
+      "is_change": true,
+      "title": "Reverse DNS added",
+      "action": "created"
     },
     {
       "eventid": 120,
       "source": "dns",
-      "name": "server_found_for_dns_name_ipv6",
+      "name": "dns_aaaa_added_ip",
       "category": "dns",
-      "default_level": null,
-      "is_change": false
+      "default_level": 60,
+      "is_change": true,
+      "title": "DNS AAAA record added (IPv6 address)",
+      "action": "created"
+    },
+    {
+      "eventid": 131,
+      "source": "dns",
+      "name": "dns_a_added_ip_from_expand",
+      "category": "dns",
+      "default_level": 50,
+      "is_change": true,
+      "title": "DNS A added IP from expand",
+      "action": "created"
     },
     {
       "eventid": 155,
       "source": "ctname",
-      "name": "url_discovered_in_certificate_transparency_logs",
+      "name": "ctname_new_url",
       "category": "discovery",
-      "default_level": null,
-      "is_change": false
+      "default_level": 60,
+      "is_change": false,
+      "title": "New URL found in certificate transparency",
+      "action": null
     },
     {
       "eventid": 156,
       "source": "ctname",
-      "name": "url_discovered_in_certificate_transparency_logs",
+      "name": "ctname_old_url",
       "category": "discovery",
-      "default_level": null,
-      "is_change": false
+      "default_level": 60,
+      "is_change": false,
+      "title": "URL found in certificate transparency (backfill) (type 156)",
+      "action": null
+    },
+    {
+      "eventid": 198,
+      "source": "dns",
+      "name": "dns_dmarc_changed",
+      "category": "dns",
+      "default_level": 60,
+      "is_change": true,
+      "title": "DMARC record changed",
+      "action": "modified"
     },
     {
       "eventid": 218,
-      "source": "ports",
-      "name": "port_opened",
-      "category": "host",
-      "default_level": null,
-      "is_change": true
-    },
-    {
-      "eventid": 219,
-      "source": "ports",
-      "name": "port_closed",
+      "source": "hosts",
+      "name": "hostscanner_tcp_opened_one",
       "category": "host",
       "default_level": null,
       "is_change": true,
-      "aliases": [
-        "port_removed"
-      ]
+      "title": "TCP port opened",
+      "action": "created"
+    },
+    {
+      "eventid": 219,
+      "source": "hosts",
+      "name": "hostscanner_tcp_closed_multi",
+      "category": "host",
+      "default_level": null,
+      "is_change": true,
+      "title": "Host TCP closed multi",
+      "action": "deleted"
     },
     {
       "eventid": 278,
       "source": "hosts",
-      "name": "url_discovered_and_suggested_from_host",
-      "category": "discovery",
-      "default_level": null,
-      "is_change": false
+      "name": "hostscanner_found_url",
+      "category": "host",
+      "default_level": 71,
+      "is_change": false,
+      "title": "Host found",
+      "action": null,
+      "aliases": [
+        "host_found"
+      ]
     },
     {
       "eventid": 279,
       "source": "hosts",
-      "name": "host_found_with_warnings",
+      "name": "host_found_with_warning",
       "category": "host",
-      "default_level": null,
-      "is_change": false
+      "default_level": 81,
+      "is_change": false,
+      "title": "Host found (warnings)",
+      "action": null
     },
     {
       "eventid": 280,
       "source": "hosts",
-      "name": "host_found_with_problems",
+      "name": "host_found_with_problem",
       "category": "host",
-      "default_level": null,
-      "is_change": false
+      "default_level": 91,
+      "is_change": false,
+      "title": "Host found (problems)",
+      "action": null
     },
     {
       "eventid": 281,
       "source": "hosts",
-      "name": "port_changes_detected_on_host",
+      "name": "host_port_changes",
       "category": "host",
-      "default_level": null,
-      "is_change": true
+      "default_level": 61,
+      "is_change": false,
+      "title": "Host ports changed",
+      "action": null
     },
     {
       "eventid": 282,
       "source": "hosts",
-      "name": "port_changes_detected_on_host_with_warnings",
+      "name": "host_port_changes_with_warning",
       "category": "host",
-      "default_level": null,
-      "is_change": true
+      "default_level": 81,
+      "is_change": false,
+      "title": "Host ports changed (warnings)",
+      "action": null
     },
     {
       "eventid": 283,
       "source": "hosts",
-      "name": "port_changes_detected_on_host_with_problems",
+      "name": "host_port_changes_with_problem",
       "category": "host",
-      "default_level": null,
-      "is_change": true
+      "default_level": 91,
+      "is_change": false,
+      "title": "Host ports changed (problems)",
+      "action": null
     },
     {
       "eventid": 285,
       "source": "hosts",
-      "name": "host_looks_like_a_honeypot_vulnerability_findings_suppressed",
+      "name": "host_detected_as_honeypot",
       "category": "host",
-      "default_level": null,
-      "is_change": false
+      "default_level": 61,
+      "is_change": false,
+      "title": "Host detected as honeypot",
+      "action": null
     },
     {
       "eventid": 1301,
       "source": "ssl",
-      "name": "certificate_found",
+      "name": "ssllabs_new_cert",
       "category": "certificate",
-      "default_level": null,
-      "is_change": false
+      "default_level": 60,
+      "is_change": false,
+      "title": "Certificate found",
+      "action": null
     },
     {
       "eventid": 1346,
       "source": "ssl",
-      "name": "certificate_issuer_changed",
+      "name": "ssllabs_changed_issuer",
       "category": "certificate",
-      "default_level": null,
-      "is_change": true
+      "default_level": 6,
+      "is_change": true,
+      "title": "Certificate issuer changed",
+      "action": "modified"
     },
     {
       "eventid": 1349,
       "source": "ssl",
-      "name": "certificate_expires_within_a_week",
+      "name": "ssllabs_expires_in_week",
       "category": "certificate",
-      "default_level": null,
-      "is_change": false
+      "default_level": 60,
+      "is_change": false,
+      "title": "Certificate expires within a week",
+      "action": null
     },
     {
       "eventid": 1350,
       "source": "ssl",
-      "name": "certificate_expires_in_two_weeks",
+      "name": "ssllabs_expires_in_two_weeks",
       "category": "certificate",
-      "default_level": null,
-      "is_change": false
+      "default_level": 60,
+      "is_change": false,
+      "title": "Certificate expires within two weeks",
+      "action": null
     },
     {
       "eventid": 1358,
       "source": "ssl",
-      "name": "certificate_expires_in_three_weeks",
+      "name": "ssllabs_expires_in_three_weeks",
       "category": "certificate",
-      "default_level": null,
-      "is_change": false
+      "default_level": 60,
+      "is_change": false,
+      "title": "Certificate expires within three weeks",
+      "action": null
     },
     {
       "eventid": 1359,
       "source": "ssl",
-      "name": "certificate_expired",
+      "name": "ssllabs_expired",
       "category": "certificate",
-      "default_level": null,
-      "is_change": false
+      "default_level": 91,
+      "is_change": false,
+      "title": "Certificate expired",
+      "action": null
     },
     {
       "eventid": 1390,
       "source": "ssl",
-      "name": "url_discovered_and_suggested_from_certificate",
-      "category": "discovery",
-      "default_level": null,
-      "is_change": false
+      "name": "ssllabs_new_url_in_common_names",
+      "category": "certificate",
+      "default_level": 60,
+      "is_change": false,
+      "title": "TLS new URL in common names",
+      "action": null
     },
     {
       "eventid": 1392,
       "source": "ssl",
-      "name": "ip_discovered_and_added_from_certificate",
-      "category": "discovery",
-      "default_level": null,
-      "is_change": false
+      "name": "ssllabs_new_ip_in_cert",
+      "category": "certificate",
+      "default_level": 60,
+      "is_change": false,
+      "title": "TLS new IP in cert",
+      "action": null
     },
     {
       "eventid": 1410,
       "source": "ssl",
-      "name": "url_discovered_and_suggested_from_certificate",
-      "category": "discovery",
-      "default_level": null,
-      "is_change": false
+      "name": "ssllabs_new_url_in_alt_names",
+      "category": "certificate",
+      "default_level": 60,
+      "is_change": false,
+      "title": "New URL found in certificate alternative names",
+      "action": null
     },
     {
       "eventid": 1411,
       "source": "ssl",
-      "name": "certificate_found_with_warnings",
+      "name": "ssllabs_new_cert_warnings",
       "category": "certificate",
-      "default_level": null,
-      "is_change": false
+      "default_level": 81,
+      "is_change": false,
+      "title": "Certificate found (warnings)",
+      "action": null
     },
     {
       "eventid": 1412,
       "source": "ssl",
-      "name": "certificate_found_with_problems",
+      "name": "ssllabs_new_cert_problems",
       "category": "certificate",
-      "default_level": null,
-      "is_change": false
+      "default_level": 91,
+      "is_change": false,
+      "title": "Certificate found (problems)",
+      "action": null
     },
     {
       "eventid": 1413,
       "source": "ssl",
-      "name": "certificate_renewed",
+      "name": "ssllabs_renewed_cert",
       "category": "certificate",
-      "default_level": null,
-      "is_change": true
+      "default_level": 60,
+      "is_change": true,
+      "title": "Certificate renewed",
+      "action": "modified"
     },
     {
       "eventid": 1415,
@@ -219,247 +304,299 @@
       "name": "ssllabs_renewed_cert_problems",
       "category": "certificate",
       "default_level": 91,
-      "is_change": true
+      "is_change": true,
+      "title": "Certificate renewed (problems)",
+      "action": "modified"
     },
     {
       "eventid": 1416,
       "source": "ssl",
-      "name": "tls_settings_changed",
+      "name": "ssllabs_tls_server_changes",
       "category": "certificate",
-      "default_level": null,
-      "is_change": true
+      "default_level": 60,
+      "is_change": false,
+      "title": "TLS settings changed",
+      "action": null
     },
     {
       "eventid": 1551,
       "source": "asn",
-      "name": "asn_found_for_ip",
+      "name": "asntracker_found_asn",
       "category": "network",
-      "default_level": null,
-      "is_change": false
+      "default_level": 50,
+      "is_change": false,
+      "title": "ASN found",
+      "action": null
     },
     {
       "eventid": 1553,
       "source": "asn",
-      "name": "asn_name_changed",
+      "name": "asntracker_changed_asnname",
       "category": "network",
-      "default_level": null,
-      "is_change": true
+      "default_level": 9,
+      "is_change": true,
+      "title": "ASN name changed",
+      "action": "modified"
     },
     {
       "eventid": 1559,
       "source": "asn",
-      "name": "bgp_prefix_changed",
+      "name": "asntracker_changed_prefix",
       "category": "network",
-      "default_level": null,
-      "is_change": true
+      "default_level": 10,
+      "is_change": true,
+      "title": "ASN prefix changed",
+      "action": "modified"
     },
     {
       "eventid": 1645,
       "source": "websites",
-      "name": "new_http_header_field_on_website",
+      "name": "webcheck_new_field",
       "category": "website",
-      "default_level": null,
-      "is_change": true
+      "default_level": 4,
+      "is_change": false,
+      "title": "Website header added",
+      "action": null
     },
     {
       "eventid": 1646,
       "source": "websites",
-      "name": "http_header_value_changed",
+      "name": "webcheck_changed_field",
       "category": "website",
-      "default_level": null,
-      "is_change": true
+      "default_level": 4,
+      "is_change": true,
+      "title": "Website header changed",
+      "action": "modified"
     },
     {
       "eventid": 1648,
       "source": "websites",
-      "name": "software_detected_on_website",
+      "name": "webcheck_changed_apps_added",
       "category": "website",
-      "default_level": null,
-      "is_change": true
+      "default_level": 1,
+      "is_change": true,
+      "title": "Website technology added",
+      "action": "created"
     },
     {
       "eventid": 1649,
       "source": "websites",
-      "name": "software_removed_from_website",
+      "name": "webcheck_changed_apps_removed",
       "category": "website",
-      "default_level": null,
-      "is_change": true
+      "default_level": 1,
+      "is_change": true,
+      "title": "Website technology removed",
+      "action": "deleted"
     },
     {
       "eventid": 1655,
       "source": "websites",
-      "name": "http_header_changed",
+      "name": "webcheck_changed_field_long",
       "category": "website",
-      "default_level": null,
-      "is_change": true
+      "default_level": 4,
+      "is_change": true,
+      "title": "Website header changed (long value)",
+      "action": "modified"
     },
     {
       "eventid": 1657,
       "source": "websites",
-      "name": "website_found_on_host",
+      "name": "webcheck_new_website_from_a_record",
       "category": "website",
       "default_level": null,
-      "is_change": false
+      "is_change": false,
+      "title": "New website found (IPv4)",
+      "action": null
     },
     {
       "eventid": 1663,
       "source": "websites",
-      "name": "website_found_at_cloud_provider",
+      "name": "webcheck_new_website_from_aaaa_record",
       "category": "website",
       "default_level": null,
-      "is_change": false
+      "is_change": false,
+      "title": "New website found (IPv6)",
+      "action": null
     },
     {
       "eventid": 1664,
       "source": "websites",
-      "name": "url_discovered_and_suggested_from_website",
-      "category": "discovery",
-      "default_level": null,
-      "is_change": false
+      "name": "webcheck_new_url_from_redirect",
+      "category": "website",
+      "default_level": 60,
+      "is_change": false,
+      "title": "New URL found in website redirect",
+      "action": null
     },
     {
       "eventid": 1668,
       "source": "websites",
-      "name": "website_security_grade_changed",
+      "name": "webcheck_grade_change",
       "category": "website",
       "default_level": null,
-      "is_change": true
+      "is_change": false,
+      "title": "Website security grade changed",
+      "action": null
     },
     {
       "eventid": 1683,
       "source": "websites",
-      "name": "ip_discovered_and_added_from_website",
-      "category": "discovery",
-      "default_level": null,
-      "is_change": false
+      "name": "webcheck_find_new_host",
+      "category": "website",
+      "default_level": 60,
+      "is_change": false,
+      "title": "New host found for website",
+      "action": null
     },
     {
       "eventid": 1801,
       "source": "whois",
-      "name": "whois_record_found",
+      "name": "whois_new_record_found",
       "category": "domain",
-      "default_level": null,
-      "is_change": false
+      "default_level": 50,
+      "is_change": false,
+      "title": "WHOIS record found",
+      "action": null
     },
     {
       "eventid": 1826,
       "source": "whois",
-      "name": "whois_record_renewed",
+      "name": "whois_renewed",
       "category": "domain",
-      "default_level": null,
-      "is_change": true
+      "default_level": 6,
+      "is_change": true,
+      "title": "Domain renewed",
+      "action": "modified"
     },
     {
       "eventid": 1840,
       "source": "rdap",
-      "name": "rdap_record_found",
+      "name": "rdap_new_record_found",
       "category": "domain",
-      "default_level": null,
-      "is_change": false
+      "default_level": 50,
+      "is_change": false,
+      "title": "RDAP record found",
+      "action": null
     },
     {
       "eventid": 3001,
       "source": "phish",
-      "name": "phishy_lookalike_domain_detected",
+      "name": "phish_new_phishy_domain",
       "category": "phishing",
-      "default_level": null,
-      "is_change": false
+      "default_level": 61,
+      "is_change": false,
+      "title": "New phishy domain found",
+      "action": null
     },
     {
       "eventid": 3005,
       "source": "phish",
-      "name": "phishy_lookalike_domain_changed",
+      "name": "phish_changed_phishy_domain",
       "category": "phishing",
-      "default_level": null,
-      "is_change": true
+      "default_level": 61,
+      "is_change": true,
+      "title": "Phishy domain changed",
+      "action": "modified"
     },
     {
       "eventid": 3101,
       "source": "hibp",
-      "name": "e_mail_address_found_in_data_breaches",
+      "name": "hibp_new_breaches_found",
       "category": "breach",
-      "default_level": null,
-      "is_change": false
+      "default_level": 40,
+      "is_change": false,
+      "title": "New data breaches found",
+      "action": null
     },
     {
       "eventid": 3304,
       "source": "reachability",
-      "name": "website_is_down",
+      "name": "reachability_website_down",
       "category": "availability",
-      "default_level": null,
-      "is_change": false
+      "default_level": 91,
+      "is_change": true,
+      "title": "Website down",
+      "action": null
     },
     {
       "eventid": 3306,
-      "source": "cisa",
-      "name": "actively_exploited_cve_cisa_kev_may_affect_assets",
+      "source": "cves",
+      "name": "cisa_kev_added",
       "category": "vulnerability",
       "default_level": null,
-      "is_change": false
+      "is_change": true,
+      "title": "CISA known exploited vulnerability",
+      "action": "created"
     },
     {
       "eventid": 3307,
-      "source": "ncsc",
-      "name": "ncsc_advisory_may_affect_assets",
+      "source": "cves",
+      "name": "ncsc_advisory_published",
       "category": "vulnerability",
-      "default_level": null,
-      "is_change": false
+      "default_level": 81,
+      "is_change": false,
+      "title": "NCSC advisory",
+      "action": null
     },
     {
       "eventid": 3308,
       "source": "websites",
-      "name": "security_header_check_no_longer_passes",
+      "name": "observatory_test_regressed",
       "category": "website",
-      "default_level": null,
-      "is_change": true
+      "default_level": 50,
+      "is_change": true,
+      "title": "Website security test regressed",
+      "action": "modified"
     },
     {
       "eventid": 3309,
       "source": "websites",
-      "name": "security_header_check_passes_again",
+      "name": "observatory_test_fixed",
       "category": "website",
-      "default_level": null,
-      "is_change": true
+      "default_level": 20,
+      "is_change": true,
+      "title": "Website security test fixed",
+      "action": "modified"
     },
     {
       "eventid": 3310,
       "source": "ssl",
-      "name": "tls_check_status_worsened",
+      "name": "testssl_check_regressed",
       "category": "certificate",
-      "default_level": null,
-      "is_change": true
+      "default_level": 50,
+      "is_change": true,
+      "title": "TLS check regressed",
+      "action": "modified"
     },
     {
       "eventid": 3311,
       "source": "ssl",
-      "name": "tls_check_ok_again",
+      "name": "testssl_check_improved",
       "category": "certificate",
-      "default_level": null,
-      "is_change": true
+      "default_level": 20,
+      "is_change": true,
+      "title": "TLS check improved",
+      "action": "modified"
     },
     {
       "eventid": 3312,
       "source": "websites",
-      "name": "possible_subdomain_takeover",
+      "name": "webcheck_possible_takeover",
       "category": "website",
-      "default_level": null,
-      "is_change": false
+      "default_level": 81,
+      "is_change": false,
+      "title": "Possible subdomain takeover",
+      "action": null
     },
     {
       "eventid": 3313,
       "source": "websites",
-      "name": "no_longer_a_possible_subdomain_takeover",
+      "name": "webcheck_possible_takeover_gone",
       "category": "website",
-      "default_level": null,
-      "is_change": true
-    },
-    {
-      "eventid": 3320,
-      "source": "dns",
-      "name": "dmarc_policy_weakened",
-      "category": "dns",
-      "default_level": 81,
-      "is_change": true
+      "default_level": 20,
+      "is_change": true,
+      "title": "Possible subdomain takeover resolved",
+      "action": "deleted"
     }
   ]
 }

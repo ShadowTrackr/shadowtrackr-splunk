@@ -9,16 +9,20 @@ fallback to time windows stays testable.
 v4 behaviour:
   * POST /api/v4/<endpoint>, "Authorization: Bearer <key>"
   * 401 for a missing or unknown key, 403 without API access or for an
-    organization outside the group, JSON 404 for unknown endpoints, 400 for
-    parameters that are not allowed
+    organization outside the group, 400 for parameters that are not allowed,
+    JSON 404 for unknown endpoints (live still answers HTML until nginx is
+    updated; the client handles both)
   * events:
       since_id/limit  ids > since_id ascending, limit default 1000, max 5000,
-                      next_since_id in the envelope
+                      next_since_id and latest_id in the envelope
+      limit only      the newest N, newest first, plus latest_id
       start + stop    the inclusive window, grouped by (source, eventid)
       start only      everything from start, grouped the same way
       no parameters   the newest 1000, newest first
       min_level       level greater than the value
+      level_gte       level greater than or equal to the value
       organization_id group keys only
+  * events carry organization only for group keys (as on live)
   * event_types with optional category / source / eventid filters
   * organizations for group keys
 
@@ -63,7 +67,7 @@ KEY_ORGS = {DEFAULT_API_KEY: {1470062}, GROUP_API_KEY: {1470062, 1470063}}
 
 LEGACY_KEYS = ("timestamp", "eventid", "level", "source", "msg", "cs1", "request", "dst", "fname")
 EVENT_PARAMS = {"since_id", "limit", "start", "stop", "update_only", "updates_only", "update",
-                "output_format", "min_level", "organization_id", "api_key"}
+                "output_format", "min_level", "level_gte", "organization_id", "api_key"}
 
 NOT_FOUND_HTML = b"<!DOCTYPE html><html><head><title>404 Page not found</title></head><body>Not found</body></html>"
 
@@ -141,6 +145,11 @@ def _int_param(body, name, default=None, minimum=None):
     return value
 
 
+def org_for(event):
+    """The fixtures come from one organization; spread them over two for the group key."""
+    return ORGANIZATIONS[1] if event.get("id", 0) % 5 == 0 else ORGANIZATIONS[0]
+
+
 class MockAPI:
     def __init__(self, events, event_types, legacy=False):
         self.events = events
@@ -153,12 +162,12 @@ class MockAPI:
             event = dict(event)
             if not self.legacy:
                 event["id"] = max([e.get("id", 0) for e in self.events] + [0]) + 1
-                event.setdefault("organization", {"id": 1470062, "name": "Customer A"})
             event.setdefault("timestamp", _fmt_ts(datetime.now(timezone.utc)))
             self.events.append(event)
             return event
 
     def events_for(self, key, body):
+        """Events visible to a key. Only group keys get an organization field."""
         orgs = KEY_ORGS.get(key, set())
         if "organization_id" in body:
             org_id = _int_param(body, "organization_id")
@@ -168,7 +177,10 @@ class MockAPI:
                 return 403, "Organization not in this group"
             orgs = {org_id}
         with self.lock:
-            return 200, [e for e in self.events if e.get("organization", {}).get("id") in orgs]
+            visible = [e for e in self.events if org_for(e)["oid"] in orgs]
+        if key == GROUP_API_KEY:
+            visible = [dict(e, organization={"id": org_for(e)["oid"], "name": org_for(e)["name"]}) for e in visible]
+        return 200, visible
 
 
 def make_handler(api, api_key):
@@ -275,14 +287,22 @@ def make_handler(api, api_key):
             status, events = api.events_for(key, body)
             if status != 200:
                 return self._error(status, events)
+            # latest_id covers every level the key can see, before level filters.
+            latest_id = max([e["id"] for e in events] + [0])
             min_level = _int_param(body, "min_level")
             if min_level is not None:
                 events = [e for e in events if e["level"] > min_level]
+            level_gte = _int_param(body, "level_gte")
+            if level_gte is not None:
+                events = [e for e in events if e["level"] >= level_gte]
+            limit = min(_int_param(body, "limit", EVENTS_DEFAULT_LIMIT, minimum=1), EVENTS_MAX_LIMIT)
             if "since_id" in body:
                 since_id = _int_param(body, "since_id", minimum=0)
-                limit = _int_param(body, "limit", EVENTS_DEFAULT_LIMIT, minimum=1)
-                page, next_since_id = page_events(events, since_id, min(limit, EVENTS_MAX_LIMIT))
-                return self._send(200, self._envelope(page, next_since_id=next_since_id))
+                page, next_since_id = page_events(events, since_id, limit)
+                return self._send(200, self._envelope(page, next_since_id=next_since_id, latest_id=latest_id))
+            if "limit" in body and not (body.get("start") or body.get("stop")):
+                newest = sorted(events, key=lambda e: e["timestamp"], reverse=True)[:limit]
+                return self._send(200, self._envelope(newest, latest_id=latest_id))
             return self._send(200, self._envelope(filter_events(events, body)))
 
         def _event_types(self, body):

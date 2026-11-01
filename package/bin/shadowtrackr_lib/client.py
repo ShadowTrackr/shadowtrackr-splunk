@@ -44,6 +44,12 @@ class APIError(ShadowTrackrError):
     """Any other error reported by the API or an unexpected response."""
 
 
+def _int_or_none(value: Any) -> Optional[int]:
+    if isinstance(value, bool) or not isinstance(value, int):
+        return None
+    return value
+
+
 def _parse_retry_after(value: Optional[str]) -> Optional[float]:
     """Parse a Retry-After header given in seconds. HTTP dates are ignored."""
     try:
@@ -202,9 +208,13 @@ class ShadowTrackrClient:
         """
         return self.post("events", {"start": start, "stop": stop})
 
-    def events_latest(self) -> List[Dict[str, Any]]:
-        """Return the newest events (at most 1000), newest first."""
-        return self.post("events", {})
+    def latest_id(self) -> Optional[int]:
+        """Highest event id the key can see (envelope latest_id), or None.
+
+        None means the API version has no event ids.
+        """
+        envelope = self.request("events", {"limit": 1})
+        return _int_or_none(envelope.get("latest_id"))
 
     def events_since(self, since_id: int, limit: int) -> Tuple[List[Dict[str, Any]], Optional[int]]:
         """Return events with id > since_id, ascending by id, and next_since_id.
@@ -215,10 +225,7 @@ class ShadowTrackrClient:
         data = envelope.get("data") or []
         if not isinstance(data, list):
             raise APIError("Unexpected 'data' type from events: {}".format(type(data).__name__))
-        next_since_id = envelope.get("next_since_id")
-        if isinstance(next_since_id, bool) or not isinstance(next_since_id, int):
-            next_since_id = None
-        return data, next_since_id
+        return data, _int_or_none(envelope.get("next_since_id"))
 
     def event_types(self) -> List[Dict[str, Any]]:
         """Return the event type catalogue (eventid, name, category, ...)."""

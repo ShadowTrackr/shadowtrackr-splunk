@@ -15,6 +15,8 @@ Redaction is deterministic within one run:
                         others example-N.net; non-generic labels become hN
   * e-mail addresses -> userN@example.org
   * serials, ids and long hex strings -> fake values
+  * nested values (changes, ports, affected_assets, ...) are redacted too;
+    event ids, levels and other non-identifying keys are kept
 
 The output still has to be reviewed by a human before it is committed.
 """
@@ -27,15 +29,24 @@ import random
 import re
 import sys
 
-TLDS = ("com", "net", "org", "io", "me", "cloud", "de", "uk", "nl", "eu", "app", "at", "host",
-        "dev", "co", "be", "ch", "fr", "info", "biz", "default", "local", "internal")
+# Any alphabetic TLD counts, except tokens that are file names or versions
+# in this data (jquery.min.js, style.css, ...).
+NOT_TLDS = ("js", "css", "php", "html", "htm", "json", "xml", "txt", "png", "jpg", "jpeg", "gif", "svg",
+            "ico", "map", "woff", "woff2", "ttf", "asp", "aspx", "jsp", "cgi", "pl", "py", "sh", "exe", "zip",
+            "gz", "min", "net_", "x", "v")
 GENERIC_LABELS = {"www", "mail", "api", "admin", "docs", "app", "dev", "test", "staging", "monitoring",
                   "grafana", "vpn", "remote", "portal", "shop", "blog", "events", "status", "ftp",
                   "smtp", "mx", "ns1", "ns2", "old", "auth", "login", "cdn", "static", "git"}
 DOC_V4_NETS = ("192.0.2.", "198.51.100.", "203.0.113.")
+# Public domains that must stay readable (deep links into the ShadowTrackr GUI).
+PRESERVE_DOMAINS = {"shadowtrackr.com"}
+# Keys whose values are never customer data.
+KEEP_KEYS = {"timestamp", "source", "id", "eventid", "level", "asset_type", "action", "status", "state",
+             "cvss", "cvss_severity", "attribute", "grade", "previous_grade", "protocol", "port"}
 
 HOST_RE = re.compile(
-    r"(?<![\w-])(?<![\w-]\.)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:%s)(?![\w-])" % "|".join(TLDS),
+    r"(?<![\w-])(?<![\w-]\.)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?!(?:%s)(?![\w-]))[a-z]{2,24}(?![\w-])"
+    % "|".join(NOT_TLDS),
     re.IGNORECASE,
 )
 EMAIL_RE = re.compile(r"[\w.+-]+@([\w-]+\.)+[a-z]{2,}", re.IGNORECASE)
@@ -72,7 +83,7 @@ class Redactor:
     def host(self, match):
         host = match.group(0)
         reg = registered_domain(host)
-        if reg == "example.org" or reg in self.domains.values():
+        if reg == "example.org" or reg in self.domains.values() or reg in PRESERVE_DOMAINS:
             # Already a placeholder (e.g. from the e-mail pass).
             return host
         prefix = host[: len(host) - len(reg)].rstrip(".")
@@ -139,9 +150,19 @@ class Redactor:
         value = HOST_RE.sub(self.host, value)
         return value
 
+    def value(self, value, key=None):
+        if key in KEEP_KEYS:
+            return value
+        if isinstance(value, str):
+            return self.text(value)
+        if isinstance(value, list):
+            return [self.value(v) for v in value]
+        if isinstance(value, dict):
+            return {k: self.value(v, k) for k, v in value.items()}
+        return value
+
     def event(self, event):
-        return {k: self.text(v) if isinstance(v, str) and k not in ("timestamp", "source") else v
-                for k, v in event.items()}
+        return self.value(event)
 
 
 def select(events, per_type, rng):
@@ -157,7 +178,8 @@ def select(events, per_type, rng):
         else:
             step = len(items) / per_type
             chosen.extend(items[int(i * step)] for i in range(per_type))
-    return sorted(chosen, key=lambda e: e["timestamp"])
+    # Keep the API's order: by id when events have one, else by time.
+    return sorted(chosen, key=lambda e: (e.get("id", 0), e["timestamp"]))
 
 
 def main():
@@ -169,7 +191,8 @@ def main():
     args = parser.parse_args()
 
     with open(args.raw, encoding="utf-8") as f:
-        data = json.load(f)["data"]
+        raw = json.load(f)
+    data = raw["data"] if isinstance(raw, dict) else raw
     rng = random.Random(args.seed)
     selected = select(data, args.per_type, rng)
 

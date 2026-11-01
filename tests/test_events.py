@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from mock_api.server import DEFAULT_API_KEY, LEGACY_KEYS, filter_events, page_events
+from mock_api.server import DEFAULT_API_KEY, LEGACY_KEYS, filter_events, org_for, page_events
 from shadowtrackr_lib.client import ShadowTrackrClient, TransientError
 from shadowtrackr_lib.events import (
     RESPONSE_CAP,
@@ -154,9 +154,11 @@ class FakeClient:
         self._record(("window", start, stop))
         return filter_events(self.data, {"start": start, "stop": stop})
 
-    def events_latest(self):
-        self._record(("latest",))
-        return filter_events(self.data, {})
+    def latest_id(self):
+        self._record(("latest_id",))
+        if self.legacy:
+            return None
+        return max([e["id"] for e in self.data] + [0])
 
     def events_since(self, since_id, limit):
         self._record(("since", since_id, limit))
@@ -303,8 +305,8 @@ def test_events_without_timestamp_are_skipped_in_window_mode(logger):
     now = dt("2026-10-30T12:00:00Z")
 
     class Client:
-        def events_latest(self):
-            return [{"eventid": 9, "msg": "x"}]
+        def latest_id(self):
+            return None
 
         def events(self, start, stop):
             return [{"eventid": 1, "msg": "no time"}, {"timestamp": "2026-10-30T11:00:00Z", "eventid": 2, "msg": "ok"}]
@@ -318,8 +320,8 @@ def test_window_returning_exactly_the_cap_is_split(logger):
     calls = []
 
     class CappedClient:
-        def events_latest(self):
-            return [{"eventid": 9, "msg": "no ids"}]
+        def latest_id(self):
+            return None
 
         def events(self, start, stop):
             calls.append((start, stop))
@@ -500,6 +502,17 @@ def test_event_without_timestamp_uses_index_time_in_id_mode(logger):
     assert h.written[0][1] is None
 
 
+def test_bootstrap_uses_latest_id_not_newest_event(fixture_events, logger):
+    """A late insert can have a higher id than the newest event by time."""
+    now = newest(fixture_events) + timedelta(minutes=5)
+    client = FakeClient(fixture_events)
+    late = client.insert(late_event(now - timedelta(days=200), "late insert, far outside the backfill"))
+    h = Harness(client, now, logger, backfill=timedelta(days=2))
+    h.run()
+    assert h.state["since_id"] == late["id"]
+    assert "late insert, far outside the backfill" not in [rec["msg"] for rec, _ in h.written]
+
+
 def test_empty_account_starts_id_mode_at_zero(logger):
     now = dt("2026-10-30T12:00:00Z")
     h = Harness(FakeClient([]), now, logger, backfill=timedelta(days=1))
@@ -512,7 +525,7 @@ def test_empty_account_starts_id_mode_at_zero(logger):
 
 def test_collector_with_mock_v4(mock_server_v4, fixture_events, logger):
     client = ShadowTrackrClient(DEFAULT_API_KEY, base_url=mock_server_v4.url)
-    org_a = [e for e in fixture_events if e["organization"]["id"] == 1470062]
+    org_a = [e for e in fixture_events if org_for(e)["name"] == "Customer A"]
     now = newest(fixture_events) + timedelta(minutes=5)
     h = Harness(client, now, logger, backfill=timedelta(days=60))
     assert h.run() == len(org_a)

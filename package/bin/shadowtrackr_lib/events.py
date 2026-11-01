@@ -20,7 +20,7 @@ window mode (older API without ids, and the backfill on first install)
   * the checkpoint is saved after each window has been written
 
 Bootstrap (first install, or upgrading from a window checkpoint):
-  1. read the newest events and remember the highest id, M0
+  1. remember the highest event id the API reports (latest_id), M0
   2. backfill with windows, remembering ids above M0 that were written
   3. continue in id mode from M0, skipping the ids written in step 2
 Every event inserted after step 1 has an id above M0, so there is no gap.
@@ -257,20 +257,16 @@ class EventCollector:
     # --- id mode ----------------------------------------------------------
 
     def _latest_id(self) -> Optional[int]:
-        """Highest event id right now, or None if the API has no ids."""
-        latest = self.client.events_latest()
-        ids = [i for i in (event_id(e) for e in latest) if i is not None]
-        if ids:
-            return max(ids)
-        if latest:
-            self.logger.info("API has no event ids, using time windows")
-            return None
-        # No events at all yet: a since_id probe tells whether ids exist.
-        _, next_since_id = self.client.events_since(0, 1)
-        if next_since_id is None:
-            self.logger.info("API has no since_id paging, using time windows")
-            return None
-        return 0
+        """Highest event id right now (M0), or None if the API has no ids.
+
+        latest_id from the API is used rather than the newest event's id: a
+        late insert can have a higher id than the newest event by time.
+        """
+        latest = self.client.latest_id()
+        if latest is not None:
+            return latest
+        self.logger.info("API has no event ids, using time windows")
+        return None
 
     def _run_id_mode(self, checkpoint: Checkpoint, stop: datetime) -> int:
         since = checkpoint.since_id

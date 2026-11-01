@@ -3,7 +3,7 @@ import socket
 
 import pytest
 
-from mock_api.server import DEFAULT_API_KEY, GROUP_API_KEY, NO_ACCESS_KEY
+from mock_api.server import DEFAULT_API_KEY, GROUP_API_KEY, NO_ACCESS_KEY, org_for
 from shadowtrackr_lib.client import (
     APIError,
     AuthError,
@@ -222,7 +222,7 @@ def test_request_returns_non_list_data():
 
 
 def org_a(events):
-    return [e for e in events if e["organization"]["id"] == 1470062]
+    return [e for e in events if org_for(e)["name"] == "Customer A"]
 
 
 def test_mock_events_window(mock_api, fixture_events):
@@ -244,6 +244,35 @@ def test_mock_since_id_paging(mock_api, fixture_events):
     assert ids == sorted(ids)
     assert len(ids) == len(org_a(fixture_events))
     assert client.events_since(since, 50) == ([], since)
+
+
+def test_mock_latest_id(mock_api, fixture_events):
+    client = ShadowTrackrClient(DEFAULT_API_KEY, base_url=mock_api)
+    assert client.latest_id() == max(e["id"] for e in org_a(fixture_events))
+
+
+def test_mock_limit_alone_returns_newest(mock_api, fixture_events):
+    client = ShadowTrackrClient(DEFAULT_API_KEY, base_url=mock_api)
+    envelope = client.request("events", {"limit": 3})
+    times = [e["timestamp"] for e in envelope["data"]]
+    assert len(times) == 3 and times == sorted(times, reverse=True)
+    assert envelope["latest_id"] == max(e["id"] for e in org_a(fixture_events))
+
+
+def test_mock_level_gte_includes_the_value(mock_api):
+    client = ShadowTrackrClient(DEFAULT_API_KEY, base_url=mock_api)
+    gte = client.post("events", {"since_id": 0, "limit": 5000, "level_gte": 90})
+    assert gte and all(e["level"] >= 90 for e in gte) and any(e["level"] == 90 for e in gte)
+
+
+def test_mock_normal_key_has_no_organization(mock_api):
+    client = ShadowTrackrClient(DEFAULT_API_KEY, base_url=mock_api)
+    page, _ = client.events_since(0, 10)
+    assert page and all("organization" not in e for e in page)
+
+
+def test_latest_id_is_none_on_legacy_api(mock_api_legacy):
+    assert ShadowTrackrClient(DEFAULT_API_KEY, base_url=mock_api_legacy).latest_id() is None
 
 
 def test_mock_limit_is_clamped(mock_api):
