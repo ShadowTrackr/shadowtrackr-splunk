@@ -37,11 +37,63 @@ Searches use these macros, so the index is set in one place:
 | `shadowtrackr_webhook_alerts` | alert results pushed by webhook |
 | `shadowtrackr_inventory_summary` | per-run inventory counts |
 
-Example: enrich firewall logs with ShadowTrackr's view of the destination:
+The lookups also work directly, e.g.
+`index=firewall | lookup shadowtrackr_hosts ip AS dest_ip OUTPUT services vulnerable problems`.
+
+## Search commands
+
+### `| stenrich`: add ShadowTrackr context to any search
 
 ```
-index=firewall | lookup shadowtrackr_hosts ip AS dest_ip OUTPUT services vulnerable problems
+index=firewall action=allowed | stenrich field=dest_ip | where st_known=1 AND st_vulnerable=1
+index=proxy | stenrich field=url | where st_phishy=1
 ```
+
+`stenrich field=<field> [type=auto|ip|domain] [prefix=st_]` looks up IPs,
+hostnames and URLs (URLs, `host:port` and `user@host` are reduced to the host)
+in the inventory lookups and adds:
+
+| Field | Meaning |
+|---|---|
+| `st_known` | 1 if ShadowTrackr knows this asset (host, website, certificate, DNS name or URL) |
+| `st_in_scope` | 1 if known, or a subdomain of one of your domains that ShadowTrackr has not found (yet) |
+| `st_asset_type` | host, website, certificate, hostname, url |
+| `st_organization` | organization (group keys) |
+| `st_ip`, `st_hostnames`, `st_domain` | IPs a name resolves to, names on an IP, your parent domain |
+| `st_ports`, `st_services`, `st_software` | open TCP ports, services, detected software |
+| `st_country`, `st_asn_name`, `st_cloud_provider` | location and network |
+| `st_problem`, `st_warning`, `st_problems`, `st_warnings`, `st_tags` | ShadowTrackr findings |
+| `st_vulnerable`, `st_cves`, `st_cve_count`, `st_max_cvss`, `st_exploited`, `st_cisa_kev` | CVEs on this asset |
+| `st_web_grade`, `st_cert_grade`, `st_cert_expires`, `st_cert_issuer` | website and certificate (worst grade, soonest expiry) |
+| `st_phishy`, `st_lookalike_of`, `st_phishy_score` | the name is (a subdomain of) a phishy lookalike domain |
+| `st_first_seen`, `st_last_seen` | when ShadowTrackr first and last saw it |
+
+It makes no API calls: the data comes from the ShadowTrackr Inventory input,
+so any role that can read the app's lookups can use it. Each distinct value
+is looked up once per search, and lookups are batched, so it is fine on large
+searches. It runs on the search head.
+
+### `| shadowtrackr`: live queries
+
+```
+| shadowtrackr query="index=hosts problem=yes"
+| shadowtrackr query="index=certificates by issuer earliest=-7d"
+| shadowtrackr query="index=events earliest=-1d level>=80" | stats count by source
+```
+
+`shadowtrackr query="<query>" [account=<name>] [max_results=10000]` runs a
+query in the ShadowTrackr search language (the same as the search box in
+ShadowTrackr, see the [search docs](https://www.shadowtrackr.com/docs_v3/3-Search-and-Queries))
+against the API and returns the rows. Comma-separated lists such as
+`tcp_ports` and `software` become multivalue fields and booleans become 1/0.
+Without `account=` the only configured account is used. The **Search
+explorer** dashboard is a front end for it.
+
+The command reads the encrypted API key, which in Splunk needs the
+`list_storage_passwords` capability. Admins have it. The app deliberately
+does not grant it to other roles, because that capability exposes every
+stored secret in Splunk; other users get a clear error and can still use
+`stenrich`, the lookups and the dashboards.
 
 ### CIM mapping
 

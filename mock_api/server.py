@@ -27,6 +27,11 @@ v4 behaviour:
   * organizations for group keys (a normal key gets HTTP 200 with an error)
   * inventory list endpoints (hosts, websites, ...) from tests/fixtures/inventory;
     a group key must pass organization_id, Customer B gets a small slice
+  * query: {"q": "..."} with a small subset of the GUI query language:
+    index=<name> (or <index>.<field>:), field=value / field:value with *
+    wildcards, != > < >= <=, "by <field>" (count per value) and
+    "| table a b"; earliest/latest are accepted and ignored. Rows are
+    flattened like on live (lists become comma-separated strings).
 
 Legacy behaviour (--legacy): no ids or new fields, since_id ignored, a wrong
 key gives HTTP 200 with an "error", unknown endpoints give an HTML 404.
@@ -49,6 +54,7 @@ import argparse
 import copy
 import json
 import os
+import re
 import sys
 import threading
 import time
@@ -162,6 +168,90 @@ def _int_param(body, name, default=None, minimum=None):
     if isinstance(value, bool) or not isinstance(value, int) or (minimum is not None and value < minimum):
         raise BadRequest("Invalid value for {}".format(name))
     return value
+
+
+# Query index names (singular or plural) and the fixture they read.
+QUERY_INDEXES = {
+    "hosts": "hosts", "websites": "websites", "urls": "urls", "domains": "domains", "certificates": "certificates",
+    "dns": "dns", "suggestions": "suggestions", "emails": "exposed_email_addresses",
+    "vulnerabilities": "vulnerabilities", "phishy_domains": "phishy_domains", "events": "events",
+}
+_QUERY_TERM = re.compile(r'([\w.]+)\s*(!=|>=|<=|=>|=|:|>|<)\s*("[^"]*"|\S+)')
+
+
+def _query_index(name):
+    name = name.lower()
+    if name in QUERY_INDEXES:
+        return name
+    if name + "s" in QUERY_INDEXES:
+        return name + "s"
+    return None
+
+
+def flatten_query_row(row):
+    """A fixture row the way /query returns it: flat, lists as comma-separated strings."""
+    flat = {}
+    for key, value in row.items():
+        if isinstance(value, list):
+            if all(isinstance(v, (str, int, float, bool)) for v in value):
+                flat[key] = ",".join(str(v) for v in value)
+        elif not isinstance(value, dict):
+            flat[key] = value
+    for proto in ("tcp", "udp"):
+        if isinstance(row.get(proto), list):
+            flat[proto + "_ports"] = ",".join(str(p.get("port")) for p in row[proto] if isinstance(p, dict))
+    return flat
+
+
+def _matches(value, op, wanted):
+    if value is None:
+        return op == "!="
+    if op in (">", "<", ">=", "<=", "=>"):
+        try:
+            a, b = float(value), float(wanted)
+        except (TypeError, ValueError):
+            a, b = str(value), wanted
+        return {">": a > b, "<": a < b, ">=": a >= b, "=>": a >= b, "<=": a <= b}[op]
+    if isinstance(value, bool):
+        value = "yes" if value else "no"
+        wanted = {"true": "yes", "1": "yes", "false": "no", "0": "no"}.get(wanted.lower(), wanted.lower())
+    pattern = "^" + ".*".join(re.escape(part) for part in wanted.lower().split("*")) + "$"
+    hit = any(re.match(pattern, part.strip()) for part in str(value).lower().split(","))
+    return not hit if op == "!=" else hit
+
+
+def run_mock_query(q, data_for):
+    """Rows for a query. data_for(index) returns the flattened rows of an index."""
+    q, _, pipe = q.partition("|")
+    table = pipe.split()[1:] if pipe.strip().lower().startswith("table") else None
+    by = None
+    match = re.search(r"\bby\s+([\w.]+)", q)
+    if match:
+        by = match.group(1)
+        q = q[:match.start()] + q[match.end():]
+    index, filters = None, []
+    for field, op, value in _QUERY_TERM.findall(q):
+        value = value.strip('"')
+        if field.lower() == "index":
+            index = _query_index(value.split(".")[0])
+            continue
+        if field.lower() in ("earliest", "latest", "include_ignored"):
+            continue
+        if "." in field:
+            prefix, field = field.split(".", 1)
+            index = index or _query_index(prefix)
+        filters.append((field, "=" if op == ":" else op, value))
+    if index is None:
+        return []
+    rows = [r for r in data_for(index) if all(_matches(r.get(f), op, v) for f, op, v in filters)]
+    if by:
+        counts = {}
+        for r in rows:
+            counts[r.get(by)] = counts.get(r.get(by), 0) + 1
+        return [{by: k, "count": n} for k, n in sorted(counts.items(), key=lambda kv: -kv[1])]
+    if table:
+        rows = [{f: r.get(f) for f in table} for r in rows]
+    return rows
 
 
 def org_for(event):
@@ -292,6 +382,8 @@ def make_handler(api, api_key):
                                             "data": {"active_organizations": 2, "organizations": ORGANIZATIONS}})
                 if endpoint in INVENTORY_ENDPOINTS:
                     return self._inventory(key, endpoint, body)
+                if endpoint == "query" and not api.legacy:
+                    return self._query(key, body)
             except BadRequest as e:
                 return self._error(400, str(e))
             return self._not_found()
@@ -342,6 +434,23 @@ def make_handler(api, api_key):
             # Customer B gets a small slice of the same fixtures.
             rows = rows if org is ORGANIZATIONS[0] else rows[:3]
             return self._send(200, self._envelope(rows, organization={"id": org["oid"], "name": org["name"]}))
+
+        def _query(self, key, body):
+            q = body.get("q")
+            if not isinstance(q, str) or not q.strip():
+                raise BadRequest("Missing parameter: q")
+
+            def data_for(index):
+                if index == "events":
+                    status, events = api.events_for(key, {})
+                    rows = [dict(flatten_query_row(e), created=e.get("timestamp")) for e in events]
+                else:
+                    rows = [flatten_query_row(r) for r in api.inventory.get(QUERY_INDEXES[index], [])]
+                if key == GROUP_API_KEY:
+                    rows = [dict(r, organization=r.get("organization") or ORGANIZATIONS[0]["name"]) for r in rows]
+                return rows
+
+            return self._send(200, self._envelope(run_mock_query(q, data_for)))
 
         def _event_types(self, body):
             rows = api.event_types
