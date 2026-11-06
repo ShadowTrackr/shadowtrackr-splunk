@@ -288,7 +288,7 @@
             "type": "ds.search",
             "name": "CVE findings over time",
             "options": {
-                "query": "`shadowtrackr_inventory_summary` type=cves status=ok | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=12h | stats latest(present) as present by _time, input, organization | timechart span=12h sum(present) as \"CVE findings\"",
+                "query": "`shadowtrackr_inventory_summary` type=cves status=ok | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=1d | stats latest(present) as present by _time, input, organization | timechart span=1d sum(present) as \"CVE findings\" | filldown \"CVE findings\"",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"

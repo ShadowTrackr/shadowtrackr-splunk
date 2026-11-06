@@ -23,10 +23,12 @@ NEUTRAL = "#c3c2b7"  # secondary text on the dark surface
 HEADER = 90
 
 # Inventory trend from the summary events: the latest count per input and
-# organization in each 12-hour bucket, summed across organizations.
-TREND = (' | fillnull value="-" organization | bin _time span=12h'
+# organization per day, summed across organizations. The inventory syncs on
+# weekdays during office hours, so days without a sync (weekends) carry the
+# last count forward instead of dropping to a gap.
+TREND = (' | fillnull value="-" organization | bin _time span=1d'
          ' | stats latest(present) as present by _time, input, organization'
-         ' | timechart span=12h sum(present) as "{}"')
+         ' | timechart span=1d sum(present) as "{label}" | filldown "{label}"')
 TIME_TOKENS = {"earliest": "$global_time.earliest$", "latest": "$global_time.latest$"}
 
 
@@ -160,7 +162,7 @@ def overview():
     def surface(title):
         inv_type, label = title
         return ('`shadowtrackr_inventory_summary` status=ok type={} | where "$org$"="*" OR organization="$org$"'
-                + TREND).format(inv_type, label)
+                + TREND).format(inv_type, label=label)
 
     org, ds_orgs = org_input("`shadowtrackr_events` vendor_account=* | stats count by vendor_account"
                              " | rename vendor_account AS org_name")
@@ -292,7 +294,7 @@ def vulnerabilities():
             " | table Severity CVEs", time=False),
         "ds_trend": ds("CVE findings over time",
                        ('`shadowtrackr_inventory_summary` type=cves status=ok'
-                        ' | where "$org$"="*" OR organization="$org$"' + TREND).format("CVE findings")),
+                        ' | where "$org$"="*" OR organization="$org$"' + TREND).format(label="CVE findings")),
         "ds_top_cves": ds(
             "Top CVEs",
             cves + " | stats max(cvss) as CVSS max(exploited) as exploited max(cisa_kev) as kev"

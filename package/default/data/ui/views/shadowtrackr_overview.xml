@@ -325,7 +325,7 @@
             "type": "ds.search",
             "name": "Hosts",
             "options": {
-                "query": "`shadowtrackr_inventory_summary` status=ok type=hosts | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=12h | stats latest(present) as present by _time, input, organization | timechart span=12h sum(present) as \"Hosts\"",
+                "query": "`shadowtrackr_inventory_summary` status=ok type=hosts | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=1d | stats latest(present) as present by _time, input, organization | timechart span=1d sum(present) as \"Hosts\" | filldown \"Hosts\"",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -336,7 +336,7 @@
             "type": "ds.search",
             "name": "Websites",
             "options": {
-                "query": "`shadowtrackr_inventory_summary` status=ok type=websites | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=12h | stats latest(present) as present by _time, input, organization | timechart span=12h sum(present) as \"Websites\"",
+                "query": "`shadowtrackr_inventory_summary` status=ok type=websites | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=1d | stats latest(present) as present by _time, input, organization | timechart span=1d sum(present) as \"Websites\" | filldown \"Websites\"",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -347,7 +347,7 @@
             "type": "ds.search",
             "name": "Certificates",
             "options": {
-                "query": "`shadowtrackr_inventory_summary` status=ok type=certificates | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=12h | stats latest(present) as present by _time, input, organization | timechart span=12h sum(present) as \"Certificates\"",
+                "query": "`shadowtrackr_inventory_summary` status=ok type=certificates | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=1d | stats latest(present) as present by _time, input, organization | timechart span=1d sum(present) as \"Certificates\" | filldown \"Certificates\"",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"
@@ -358,7 +358,7 @@
             "type": "ds.search",
             "name": "CVEs",
             "options": {
-                "query": "`shadowtrackr_inventory_summary` status=ok type=cves | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=12h | stats latest(present) as present by _time, input, organization | timechart span=12h sum(present) as \"CVE findings\"",
+                "query": "`shadowtrackr_inventory_summary` status=ok type=cves | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=1d | stats latest(present) as present by _time, input, organization | timechart span=1d sum(present) as \"CVE findings\" | filldown \"CVE findings\"",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"

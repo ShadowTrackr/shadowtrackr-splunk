@@ -271,8 +271,8 @@
                             "type": "interval",
                             "label": "Interval",
                             "field": "interval",
-                            "defaultValue": "43200",
-                            "help": "How often to sync the inventory, in seconds. 43200 (12 hours) is recommended.",
+                            "defaultValue": "0 7,10,13,16 * * 1-5",
+                            "help": "Seconds, or a cron schedule in the Splunk server's time zone. The default syncs every 3 hours during office hours: 07:00, 10:00, 13:00 and 16:00 on weekdays.",
                             "required": true,
                             "options": {
                                 "range": [
