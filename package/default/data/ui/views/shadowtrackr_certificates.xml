@@ -195,7 +195,16 @@
             "options": {
                 "count": 8
             },
-            "description": "Expired and expiring within 30 days, soonest first."
+            "description": "Expired and expiring within 30 days, soonest first. Click a row to open the asset in Asset 360.",
+            "eventHandlers": [
+                {
+                    "type": "drilldown.customUrl",
+                    "options": {
+                        "url": "/app/shadowtrackr/shadowtrackr_asset?form.asset=$row.URL.value$",
+                        "newTab": false
+                    }
+                }
+            ]
         },
         "viz_weak": {
             "type": "splunk.table",
@@ -206,7 +215,16 @@
             "options": {
                 "count": 8
             },
-            "description": "Grade M means the certificate does not match the name; T means it is not trusted."
+            "description": "Grade M means the certificate does not match the name; T means it is not trusted. Click a row to open the asset in Asset 360.",
+            "eventHandlers": [
+                {
+                    "type": "drilldown.customUrl",
+                    "options": {
+                        "url": "/app/shadowtrackr/shadowtrackr_asset?form.asset=$row.URL.value$",
+                        "newTab": false
+                    }
+                }
+            ]
         }
     },
     "dataSources": {

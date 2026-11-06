@@ -1,0 +1,251 @@
+<dashboard version="2" theme="dark">
+    <label>Search explorer</label>
+    <description>Run live queries against the ShadowTrackr API.</description>
+    <definition><![CDATA[
+{
+    "title": "Search explorer",
+    "description": "Run live queries against the ShadowTrackr API.",
+    "inputs": {
+        "input_q": {
+            "type": "input.text",
+            "title": "Query",
+            "options": {
+                "token": "q",
+                "defaultValue": "index=hosts problem=yes"
+            }
+        },
+        "input_account": {
+            "type": "input.dropdown",
+            "title": "Account",
+            "dataSources": {
+                "primary": "ds_accounts"
+            },
+            "options": {
+                "token": "account",
+                "selectFirstSearchResult": true,
+                "items": ">frame(label, value) | objects()"
+            },
+            "context": {
+                "label": ">primary | seriesByName(\"label\") | renameSeries(\"label\") | formatByType(fmt)",
+                "value": ">primary | seriesByName(\"value\") | renameSeries(\"value\") | formatByType(fmt)",
+                "fmt": {
+                    "string": {}
+                }
+            }
+        },
+        "input_max": {
+            "type": "input.dropdown",
+            "title": "Max rows",
+            "options": {
+                "token": "max",
+                "defaultValue": "1000",
+                "items": [
+                    {
+                        "label": "100",
+                        "value": "100"
+                    },
+                    {
+                        "label": "1,000",
+                        "value": "1000"
+                    },
+                    {
+                        "label": "10,000",
+                        "value": "10000"
+                    }
+                ]
+            }
+        }
+    },
+    "defaults": {},
+    "visualizations": {
+        "viz_logo": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/shadowtrackr/images/logo_tile.png",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.customUrl",
+                    "options": {
+                        "url": "https://shadowtrackr.com/usr/",
+                        "newTab": true
+                    }
+                }
+            ]
+        },
+        "viz_title": {
+            "type": "splunk.markdown",
+            "options": {
+                "markdown": "## ShadowTrackr\nSearch explorer \u00b7 [Open ShadowTrackr](https://shadowtrackr.com/usr/) \u00b7 [Documentation](https://shadowtrackr.com/docs)"
+            }
+        },
+        "viz_help": {
+            "type": "splunk.markdown",
+            "options": {
+                "markdown": "Runs a live query against the ShadowTrackr API with `| shadowtrackr`, in the same language as the ShadowTrackr search box ([syntax](https://www.shadowtrackr.com/docs_v3/3-Search-and-Queries)). Type a query or click an example, then press **Submit**. Every submit is an API call. Needs a role with the list_storage_passwords capability (admin). Use **Open in Search** on the results to continue in SPL.",
+                "fontColor": "#c3c2b7"
+            }
+        },
+        "viz_count": {
+            "type": "splunk.singlevalue",
+            "title": "Rows",
+            "dataSources": {
+                "primary": "ds_count"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_results": {
+            "type": "splunk.table",
+            "title": "Results",
+            "dataSources": {
+                "primary": "ds_results"
+            },
+            "options": {
+                "count": 15
+            }
+        },
+        "viz_examples": {
+            "type": "splunk.table",
+            "title": "Examples",
+            "description": "Click a row to use the query.",
+            "dataSources": {
+                "primary": "ds_examples"
+            },
+            "options": {
+                "count": 12
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.setToken",
+                    "options": {
+                        "tokens": [
+                            {
+                                "token": "q",
+                                "key": "row.Query.value"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    "dataSources": {
+        "ds_results": {
+            "type": "ds.search",
+            "name": "Query results",
+            "options": {
+                "query": "| shadowtrackr query=$q|s$ account=$account|s$ max_results=$max$"
+            }
+        },
+        "ds_count": {
+            "type": "ds.chain",
+            "name": "Rows",
+            "options": {
+                "extend": "ds_results",
+                "query": "| stats count AS Rows"
+            }
+        },
+        "ds_examples": {
+            "type": "ds.search",
+            "name": "Examples",
+            "options": {
+                "query": "| makeresults format=csv data=\"Query,Shows\nindex=hosts problem=yes,Hosts with a problem\nindex=hosts remote_login_services=true,Hosts with a remote login service such as SSH or RDP\nindex=hosts by country,Hosts per country\nindex=websites https_status>=500,Websites answering with a server error\nindex=websites warning=yes earliest=-7d,Websites with a warning seen in the last 7 days\nindex=certificates by issuer earliest=-7d,Certificates seen in the last 7 days per issuer\nindex=certificates grade=T earliest=-7d,Untrusted certificates\nindex=dns rrtype=MX,Mail (MX) records\nindex=events earliest=-1d level>=80,Problems and warnings of the last day\nindex=events earliest=-1d by source,Events of the last day per source\nindex=suggestions,Assets ShadowTrackr suggests adding to your monitoring\nindex=emails,Exposed email addresses\" | table Query Shows"
+            }
+        },
+        "ds_accounts": {
+            "type": "ds.search",
+            "name": "Accounts",
+            "options": {
+                "query": "| rest splunk_server=local count=0 /servicesNS/nobody/shadowtrackr/configs/conf-shadowtrackr_account | where title!=\"default\" | eval label=title, value=title | sort label | table label value"
+            }
+        }
+    },
+    "layout": {
+        "type": "grid",
+        "options": {
+            "width": 1200,
+            "submitButton": true,
+            "submitOnDashboardLoad": false
+        },
+        "globalInputs": [
+            "input_q",
+            "input_account",
+            "input_max"
+        ],
+        "structure": [
+            {
+                "item": "viz_logo",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "w": 90,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_title",
+                "type": "block",
+                "position": {
+                    "x": 90,
+                    "y": 0,
+                    "w": 1110,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_count",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 90,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_help",
+                "type": "block",
+                "position": {
+                    "x": 300,
+                    "y": 90,
+                    "w": 900,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_results",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 200,
+                    "w": 1200,
+                    "h": 560
+                }
+            },
+            {
+                "item": "viz_examples",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 760,
+                    "w": 1200,
+                    "h": 470
+                }
+            }
+        ]
+    }
+}
+    ]]></definition>
+    <meta type="hiddenElements"><![CDATA[
+{
+    "hideEdit": false,
+    "hideOpenInSearch": false,
+    "hideExport": false
+}
+    ]]></meta>
+</dashboard>

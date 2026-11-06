@@ -2,6 +2,8 @@
     <view name="shadowtrackr_overview" default="true"/>
     <view name="shadowtrackr_vulnerabilities"/>
     <view name="shadowtrackr_certificates"/>
+    <view name="shadowtrackr_asset"/>
+    <view name="shadowtrackr_explorer"/>
     <view name="inputs"/>
     <view name="configuration"/>
     <view name="dashboard"/>

@@ -1,0 +1,724 @@
+<dashboard version="2" theme="dark">
+    <label>Asset 360</label>
+    <description>One asset from every angle: ShadowTrackr's inventory, findings and events, and your own logs.</description>
+    <definition><![CDATA[
+{
+    "title": "Asset 360",
+    "description": "One asset from every angle: ShadowTrackr's inventory, findings and events, and your own logs.",
+    "inputs": {
+        "input_asset": {
+            "type": "input.text",
+            "title": "Asset (IP, hostname or URL)",
+            "options": {
+                "token": "asset",
+                "defaultValue": ""
+            }
+        },
+        "input_time": {
+            "type": "input.timerange",
+            "title": "Time range (events and logs)",
+            "options": {
+                "token": "global_time",
+                "defaultValue": "-7d@h,now"
+            }
+        }
+    },
+    "defaults": {},
+    "visualizations": {
+        "viz_logo": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/shadowtrackr/images/logo_tile.png",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.customUrl",
+                    "options": {
+                        "url": "https://shadowtrackr.com/usr/",
+                        "newTab": true
+                    }
+                }
+            ]
+        },
+        "viz_title": {
+            "type": "splunk.markdown",
+            "options": {
+                "markdown": "## ShadowTrackr\nAsset 360 \u00b7 [Open ShadowTrackr](https://shadowtrackr.com/usr/) \u00b7 [Documentation](https://shadowtrackr.com/docs)"
+            }
+        },
+        "viz_intro": {
+            "type": "splunk.markdown",
+            "options": {
+                "markdown": "Everything about one asset: ShadowTrackr's view from the inventory lookups and events, and your own logs for the asset and its related IPs and hostnames. Open it from any asset in the other dashboards. The log panels use the `shadowtrackr_asset_network`, `_web`, `_auth` and `_ids` macros (CIM tags by default); point them at your indexes under Settings > Advanced search > Search macros.",
+                "fontColor": "#c3c2b7"
+            }
+        },
+        "viz_status": {
+            "type": "splunk.singlevalue",
+            "title": "Status",
+            "dataSources": {
+                "primary": "ds_status"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_ports": {
+            "type": "splunk.singlevalue",
+            "title": "Open ports",
+            "dataSources": {
+                "primary": "ds_ports"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_cve_count": {
+            "type": "splunk.singlevalue",
+            "title": "CVEs",
+            "dataSources": {
+                "primary": "ds_cve_count"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off",
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 1,
+                        "value": "#c3c2b7"
+                    },
+                    {
+                        "from": 1,
+                        "to": 1000000000000000.0,
+                        "value": "#d03b3b"
+                    }
+                ]
+            }
+        },
+        "viz_findings_count": {
+            "type": "splunk.singlevalue",
+            "title": "Problems and warnings",
+            "dataSources": {
+                "primary": "ds_findings_count"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off",
+                "majorColor": "> majorValue | rangeValue(majorColorConfig)"
+            },
+            "context": {
+                "majorColorConfig": [
+                    {
+                        "to": 1,
+                        "value": "#c3c2b7"
+                    },
+                    {
+                        "from": 1,
+                        "to": 1000000000000000.0,
+                        "value": "#c98500"
+                    }
+                ]
+            }
+        },
+        "viz_details": {
+            "type": "splunk.table",
+            "title": "Details",
+            "dataSources": {
+                "primary": "ds_details"
+            },
+            "options": {
+                "count": 18
+            }
+        },
+        "viz_findings": {
+            "type": "splunk.table",
+            "title": "Problems and warnings",
+            "dataSources": {
+                "primary": "ds_findings"
+            },
+            "options": {
+                "count": 10
+            }
+        },
+        "viz_services": {
+            "type": "splunk.table",
+            "title": "Services",
+            "dataSources": {
+                "primary": "ds_services"
+            },
+            "options": {
+                "count": 10
+            }
+        },
+        "viz_websites": {
+            "type": "splunk.table",
+            "title": "Websites",
+            "dataSources": {
+                "primary": "ds_websites"
+            },
+            "options": {
+                "count": 8
+            },
+            "description": "Click a row to open the asset in Asset 360.",
+            "eventHandlers": [
+                {
+                    "type": "drilldown.customUrl",
+                    "options": {
+                        "url": "/app/shadowtrackr/shadowtrackr_asset?form.asset=$row.URL.value$",
+                        "newTab": false
+                    }
+                }
+            ]
+        },
+        "viz_certificates": {
+            "type": "splunk.table",
+            "title": "Certificates",
+            "dataSources": {
+                "primary": "ds_certificates"
+            },
+            "options": {
+                "count": 8
+            }
+        },
+        "viz_cves": {
+            "type": "splunk.table",
+            "title": "CVEs",
+            "dataSources": {
+                "primary": "ds_cves"
+            },
+            "options": {
+                "count": 8
+            },
+            "description": "Click a row to open the CVE at NVD.",
+            "eventHandlers": [
+                {
+                    "type": "drilldown.customUrl",
+                    "options": {
+                        "url": "https://nvd.nist.gov/vuln/detail/$row.CVE.value$",
+                        "newTab": true
+                    }
+                }
+            ]
+        },
+        "viz_dns": {
+            "type": "splunk.table",
+            "title": "DNS records",
+            "dataSources": {
+                "primary": "ds_dns"
+            },
+            "options": {
+                "count": 8
+            }
+        },
+        "viz_event_timeline": {
+            "type": "splunk.column",
+            "title": "ShadowTrackr events",
+            "dataSources": {
+                "primary": "ds_event_timeline"
+            },
+            "options": {
+                "stackMode": "stacked",
+                "legendDisplay": "top",
+                "seriesColorsByField": {
+                    "Problems": "#d03b3b",
+                    "Warnings": "#c98500",
+                    "Info": "#3987e5"
+                },
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide"
+            }
+        },
+        "viz_event_list": {
+            "type": "splunk.table",
+            "title": "Latest ShadowTrackr events",
+            "dataSources": {
+                "primary": "ds_event_list"
+            },
+            "options": {
+                "count": 8
+            }
+        },
+        "viz_logs_title": {
+            "type": "splunk.markdown",
+            "options": {
+                "markdown": "### Your logs for this asset",
+                "fontColor": "#c3c2b7"
+            }
+        },
+        "viz_log_activity": {
+            "type": "splunk.column",
+            "title": "Activity in your logs",
+            "dataSources": {
+                "primary": "ds_log_activity"
+            },
+            "options": {
+                "stackMode": "stacked",
+                "legendDisplay": "top",
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide"
+            }
+        },
+        "viz_network": {
+            "type": "splunk.table",
+            "title": "Network traffic (firewall)",
+            "dataSources": {
+                "primary": "ds_network"
+            },
+            "options": {
+                "count": 8
+            }
+        },
+        "viz_web": {
+            "type": "splunk.table",
+            "title": "Web, proxy and WAF",
+            "dataSources": {
+                "primary": "ds_web"
+            },
+            "options": {
+                "count": 8
+            }
+        },
+        "viz_auth": {
+            "type": "splunk.table",
+            "title": "Authentication",
+            "dataSources": {
+                "primary": "ds_auth"
+            },
+            "options": {
+                "count": 8
+            }
+        },
+        "viz_ids": {
+            "type": "splunk.table",
+            "title": "IDS/IPS",
+            "dataSources": {
+                "primary": "ds_ids"
+            },
+            "options": {
+                "count": 8
+            }
+        }
+    },
+    "dataSources": {
+        "ds_profile": {
+            "type": "ds.search",
+            "name": "Profile",
+            "options": {
+                "query": "| makeresults | eval Asset=$asset|s$ | stenrich field=Asset"
+            }
+        },
+        "ds_status": {
+            "type": "ds.chain",
+            "name": "Status",
+            "options": {
+                "extend": "ds_profile",
+                "query": "| eval Status=case(isnull(Asset) OR Asset=\"\", \"Enter an asset above\", st_phishy=1, \"\u25b2 Phishy lookalike\", st_known=1, \"\u25cf Known asset\", st_in_scope=1, \"\u25a0 In scope, not found yet\", isnull(st_known), \"Not an IP or hostname\", true(), \"\u25cb Not in your inventory\") | table Status"
+            }
+        },
+        "ds_ports": {
+            "type": "ds.chain",
+            "name": "Open ports",
+            "options": {
+                "extend": "ds_profile",
+                "query": "| eval Ports=coalesce(mvcount(st_ports), 0) | table Ports"
+            }
+        },
+        "ds_cve_count": {
+            "type": "ds.chain",
+            "name": "CVEs",
+            "options": {
+                "extend": "ds_profile",
+                "query": "| eval CVEs=coalesce(st_cve_count, 0) | table CVEs"
+            }
+        },
+        "ds_findings_count": {
+            "type": "ds.chain",
+            "name": "Findings",
+            "options": {
+                "extend": "ds_profile",
+                "query": "| eval Findings=coalesce(mvcount(st_problems), 0)+coalesce(mvcount(st_warnings), 0) | table Findings"
+            }
+        },
+        "ds_details": {
+            "type": "ds.chain",
+            "name": "Details",
+            "options": {
+                "extend": "ds_profile",
+                "query": "| eval Type=st_asset_type, \"IP addresses\"=st_ip, Hostnames=st_hostnames, Domain=st_domain, Organization=st_organization, Country=st_country, Network=st_asn_name, Cloud=st_cloud_provider, Software=st_software, \"Website grade\"=st_web_grade, \"Certificate grade\"=st_cert_grade, \"Certificate expires\"=st_cert_expires, \"Certificate issuer\"=st_cert_issuer, Tags=st_tags, \"Lookalike of\"=st_lookalike_of, \"Lookalike score\"=st_phishy_score, \"First seen\"=st_first_seen, \"Last seen\"=st_last_seen | table Type \"IP addresses\" Hostnames Domain Organization Country Network Cloud Software \"Website grade\" \"Certificate grade\" \"Certificate expires\" \"Certificate issuer\" Tags \"Lookalike of\" \"Lookalike score\" \"First seen\" \"Last seen\" | foreach * [eval <<FIELD>>=mvjoin('<<FIELD>>', \", \")] | transpose 0 column_name=Field | rename \"row 1\" AS Value | where isnotnull(Value) AND Value!=\"\""
+            }
+        },
+        "ds_findings": {
+            "type": "ds.chain",
+            "name": "Findings",
+            "options": {
+                "extend": "ds_profile",
+                "query": "| eval f=coalesce(mvappend(mvmap(st_problems, \"\u25b2 Problem|\".st_problems), mvmap(st_warnings, \"\u25a0 Warning|\".st_warnings)), \"\") | mvexpand f | where f!=\"\" | rex field=f \"^(?<Status>[^|]+)\\|(?<Finding>.*)$\" | table Status Finding"
+            }
+        },
+        "ds_services": {
+            "type": "ds.chain",
+            "name": "Services",
+            "options": {
+                "extend": "ds_profile",
+                "query": "| eval s=coalesce(st_services, \"\") | mvexpand s | where s!=\"\" | rex field=s \"^(?<Port>\\d+)/(?<Protocol>\\w+)\\s*(?<Service>.*)$\" | eval Port=tonumber(Port) | sort Port | table Port Protocol Service"
+            }
+        },
+        "ds_websites": {
+            "type": "ds.search",
+            "name": "Websites",
+            "options": {
+                "query": "| inputlookup shadowtrackr_websites where st_present=1 | search [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS url] OR [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS host] | eval Status=coalesce(https_status, http_status), Software=mvjoin(software, \", \") | sort url | rename url AS URL, title AS Title, grade AS Grade | table URL Status Grade Title Software"
+            }
+        },
+        "ds_certificates": {
+            "type": "ds.search",
+            "name": "Certificates",
+            "options": {
+                "query": "| inputlookup shadowtrackr_certificates where st_present=1 | search [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS url] OR [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS host] | eval days=floor((strptime(not_after, \"%Y-%m-%dT%H:%M:%SZ\")-now())/86400), Expires=substr(not_after, 1, 10), \"Days left\"=days, Issuer=coalesce(issuer_o, issuer_cn) | sort days | rename url AS URL, grade AS Grade | table URL Grade Expires \"Days left\" Issuer"
+            }
+        },
+        "ds_cves": {
+            "type": "ds.search",
+            "name": "CVEs",
+            "options": {
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | search [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS asset] | eval Flags=trim(if(exploited=1, \"\u26a0 Exploited \", \"\").if(cisa_kev=1, \"\u25c6 CISA KEV\", \"\")) | sort - exploited - cvss | rename cve AS CVE, cvss AS CVSS, software AS Software, asset AS Asset | table CVE CVSS Flags Software Asset"
+            }
+        },
+        "ds_dns": {
+            "type": "ds.search",
+            "name": "DNS records",
+            "options": {
+                "query": "| inputlookup shadowtrackr_dns where st_present=1 | search [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS url] | sort url rrtype | rename url AS Name, rrtype AS Type, rrdata AS Value | table Name Type Value"
+            }
+        },
+        "ds_events": {
+            "type": "ds.search",
+            "name": "ShadowTrackr events",
+            "options": {
+                "query": "`shadowtrackr_events` [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS search | format] | fields _time level signature message",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_event_timeline": {
+            "type": "ds.chain",
+            "name": "Events over time",
+            "options": {
+                "extend": "ds_events",
+                "query": "| eval Status=case(level>=90, \"Problems\", level>=80, \"Warnings\", true(), \"Info\") | timechart count by Status | fillnull value=0 Problems Warnings Info | table _time Problems Warnings Info"
+            }
+        },
+        "ds_event_list": {
+            "type": "ds.chain",
+            "name": "Latest events",
+            "options": {
+                "extend": "ds_events",
+                "query": "| sort - _time | head 100 | eval Status=case(level>=90, \"\u25b2 Problem\", level>=80, \"\u25a0 Warning\", true(), \"\u25cf Info\") | eval Time=strftime(_time, \"%Y-%m-%d %H:%M\") | rename signature AS Event, message AS Details | table Time Status Event Details"
+            }
+        },
+        "ds_log_activity": {
+            "type": "ds.search",
+            "name": "Activity in your logs",
+            "options": {
+                "query": "(`shadowtrackr_asset_network`) OR (`shadowtrackr_asset_web`) OR (`shadowtrackr_asset_auth`) OR (`shadowtrackr_asset_ids`) [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS search | format] | eval Source=case(isnotnull(mvfind(tag, \"^attack$\")), \"IDS/IPS\", isnotnull(mvfind(tag, \"^authentication$\")), \"Authentication\", isnotnull(mvfind(tag, \"^web$\")), \"Web/proxy/WAF\", true(), \"Network\") | timechart count by Source",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_network": {
+            "type": "ds.search",
+            "name": "Network traffic",
+            "options": {
+                "query": "`shadowtrackr_asset_network` [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS search | format] | eval Source=coalesce(src_ip, src), Destination=coalesce(dest_ip, dest, dest_host) | fillnull value=\"-\" Source Destination dest_port | stats count AS Events latest(_time) AS last values(action) AS Action by Source Destination dest_port | sort - Events | head 50 | eval Last=strftime(last, \"%Y-%m-%d %H:%M\") | fields - last | rename dest_port AS Port",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_web": {
+            "type": "ds.search",
+            "name": "Web, proxy and WAF",
+            "options": {
+                "query": "`shadowtrackr_asset_web` [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS search | format] | eval Source=coalesce(src_ip, src), Destination=coalesce(dest_ip, dest, dest_host) | fillnull value=\"-\" Source http_method url status action | stats count AS Events latest(_time) AS last by Source http_method url status action | sort - Events | head 50 | eval Last=strftime(last, \"%Y-%m-%d %H:%M\") | fields - last | rename http_method AS Method, url AS URL, status AS Status, action AS Action",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_auth": {
+            "type": "ds.search",
+            "name": "Authentication",
+            "options": {
+                "query": "`shadowtrackr_asset_auth` [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS search | format] | eval Source=coalesce(src_ip, src), Destination=coalesce(dest_ip, dest, dest_host) | fillnull value=\"-\" user Source Destination app action | stats count AS Events latest(_time) AS last by user Source Destination app action | sort - Events | head 50 | eval Last=strftime(last, \"%Y-%m-%d %H:%M\") | fields - last | rename user AS User, app AS App, action AS Result",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        },
+        "ds_ids": {
+            "type": "ds.search",
+            "name": "IDS/IPS",
+            "options": {
+                "query": "`shadowtrackr_asset_ids` [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS search | format] | eval Source=coalesce(src_ip, src), Destination=coalesce(dest_ip, dest, dest_host) | fillnull value=\"-\" signature severity Source Destination action | stats count AS Events latest(_time) AS last by signature severity Source Destination action | sort - Events | head 50 | eval Last=strftime(last, \"%Y-%m-%d %H:%M\") | fields - last | rename signature AS Signature, severity AS Severity, action AS Action",
+                "queryParameters": {
+                    "earliest": "$global_time.earliest$",
+                    "latest": "$global_time.latest$"
+                }
+            }
+        }
+    },
+    "layout": {
+        "type": "grid",
+        "options": {
+            "width": 1200
+        },
+        "globalInputs": [
+            "input_asset",
+            "input_time"
+        ],
+        "structure": [
+            {
+                "item": "viz_logo",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "w": 90,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_title",
+                "type": "block",
+                "position": {
+                    "x": 90,
+                    "y": 0,
+                    "w": 1110,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_intro",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 90,
+                    "w": 1200,
+                    "h": 70
+                }
+            },
+            {
+                "item": "viz_status",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 160,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_ports",
+                "type": "block",
+                "position": {
+                    "x": 300,
+                    "y": 160,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_cve_count",
+                "type": "block",
+                "position": {
+                    "x": 600,
+                    "y": 160,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_findings_count",
+                "type": "block",
+                "position": {
+                    "x": 900,
+                    "y": 160,
+                    "w": 300,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_details",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 270,
+                    "w": 500,
+                    "h": 520
+                }
+            },
+            {
+                "item": "viz_findings",
+                "type": "block",
+                "position": {
+                    "x": 500,
+                    "y": 270,
+                    "w": 700,
+                    "h": 260
+                }
+            },
+            {
+                "item": "viz_services",
+                "type": "block",
+                "position": {
+                    "x": 500,
+                    "y": 530,
+                    "w": 700,
+                    "h": 260
+                }
+            },
+            {
+                "item": "viz_websites",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 790,
+                    "w": 600,
+                    "h": 330
+                }
+            },
+            {
+                "item": "viz_certificates",
+                "type": "block",
+                "position": {
+                    "x": 600,
+                    "y": 790,
+                    "w": 600,
+                    "h": 330
+                }
+            },
+            {
+                "item": "viz_cves",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 1120,
+                    "w": 600,
+                    "h": 330
+                }
+            },
+            {
+                "item": "viz_dns",
+                "type": "block",
+                "position": {
+                    "x": 600,
+                    "y": 1120,
+                    "w": 600,
+                    "h": 330
+                }
+            },
+            {
+                "item": "viz_event_timeline",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 1450,
+                    "w": 500,
+                    "h": 330
+                }
+            },
+            {
+                "item": "viz_event_list",
+                "type": "block",
+                "position": {
+                    "x": 500,
+                    "y": 1450,
+                    "w": 700,
+                    "h": 330
+                }
+            },
+            {
+                "item": "viz_logs_title",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 1780,
+                    "w": 1200,
+                    "h": 50
+                }
+            },
+            {
+                "item": "viz_log_activity",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 1830,
+                    "w": 1200,
+                    "h": 260
+                }
+            },
+            {
+                "item": "viz_network",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 2090,
+                    "w": 600,
+                    "h": 360
+                }
+            },
+            {
+                "item": "viz_web",
+                "type": "block",
+                "position": {
+                    "x": 600,
+                    "y": 2090,
+                    "w": 600,
+                    "h": 360
+                }
+            },
+            {
+                "item": "viz_auth",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 2450,
+                    "w": 600,
+                    "h": 360
+                }
+            },
+            {
+                "item": "viz_ids",
+                "type": "block",
+                "position": {
+                    "x": 600,
+                    "y": 2450,
+                    "w": 600,
+                    "h": 360
+                }
+            }
+        ]
+    }
+}
+    ]]></definition>
+    <meta type="hiddenElements"><![CDATA[
+{
+    "hideEdit": false,
+    "hideOpenInSearch": false,
+    "hideExport": false
+}
+    ]]></meta>
+</dashboard>

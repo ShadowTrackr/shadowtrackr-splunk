@@ -20,6 +20,35 @@ API access requires a ShadowTrackr Business or Enterprise subscription.
    Vulnerabilities and Certificates dashboards.
 5. Open the **Overview** dashboard.
 
+## Dashboards
+
+| Dashboard | Shows |
+|---|---|
+| Overview | Events, problems and warnings over time; inventory counts and trends |
+| Vulnerabilities & software | CVEs by severity, exploited and CISA KEV, vulnerable software, assets at risk |
+| Certificates | Expiry, grades, issuers and weak configurations |
+| Asset 360 | One IP, hostname or URL from every angle: ShadowTrackr's inventory, findings, CVEs, certificates, DNS and events, and your own firewall, proxy/WAF, authentication and IDS logs for the asset and its related IPs and hostnames. Click an asset in the other dashboards to open it here. |
+| Search explorer | Live queries against the ShadowTrackr API with `\| shadowtrackr`, with clickable examples. Runs only when you press Submit. |
+
+Asset 360 finds your own logs through four macros. The defaults use the CIM
+tags, so they work with any CIM-compliant add-on, without accelerated data
+models. For speed, point them at your indexes (Settings > Advanced search >
+Search macros):
+
+| Macro | Default |
+|---|---|
+| `shadowtrackr_asset_network` | `index=* tag=network tag=communicate` (firewall, network traffic) |
+| `shadowtrackr_asset_web` | `index=* tag=web` (proxy, web server, WAF) |
+| `shadowtrackr_asset_auth` | `index=* tag=authentication` |
+| `shadowtrackr_asset_ids` | `index=* tag=ids tag=attack` (IDS/IPS, WAF attacks) |
+
+`shadowtrackr_asset_terms("<asset>")` returns the asset with its related IPs
+and hostnames, for your own searches:
+
+```
+index=firewall [| `shadowtrackr_asset_terms("www.example.com")` | rename term AS search | format]
+```
+
 ## What gets collected
 
 | Input | Sourcetype | Notes |
@@ -141,6 +170,13 @@ The mock implements the v4 API (since_id paging, structured fields,
 behaves like the API before those changes. Fault injection keys:
 `mock-error-500`, `mock-error-429`, `mock-error-slow`, `mock-error-html` and
 `mock-no-api-access`. `POST /_mock/insert` adds an event, e.g. a late insert.
+
+### Dev logs for Asset 360
+
+`make devlogs` creates a `devlogs` index with CIM eventtypes and tags in the dev
+Splunk and sends a week of synthetic firewall, proxy/WAF, authentication and IDS
+events (via HEC) for a few assets from the `shadowtrackr_hosts` lookup, so the
+log panels of Asset 360 have data. Run the inventory input first.
 
 ### Fixtures
 

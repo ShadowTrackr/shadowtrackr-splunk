@@ -1,7 +1,7 @@
 APP ?= shadowtrackr
 VERSION ?= 0.1.0
 
-.PHONY: build test test-bundled deploy up down restart logs inspect index mock
+.PHONY: build test test-bundled deploy up down restart logs inspect index mock devlogs dashboards
 
 build:
 	# Tests import package/bin; never ship their __pycache__ (AppInspect rejects .pyc files).
@@ -43,3 +43,11 @@ index:
 # http://host.docker.internal:8081/api/v4 with API key mock-api-key-0000000000.
 mock:
 	python3 mock_api/server.py --shift-to-now
+
+# Synthetic firewall/proxy/auth/IDS logs in the dev Splunk, for Asset 360.
+devlogs:
+	python3 -I tools/gen_dev_logs.py
+
+# Regenerate the Dashboard Studio views from tools/gen_dashboards.py.
+dashboards:
+	python3 -I tools/gen_dashboards.py
