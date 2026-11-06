@@ -268,18 +268,19 @@
                             ]
                         },
                         {
-                            "type": "interval",
+                            "type": "text",
                             "label": "Interval",
                             "field": "interval",
                             "defaultValue": "0 7,10,13,16 * * 1-5",
-                            "help": "Seconds, or a cron schedule in the Splunk server's time zone. The default syncs every 3 hours during office hours: 07:00, 10:00, 13:00 and 16:00 on weekdays.",
+                            "help": "Seconds (at least 3600, at most a week), or a cron schedule in the Splunk server's time zone. The default syncs every 3 hours during office hours: 07:00, 10:00, 13:00 and 16:00 on weekdays.",
                             "required": true,
-                            "options": {
-                                "range": [
-                                    3600,
-                                    604800
-                                ]
-                            }
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "pattern": "^(?:(?:3[6-9]\\d\\d|[4-9]\\d{3}|[1-9]\\d{4}|[1-5]\\d{5}|60[0-4]\\d{3})|(?:[0-9*,/-]+\\s+){4}[0-9*,/-]+)$",
+                                    "errorMsg": "Enter seconds (at least 3600, at most a week), or a cron schedule such as 0 7,10,13,16 * * 1-5."
+                                }
+                            ]
                         },
                         {
                             "type": "index",

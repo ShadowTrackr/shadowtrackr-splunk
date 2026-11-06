@@ -15,6 +15,7 @@ A failing type is logged and reported; the other types still sync.
 """
 
 import logging
+import re
 import time
 from typing import Any, Callable, Dict, Iterable, List, Optional
 
@@ -22,6 +23,29 @@ from .client import AuthError, ShadowTrackrError
 from .inventory_types import TYPES, InventoryType, Row
 
 EMPTY_RUNS_BEFORE_GONE = 2
+
+# The inventory is a full snapshot per run; more often than hourly only loads the API.
+MIN_INTERVAL = 3600
+MAX_INTERVAL = 7 * 86400
+_CRON = re.compile(r"^(?:[0-9*,/-]+\s+){4}[0-9*,/-]+$")
+
+
+def validate_interval(value: Any) -> None:
+    """Accept seconds between MIN_INTERVAL and MAX_INTERVAL, or a 5-field cron schedule.
+
+    UCC replaces the validators of a field named "interval" with a generic
+    pattern, so the limits are checked here, when Splunk validates the input.
+    """
+    text = str(value if value is not None else "").strip()
+    if _CRON.match(text):
+        return
+    try:
+        seconds = float(text)
+    except ValueError:
+        raise ValueError("interval must be seconds or a cron schedule such as 0 7,10,13,16 * * 1-5") from None
+    if not MIN_INTERVAL <= seconds <= MAX_INTERVAL:
+        raise ValueError("interval must be between {} and {} seconds, or a cron schedule".format(
+            MIN_INTERVAL, MAX_INTERVAL))
 
 
 class KVStore:

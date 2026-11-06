@@ -9,7 +9,7 @@ from splunklib import modularinput as smi
 
 from shadowtrackr_common import ADDON_NAME, CHECKPOINT_COLLECTION, build_client, logger_for_input, to_int
 from shadowtrackr_lib.client import AuthError, ShadowTrackrError
-from shadowtrackr_lib.inventory import InventoryCollector, KVStore
+from shadowtrackr_lib.inventory import InventoryCollector, KVStore, validate_interval
 from shadowtrackr_lib.inventory_types import DEFAULT_TYPES, TYPES
 
 SOURCETYPE = "shadowtrackr:inventory:summary"
@@ -52,6 +52,8 @@ def selected_types(value) -> list:
 
 def validate_input(definition: smi.ValidationDefinition):
     params = definition.parameters
+    if params.get("interval") is not None:
+        validate_interval(params.get("interval"))
     retention = params.get("retention_days")
     if retention is not None and not (1 <= to_int(retention, -1) <= 365):
         raise ValueError("retention_days must be a whole number between 1 and 365")

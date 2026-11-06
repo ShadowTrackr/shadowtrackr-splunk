@@ -6,7 +6,7 @@ import pytest
 
 from mock_api.server import DEFAULT_API_KEY, GROUP_API_KEY
 from shadowtrackr_lib.client import AuthError, ShadowTrackrClient, TransientError
-from shadowtrackr_lib.inventory import InventoryCollector, KVStore, list_organizations, reconcile
+from shadowtrackr_lib.inventory import InventoryCollector, KVStore, list_organizations, reconcile, validate_interval
 from shadowtrackr_lib.inventory_types import TYPES, enrich_cves, expand_internet_standards, merge_cloud_providers
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -334,3 +334,14 @@ def test_mock_group_key_syncs_each_organization(mock_api):
         ("Customer A", len(fixture("hosts"))), ("Customer B", 3)]
     hosts = kv.data["shadowtrackr_hosts"].values()
     assert {h["organization"] for h in hosts} == {"Customer A", "Customer B"}
+
+
+@pytest.mark.parametrize("value", ["3600", "43200", 604800, "0 7,10,13,16 * * 1-5", "*/30 * * * *", " 0 7 * * 1-5 "])
+def test_validate_interval_accepts(value):
+    validate_interval(value)
+
+
+@pytest.mark.parametrize("value", ["900", "3599", "604801", "-1", "", None, "abc", "0 7 * *", "0 7 * * 1-5 2026"])
+def test_validate_interval_rejects(value):
+    with pytest.raises(ValueError):
+        validate_interval(value)
