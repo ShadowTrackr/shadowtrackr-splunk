@@ -198,6 +198,9 @@ def project_cve(r: Row) -> Row:
         cvss=r.get("cvss_score"),
         severity=severity.lower() if isinstance(severity, str) else None,
         st_score=r.get("shadowtrackr_cvss_score"),
+        ncsc=r.get("ncsc_number"),
+        ncsc_chance=r.get("ncsc_chance"),
+        ncsc_impact=r.get("ncsc_impact"),
         exploited=_bool(r.get("exploited")),
         cisa_kev=_bool(r.get("cisa")),
         **_seen(r),
@@ -320,14 +323,18 @@ def enrich_cves(records: List[Row], vulnerabilities: List[Row]) -> List[Row]:
     return out
 
 
-def add_st_scores(records: List[Row], assets: List[Row]) -> List[Row]:
-    """Add the ShadowTrackr score per CVE to /cves_assets rows.
+# Per-CVE details that only the CVE lists nested in /hosts and /websites carry.
+NESTED_CVE_FIELDS = ("shadowtrackr_cvss_score", "ncsc_number", "ncsc_chance", "ncsc_impact")
 
-    The score is only in the CVE lists nested in /hosts and /websites
-    (per software: {"vulnerabilities": [{"cve" or "name": ..., "shadowtrackr_cvss_score": ...}]}).
-    It is the same for a CVE on every asset.
+
+def add_nested_cve_details(records: List[Row], assets: List[Row]) -> List[Row]:
+    """Add the ShadowTrackr score and the NCSC NL advisory per CVE to /cves_assets rows.
+
+    These are only in the CVE lists nested in /hosts and /websites (per
+    software: {"vulnerabilities": [{"cve" or "name": ..., "shadowtrackr_cvss_score": ...,
+    "ncsc_number": ...}]}). They are the same for a CVE on every asset.
     """
-    scores: Dict[str, float] = {}
+    details: Dict[str, Row] = {}
     for asset in assets:
         for software in asset.get("vulnerabilities") or []:
             if not isinstance(software, dict):
@@ -335,14 +342,17 @@ def add_st_scores(records: List[Row], assets: List[Row]) -> List[Row]:
             for cve in software.get("vulnerabilities") or []:
                 if not isinstance(cve, dict):
                     continue
-                cve_id, score = cve.get("cve") or cve.get("name"), cve.get("shadowtrackr_cvss_score")
-                if isinstance(cve_id, str) and isinstance(score, (int, float)) and not isinstance(score, bool):
-                    scores[cve_id] = max(score, scores.get(cve_id, score))
-    out = []
-    for r in records:
-        score = scores.get(r.get("cve"))
-        out.append(dict(r, shadowtrackr_cvss_score=score) if score is not None else r)
-    return out
+                cve_id = cve.get("cve") or cve.get("name")
+                if not isinstance(cve_id, str):
+                    continue
+                found = details.setdefault(cve_id, {})
+                score = cve.get("shadowtrackr_cvss_score")
+                if isinstance(score, (int, float)) and not isinstance(score, bool):
+                    found["shadowtrackr_cvss_score"] = max(score, found.get("shadowtrackr_cvss_score", score))
+                for field in NESTED_CVE_FIELDS[1:]:
+                    if isinstance(cve.get(field), str) and cve[field]:
+                        found[field] = cve[field]
+    return [dict(r, **details[r["cve"]]) if r.get("cve") in details else r for r in records]
 
 
 # --- type registry ----------------------------------------------------------
@@ -429,8 +439,10 @@ TYPES: Dict[str, InventoryType] = {t.name: t for t in [
                   _f("software", "vendor", "product", "version", "patch", "asset_count", "cve_count", "max_cvss",
                      "exploited", "cisa_kev") + SEEN),
     InventoryType("cves", "cves_assets", "Vulnerabilities (CVE per asset)", ("cve", "asset", "software"), project_cve,
-                  _f("cve", "asset", "software", "cvss", "severity", "st_score", "exploited", "cisa_kev") + SEEN,
-                  extra=(("vulnerabilities", enrich_cves), ("hosts", add_st_scores), ("websites", add_st_scores))),
+                  _f("cve", "asset", "software", "cvss", "severity", "st_score", "ncsc", "ncsc_chance", "ncsc_impact",
+                     "exploited", "cisa_kev") + SEEN,
+                  extra=(("vulnerabilities", enrich_cves), ("hosts", add_nested_cve_details),
+                         ("websites", add_nested_cve_details))),
     InventoryType("cloud_providers", "cloud_providers", "Cloud providers", ("cloud_provider",), project_cloud_provider,
                   _f("cloud_provider", "asset_count", "urls") + SEEN, expand=merge_cloud_providers),
     InventoryType("remote_login_services", "remote_login_services", "Remote login services", (), project_generic, ()),

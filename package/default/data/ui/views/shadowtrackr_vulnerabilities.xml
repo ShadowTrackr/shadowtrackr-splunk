@@ -34,14 +34,22 @@
         },
         "input_exploited": {
             "type": "input.dropdown",
-            "title": "Exploited",
+            "title": "Threat intel",
             "options": {
-                "token": "exploited",
+                "token": "threat_intel",
                 "defaultValue": "true()",
                 "items": [
                     {
                         "label": "All CVEs",
                         "value": "true()"
+                    },
+                    {
+                        "label": "CISA KEV",
+                        "value": "cisa_kev=1"
+                    },
+                    {
+                        "label": "NCSC NL",
+                        "value": "isnotnull(ncsc)"
                     },
                     {
                         "label": "Known exploited only",
@@ -384,35 +392,35 @@
             "type": "ds.search",
             "name": "Distinct CVEs",
             "options": {
-                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | stats dc(cve) as CVEs"
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($threat_intel$) | stats dc(cve) as CVEs"
             }
         },
         "ds_critical": {
             "type": "ds.search",
             "name": "Critical CVEs",
             "options": {
-                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | where cvss>=9 | stats dc(cve) as Critical"
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($threat_intel$) | where cvss>=9 | stats dc(cve) as Critical"
             }
         },
         "ds_exploited": {
             "type": "ds.search",
             "name": "Exploited CVEs",
             "options": {
-                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | where exploited=1 | stats dc(cve) as Exploited"
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($threat_intel$) | where exploited=1 | stats dc(cve) as Exploited"
             }
         },
         "ds_assets": {
             "type": "ds.search",
             "name": "Affected assets",
             "options": {
-                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | stats dc(asset) as Assets"
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($threat_intel$) | stats dc(asset) as Assets"
             }
         },
         "ds_severity": {
             "type": "ds.search",
             "name": "CVEs by severity",
             "options": {
-                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | eval severity=coalesce(severity, \"unknown\") | stats dc(cve) as CVEs by severity | eval order=case(severity=\"critical\",1, severity=\"high\",2, severity=\"medium\",3, severity=\"low\",4, true(),5) | sort order | eval Severity=upper(substr(severity,1,1)).substr(severity,2) | table Severity CVEs | eval {Severity}=CVEs | fields - CVEs"
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($threat_intel$) | eval severity=coalesce(severity, \"unknown\") | stats dc(cve) as CVEs by severity | eval order=case(severity=\"critical\",1, severity=\"high\",2, severity=\"medium\",3, severity=\"low\",4, true(),5) | sort order | eval Severity=upper(substr(severity,1,1)).substr(severity,2) | table Severity CVEs | eval {Severity}=CVEs | fields - CVEs"
             }
         },
         "ds_trend": {
@@ -430,7 +438,7 @@
             "type": "ds.search",
             "name": "Top CVEs",
             "options": {
-                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | stats max(cvss) as cvss max(st_score) as st_score max(exploited) as exploited max(cisa_kev) as cisa_kev dc(asset) as Assets values(software) as Software by cve | sort - exploited - cvss - Assets | rename cve AS CVE | eval CVSS=coalesce(round(cvss, 1), \"\u2013\"), \"ST score\"=coalesce(round(st_score, 1), \"\u2013\"), Exploited=case(exploited=1 AND cisa_kev=1, \"\u26a0 Exploited \u25c6 KEV\", exploited=1, \"\u26a0 Exploited\", cisa_kev=1, \"\u25c6 CISA KEV\", true(), \"\") | table CVSS \"ST score\" CVE Exploited Assets Software"
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($threat_intel$) | stats max(cvss) as cvss max(st_score) as st_score max(exploited) as exploited max(cisa_kev) as cisa_kev dc(asset) as Assets values(software) as Software by cve | sort - exploited - cvss - Assets | rename cve AS CVE | eval CVSS=coalesce(round(cvss, 1), \"\u2013\"), \"ST score\"=coalesce(round(st_score, 1), \"\u2013\"), Exploited=case(exploited=1 AND cisa_kev=1, \"\u26a0 Exploited \u25c6 KEV\", exploited=1, \"\u26a0 Exploited\", cisa_kev=1, \"\u25c6 CISA KEV\", true(), \"\") | table CVSS \"ST score\" CVE Exploited Assets Software"
             }
         },
         "ds_software": {
@@ -444,7 +452,7 @@
             "type": "ds.search",
             "name": "Assets with the most serious CVEs",
             "options": {
-                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | stats max(cvss) as \"Max CVSS\" dc(cve) as CVEs sum(exploited) as Exploited by asset | sort - \"Max CVSS\" - Exploited - CVEs | rename asset AS Asset | table Asset \"Max CVSS\" CVEs Exploited"
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($threat_intel$) | stats max(cvss) as \"Max CVSS\" dc(cve) as CVEs sum(exploited) as Exploited by asset | sort - \"Max CVSS\" - Exploited - CVEs | rename asset AS Asset | table Asset \"Max CVSS\" CVEs Exploited"
             }
         },
         "ds_orgs": {

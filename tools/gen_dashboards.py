@@ -362,7 +362,7 @@ SEVERITY_ORDER = 'eval order=case(severity="critical",1, severity="high",2, seve
 
 
 def vulnerabilities():
-    cves = lookup("cves") + " | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$)"
+    cves = lookup("cves") + " | where coalesce(cvss, 0)>=$min_cvss$ AND ($threat_intel$)"
     software = lookup("software")
     org, ds_orgs = lookup_orgs()
     data_sources = {
@@ -427,9 +427,11 @@ def vulnerabilities():
                                   {"label": "7+ (high)", "value": "7"}, {"label": "9+ (critical)", "value": "9"}]},
         },
         "input_exploited": {
-            "type": "input.dropdown", "title": "Exploited",
-            "options": {"token": "exploited", "defaultValue": "true()",
+            "type": "input.dropdown", "title": "Threat intel",
+            "options": {"token": "threat_intel", "defaultValue": "true()",
                         "items": [{"label": "All CVEs", "value": "true()"},
+                                  {"label": "CISA KEV", "value": "cisa_kev=1"},
+                                  {"label": "NCSC NL", "value": "isnotnull(ncsc)"},
                                   {"label": "Known exploited only", "value": "exploited=1"}]},
         },
         "input_org": org,

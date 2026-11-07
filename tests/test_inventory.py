@@ -7,7 +7,7 @@ import pytest
 from mock_api.server import DEFAULT_API_KEY, GROUP_API_KEY
 from shadowtrackr_lib.client import AuthError, ShadowTrackrClient, TransientError
 from shadowtrackr_lib.inventory import InventoryCollector, KVStore, list_organizations, reconcile, validate_interval
-from shadowtrackr_lib.inventory_types import TYPES, add_st_scores, enrich_cves, expand_internet_standards, merge_cloud_providers
+from shadowtrackr_lib.inventory_types import TYPES, add_nested_cve_details, enrich_cves, expand_internet_standards, merge_cloud_providers
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INVENTORY = os.path.join(ROOT, "tests", "fixtures", "inventory")
@@ -348,17 +348,23 @@ def test_validate_interval_rejects(value):
         validate_interval(value)
 
 
-def test_add_st_scores_from_hosts_and_websites():
+def test_add_nested_cve_details_from_hosts_and_websites():
     records = [{"cve": "CVE-1", "asset": "192.0.2.1"}, {"cve": "CVE-2", "asset": "www.example.com"},
                {"cve": "CVE-3", "asset": "192.0.2.1"}]
     hosts = [{"ip": "192.0.2.1", "vulnerabilities": [
-        {"name": "OpenSSH 8.9", "vulnerabilities": [{"cve": "CVE-1", "shadowtrackr_cvss_score": 7.2}]}]}]
+        {"name": "OpenSSH 8.9", "vulnerabilities": [{"cve": "CVE-1", "shadowtrackr_cvss_score": 7.2,
+                                                     "ncsc_number": "NCSC-2026-0469", "ncsc_chance": "medium",
+                                                     "ncsc_impact": "high"}]}]}]
     websites = [{"url": "www.example.com", "vulnerabilities": [
         {"name": "Next.js 13", "vulnerabilities": [{"name": "CVE-2", "shadowtrackr_cvss_score": 4.6},
                                                    {"name": "CVE-9", "shadowtrackr_cvss_score": True}]}]},
                 {"url": "x", "vulnerabilities": ""}]
-    out = add_st_scores(add_st_scores(records, hosts), websites)
+    out = add_nested_cve_details(add_nested_cve_details(records, hosts), websites)
     assert [r.get("shadowtrackr_cvss_score") for r in out] == [7.2, 4.6, None]
     rows = TYPES["cves"].rows(out)
     assert sorted(r.get("st_score") for r in rows if "st_score" in r) == [4.6, 7.2]
+    ncsc = [r for r in rows if r.get("ncsc")]
+    assert len(ncsc) == 1
+    assert (ncsc[0]["cve"], ncsc[0]["ncsc"], ncsc[0]["ncsc_chance"], ncsc[0]["ncsc_impact"]) == \
+        ("CVE-1", "NCSC-2026-0469", "medium", "high")
 
