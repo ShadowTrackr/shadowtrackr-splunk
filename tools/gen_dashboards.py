@@ -27,10 +27,10 @@ NEUTRAL = "#c3c2b7"  # secondary text on the dark surface
 # deliberately neutral.
 SEVERITY_COLORS = {"Critical": "#a8323e", "High": "#e8622c", "Medium": "#f2b31d", "Low": "#3f8f3f",
                    "Unknown": "#8f8e86"}
-# Text on each severity colour (>= 4.5:1).
-SEVERITY_TEXT = {"Critical": "#ffffff", "High": "#0b0b0b", "Medium": "#0b0b0b", "Low": "#0b0b0b",
-                 "Unknown": "#0b0b0b"}
-CVE_PILL = "#3b6a96"  # the blue of ShadowTrackr's CVE pills; white text 5.7:1
+# Severity as text on the dark surface (#171d21), each >= 4.5:1: critical and
+# low are lighter than their bar colours, which are too dark for text.
+SEVERITY_TEXT_ON_DARK = {"Critical": "#ef6b73", "High": "#e8622c", "Medium": "#f2b31d", "Low": "#4fa84f",
+                         "Unknown": "#8f8e86"}
 
 HEADER = 90
 
@@ -99,49 +99,44 @@ def _score_ranges(colors):
             {"from": 9, "value": colors["Critical"]}]
 
 
-# SPL that turns CVE rows (cvss, st_score, exploited, cisa_kev) into the pill columns.
-CVE_PILL_SPL = (' | eval CVSS=coalesce(round(cvss, 1), "–"), "ST score"=coalesce(round(st_score, 1), "–"),'
-                ' Exploited=case(exploited=1 AND cisa_kev=1, "⚠ Exploited ◆ KEV", exploited=1, "⚠ Exploited",'
-                ' cisa_kev=1, "◆ CISA KEV", true(), "")')
-EXPLOITED_LABELS = ("⚠ Exploited ◆ KEV", "⚠ Exploited", "◆ CISA KEV")
+# SPL that turns CVE rows (cvss, st_score, exploited, cisa_kev, ncsc*) into the CVE table columns.
+# Missing scores and no threat intel stay null, not "–": the table sorts in
+# Splunk, which puts text above numbers when sorting descending but nulls last
+# either way.
+CVE_COLUMNS_SPL = (
+    ' | eval CVSS=round(cvss, 1), "ST score"=round(st_score, 1),'
+    ' "Threat intel"=mvjoin(mvappend(if(exploited=1, "⚠ Exploited", null()), if(cisa_kev=1, "◆ CISA KEV", null()),'
+    ' if(isnotnull(ncsc), "NCSC NL".if(isnotnull(ncsc_chance) AND isnotnull(ncsc_impact),'
+    ' " ".ncsc_chance."/".ncsc_impact, ""), null())), " · ")')
+THREAT_INTEL_NOTE = "Threat intel: known exploited, CISA KEV, and NCSC NL with the advisory's chance/impact."
 
 
 def cve_table(title, ds_id, count=10, description=None, widths=None):
-    """A CVE table styled like ShadowTrackr's CVE pills.
+    """A CVE table: CVSS | ST score | CVE | Threat intel | ...
 
-    Studio cannot draw stripes inside a cell, so the pill is spread over
-    adjacent cells: CVSS severity | ShadowTrackr score severity | CVE (blue) |
-    exploited (red). The cells show the scores and labels, so colour is never
-    the only cue. A missing score shows as "–". Click a row to open the CVE at NVD.
+    No cell backgrounds. The CVSS and ST score text is coloured by CVSS
+    severity; the cells show the numbers, so colour is never the only cue.
+    Click a row to open the CVE at NVD.
     """
     viz = table(title, ds_id, count=count,
-                description=((description + " ") if description else "") + "Click a row to open the CVE at NVD.",
+                description=" ".join(filter(None, (description, THREAT_INTEL_NOTE,
+                                                   "Click a row to open the CVE at NVD."))),
                 url="https://nvd.nist.gov/vuln/detail/$row.CVE.value$")
 
     def score(field, width):
-        return {"rowBackgroundColors": '> table | seriesByName("{}") | rangeValue(severityBg)'.format(field),
-                "rowColors": '> table | seriesByName("{}") | rangeValue(severityText)'.format(field),
-                "align": "center", "width": width}
+        return {"rowColors": '> table | seriesByName("{}") | rangeValue(severityText)'.format(field),
+                "align": "right", "width": width}
 
     viz["options"]["columnFormat"] = {
         "CVSS": score("CVSS", 80),
         "ST score": score("ST score", 100),
-        "CVE": {"rowBackgroundColors": '> table | seriesByName("CVE") | pick(pillBg)',
-                "rowColors": '> table | seriesByName("CVE") | pick(pillText)', "width": 160},
-        "Exploited": {"rowBackgroundColors": '> table | seriesByName("Exploited") | matchValue(exploitedBg)',
-                      "rowColors": '> table | seriesByName("Exploited") | matchValue(exploitedText)',
-                      "width": 130},
+        "CVE": {"width": 160},
+        "Threat intel": {"width": 300},
     }
-    # Widths for every column; the pill columns plus these add up to the panel width (1160px of 1200).
+    # Widths for every column; these add up to the panel width (1160px of 1200).
     for column, width in (widths or {}).items():
         viz["options"]["columnFormat"][column] = {"width": width}
-    viz["context"] = {
-        "severityBg": _score_ranges(SEVERITY_COLORS),
-        "severityText": _score_ranges(SEVERITY_TEXT),
-        "pillBg": [CVE_PILL], "pillText": ["#ffffff"],
-        "exploitedBg": [{"match": label, "value": PROBLEM} for label in EXPLOITED_LABELS],
-        "exploitedText": [{"match": label, "value": "#ffffff"} for label in EXPLOITED_LABELS],
-    }
+    viz["context"] = {"severityText": _score_ranges(SEVERITY_TEXT_ON_DARK)}
     return viz
 
 
@@ -382,9 +377,10 @@ def vulnerabilities():
         "ds_top_cves": ds(
             "Top CVEs",
             cves + " | stats max(cvss) as cvss max(st_score) as st_score max(exploited) as exploited"
-            " max(cisa_kev) as cisa_kev dc(asset) as Assets values(software) as Software by cve"
-            " | sort - exploited - cvss - Assets | rename cve AS CVE" + CVE_PILL_SPL
-            + ' | table CVSS "ST score" CVE Exploited Assets Software', time=False),
+            " max(cisa_kev) as cisa_kev max(ncsc) as ncsc max(ncsc_chance) as ncsc_chance max(ncsc_impact) as ncsc_impact"
+            " dc(asset) as Assets values(software) as Software by cve"
+            " | sort - exploited - cisa_kev - cvss - Assets | rename cve AS CVE" + CVE_COLUMNS_SPL
+            + ' | table CVSS "ST score" CVE "Threat intel" Assets Software', time=False),
         "ds_software": ds(
             "Software with known CVEs",
             software + " | where cve_count>0 | sort - exploited - max_cvss - asset_count"
@@ -414,8 +410,8 @@ def vulnerabilities():
             "options": {"legendDisplay": "off", "seriesColors": [INFO],
                         "xAxisTitleVisibility": "hide", "yAxisTitleVisibility": "hide"},
         },
-        "viz_top_cves": cve_table("Top CVEs", "ds_top_cves", description="Exploited first, then by CVSS. "
-                                  "ST score is the ShadowTrackr score.", widths={"Assets": 90, "Software": 600}),
+        "viz_top_cves": cve_table("Top CVEs", "ds_top_cves", description="Exploited first, then CISA KEV, then by CVSS. "
+                                  "ST score is the ShadowTrackr score.", widths={"Assets": 90, "Software": 430}),
         "viz_software": table("Software with known CVEs", "ds_software", count=9),
         "viz_asset_risk": asset_table("Assets with the most serious CVEs", "ds_asset_risk", "Asset", count=9),
     }
@@ -672,8 +668,8 @@ def asset360():
             time=False),
         "ds_cves": ds(
             "CVEs", related("cves", "asset")
-            + " | sort - exploited - cvss | rename cve AS CVE, software AS Software, asset AS Asset" + CVE_PILL_SPL
-            + ' | table CVSS "ST score" CVE Exploited Asset Software', time=False),
+            + " | sort - exploited - cisa_kev - cvss | rename cve AS CVE, software AS Software, asset AS Asset"
+            + CVE_COLUMNS_SPL + ' | table CVSS "ST score" CVE "Threat intel" Asset Software', time=False),
         "ds_dns": ds(
             "DNS records", related("dns", "url")
             + " | sort url rrtype | rename url AS Name, rrtype AS Type, rrdata AS Value | table Name Type Value",
@@ -733,7 +729,7 @@ def asset360():
         "viz_websites": asset_table("Websites", "ds_websites", "URL", count=8),
         "viz_certificates": table("Certificates", "ds_certificates", count=8),
         "viz_cves": cve_table("CVEs", "ds_cves", count=8, description="ST score is the ShadowTrackr score.",
-                              widths={"Asset": 260, "Software": 430}),
+                              widths={"Asset": 230, "Software": 290}),
         "viz_dns": table("DNS records", "ds_dns", count=8),
         "viz_event_timeline": {
             "type": "splunk.column", "title": "ShadowTrackr events", "dataSources": {"primary": "ds_event_timeline"},
