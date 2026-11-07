@@ -126,7 +126,10 @@ TIME_INPUT = {"type": "input.timerange", "title": "Time range",
 
 
 def dashboard(name, label, description, subtitle, inputs, data_sources, visualizations, rows, layout_options=None):
+    """rows: (item, x, y, w, h). Inputs listed in rows are placed in the canvas (so they can be wide);
+    the other inputs go in the bar at the top."""
     vizs = dict(header(subtitle), **visualizations)
+    in_canvas = {item for item, *_ in rows if item in inputs}
     layout = [("viz_logo", 0, 0, 90, HEADER), ("viz_title", 90, 0, 1110, HEADER)]
     layout += [(item, x, y + HEADER, w, h) for item, x, y, w, h in rows]
     definition = {
@@ -139,9 +142,9 @@ def dashboard(name, label, description, subtitle, inputs, data_sources, visualiz
         "layout": {
             "type": "grid",
             "options": dict({"width": 1200}, **(layout_options or {})),
-            "globalInputs": list(inputs),
-            "structure": [{"item": i, "type": "block", "position": {"x": x, "y": y, "w": w, "h": h}}
-                          for i, x, y, w, h in layout],
+            "globalInputs": [i for i in inputs if i not in in_canvas],
+            "structure": [{"item": i, "type": "input" if i in in_canvas else "block",
+                           "position": {"x": x, "y": y, "w": w, "h": h}} for i, x, y, w, h in layout],
         },
     }
     xml = """<dashboard version="2" theme="dark">
@@ -514,9 +517,10 @@ def explorer():
         },
     }
     rows = [
-        ("viz_count", 0, 0, 300, 110), ("viz_help", 300, 0, 900, 110),
-        ("viz_results", 0, 110, 1200, 560),
-        ("viz_examples", 0, 670, 1200, 470),
+        ("input_q", 0, 0, 1200, 90),
+        ("viz_count", 0, 90, 300, 110), ("viz_help", 300, 90, 900, 110),
+        ("viz_results", 0, 200, 1200, 560),
+        ("viz_examples", 0, 760, 1200, 470),
     ]
     dashboard("shadowtrackr_explorer", "Search explorer",
               "Run live queries against the ShadowTrackr API.",

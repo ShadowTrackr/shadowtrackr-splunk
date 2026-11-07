@@ -172,7 +172,6 @@
             "submitOnDashboardLoad": false
         },
         "globalInputs": [
-            "input_q",
             "input_account",
             "input_max"
         ],
@@ -198,11 +197,21 @@
                 }
             },
             {
+                "item": "input_q",
+                "type": "input",
+                "position": {
+                    "x": 0,
+                    "y": 90,
+                    "w": 1200,
+                    "h": 90
+                }
+            },
+            {
                 "item": "viz_count",
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 90,
+                    "y": 180,
                     "w": 300,
                     "h": 110
                 }
@@ -212,7 +221,7 @@
                 "type": "block",
                 "position": {
                     "x": 300,
-                    "y": 90,
+                    "y": 180,
                     "w": 900,
                     "h": 110
                 }
@@ -222,7 +231,7 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 200,
+                    "y": 290,
                     "w": 1200,
                     "h": 560
                 }
@@ -232,7 +241,7 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 760,
+                    "y": 850,
                     "w": 1200,
                     "h": 470
                 }
