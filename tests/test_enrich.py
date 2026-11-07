@@ -33,8 +33,7 @@ def _inventory(name, extra=()):
     inv_type = TYPES[name]
     with open(os.path.join(FIXTURES, inv_type.endpoint + ".json"), encoding="utf-8") as f:
         records = json.load(f)["data"]
-    if inv_type.extra:
-        endpoint, combine = inv_type.extra
+    for endpoint, combine in inv_type.extra:
         with open(os.path.join(FIXTURES, endpoint + ".json"), encoding="utf-8") as f:
             records = combine(records, json.load(f)["data"])
     rows = [dict(r, st_present=1) for r in inv_type.rows(records, None)]

@@ -193,9 +193,39 @@
                 "primary": "ds_cves"
             },
             "options": {
-                "count": 8
+                "count": 8,
+                "columnFormat": {
+                    "CVSS": {
+                        "rowBackgroundColors": "> table | seriesByName(\"CVSS\") | rangeValue(severityBg)",
+                        "rowColors": "> table | seriesByName(\"CVSS\") | rangeValue(severityText)",
+                        "align": "center",
+                        "width": 80
+                    },
+                    "ST score": {
+                        "rowBackgroundColors": "> table | seriesByName(\"ST score\") | rangeValue(severityBg)",
+                        "rowColors": "> table | seriesByName(\"ST score\") | rangeValue(severityText)",
+                        "align": "center",
+                        "width": 100
+                    },
+                    "CVE": {
+                        "rowBackgroundColors": "> table | seriesByName(\"CVE\") | pick(pillBg)",
+                        "rowColors": "> table | seriesByName(\"CVE\") | pick(pillText)",
+                        "width": 160
+                    },
+                    "Exploited": {
+                        "rowBackgroundColors": "> table | seriesByName(\"Exploited\") | matchValue(exploitedBg)",
+                        "rowColors": "> table | seriesByName(\"Exploited\") | matchValue(exploitedText)",
+                        "width": 130
+                    },
+                    "Asset": {
+                        "width": 260
+                    },
+                    "Software": {
+                        "width": 430
+                    }
+                }
             },
-            "description": "Click a row to open the CVE at NVD.",
+            "description": "ST score is the ShadowTrackr score. Click a row to open the CVE at NVD.",
             "eventHandlers": [
                 {
                     "type": "drilldown.customUrl",
@@ -204,7 +234,93 @@
                         "newTab": true
                     }
                 }
-            ]
+            ],
+            "context": {
+                "severityBg": [
+                    {
+                        "to": 0.1,
+                        "value": "#8f8e86"
+                    },
+                    {
+                        "from": 0.1,
+                        "to": 4,
+                        "value": "#3f8f3f"
+                    },
+                    {
+                        "from": 4,
+                        "to": 7,
+                        "value": "#f2b31d"
+                    },
+                    {
+                        "from": 7,
+                        "to": 9,
+                        "value": "#e8622c"
+                    },
+                    {
+                        "from": 9,
+                        "value": "#a8323e"
+                    }
+                ],
+                "severityText": [
+                    {
+                        "to": 0.1,
+                        "value": "#0b0b0b"
+                    },
+                    {
+                        "from": 0.1,
+                        "to": 4,
+                        "value": "#0b0b0b"
+                    },
+                    {
+                        "from": 4,
+                        "to": 7,
+                        "value": "#0b0b0b"
+                    },
+                    {
+                        "from": 7,
+                        "to": 9,
+                        "value": "#0b0b0b"
+                    },
+                    {
+                        "from": 9,
+                        "value": "#ffffff"
+                    }
+                ],
+                "pillBg": [
+                    "#3b6a96"
+                ],
+                "pillText": [
+                    "#ffffff"
+                ],
+                "exploitedBg": [
+                    {
+                        "match": "\u26a0 Exploited \u25c6 KEV",
+                        "value": "#d03b3b"
+                    },
+                    {
+                        "match": "\u26a0 Exploited",
+                        "value": "#d03b3b"
+                    },
+                    {
+                        "match": "\u25c6 CISA KEV",
+                        "value": "#d03b3b"
+                    }
+                ],
+                "exploitedText": [
+                    {
+                        "match": "\u26a0 Exploited \u25c6 KEV",
+                        "value": "#ffffff"
+                    },
+                    {
+                        "match": "\u26a0 Exploited",
+                        "value": "#ffffff"
+                    },
+                    {
+                        "match": "\u25c6 CISA KEV",
+                        "value": "#ffffff"
+                    }
+                ]
+            }
         },
         "viz_dns": {
             "type": "splunk.table",
@@ -387,7 +503,7 @@
             "type": "ds.search",
             "name": "CVEs",
             "options": {
-                "query": "| inputlookup shadowtrackr_cves where st_present=1 | search [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS asset] | eval Flags=trim(if(exploited=1, \"\u26a0 Exploited \", \"\").if(cisa_kev=1, \"\u25c6 CISA KEV\", \"\")) | sort - exploited - cvss | rename cve AS CVE, cvss AS CVSS, software AS Software, asset AS Asset | table CVE CVSS Flags Software Asset"
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | search [| `shadowtrackr_asset_terms($asset|s$)` | rename term AS asset] | sort - exploited - cvss | rename cve AS CVE, software AS Software, asset AS Asset | eval CVSS=coalesce(round(cvss, 1), \"\u2013\"), \"ST score\"=coalesce(round(st_score, 1), \"\u2013\"), Exploited=case(exploited=1 AND cisa_kev=1, \"\u26a0 Exploited \u25c6 KEV\", exploited=1, \"\u26a0 Exploited\", cisa_kev=1, \"\u25c6 CISA KEV\", true(), \"\") | table CVSS \"ST score\" CVE Exploited Asset Software"
             }
         },
         "ds_dns": {
@@ -616,26 +732,16 @@
                 "position": {
                     "x": 0,
                     "y": 1120,
-                    "w": 600,
-                    "h": 330
+                    "w": 1200,
+                    "h": 360
                 }
             },
             {
                 "item": "viz_dns",
                 "type": "block",
                 "position": {
-                    "x": 600,
-                    "y": 1120,
-                    "w": 600,
-                    "h": 330
-                }
-            },
-            {
-                "item": "viz_event_timeline",
-                "type": "block",
-                "position": {
                     "x": 0,
-                    "y": 1450,
+                    "y": 1480,
                     "w": 500,
                     "h": 330
                 }
@@ -645,9 +751,19 @@
                 "type": "block",
                 "position": {
                     "x": 500,
-                    "y": 1450,
+                    "y": 1480,
                     "w": 700,
                     "h": 330
+                }
+            },
+            {
+                "item": "viz_event_timeline",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 1810,
+                    "w": 1200,
+                    "h": 260
                 }
             },
             {
@@ -655,7 +771,7 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 1780,
+                    "y": 2070,
                     "w": 1200,
                     "h": 50
                 }
@@ -665,7 +781,7 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 1830,
+                    "y": 2120,
                     "w": 1200,
                     "h": 260
                 }
@@ -675,7 +791,7 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 2090,
+                    "y": 2380,
                     "w": 600,
                     "h": 360
                 }
@@ -685,7 +801,7 @@
                 "type": "block",
                 "position": {
                     "x": 600,
-                    "y": 2090,
+                    "y": 2380,
                     "w": 600,
                     "h": 360
                 }
@@ -695,7 +811,7 @@
                 "type": "block",
                 "position": {
                     "x": 0,
-                    "y": 2450,
+                    "y": 2740,
                     "w": 600,
                     "h": 360
                 }
@@ -705,7 +821,7 @@
                 "type": "block",
                 "position": {
                     "x": 600,
-                    "y": 2450,
+                    "y": 2740,
                     "w": 600,
                     "h": 360
                 }

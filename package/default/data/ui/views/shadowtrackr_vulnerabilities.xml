@@ -190,7 +190,7 @@
                     "Critical": "#a8323e",
                     "High": "#e8622c",
                     "Medium": "#f2b31d",
-                    "Low": "#3987e5",
+                    "Low": "#3f8f3f",
                     "Unknown": "#8f8e86"
                 },
                 "xAxisTitleVisibility": "hide",
@@ -219,9 +219,39 @@
                 "primary": "ds_top_cves"
             },
             "options": {
-                "count": 10
+                "count": 10,
+                "columnFormat": {
+                    "CVSS": {
+                        "rowBackgroundColors": "> table | seriesByName(\"CVSS\") | rangeValue(severityBg)",
+                        "rowColors": "> table | seriesByName(\"CVSS\") | rangeValue(severityText)",
+                        "align": "center",
+                        "width": 80
+                    },
+                    "ST score": {
+                        "rowBackgroundColors": "> table | seriesByName(\"ST score\") | rangeValue(severityBg)",
+                        "rowColors": "> table | seriesByName(\"ST score\") | rangeValue(severityText)",
+                        "align": "center",
+                        "width": 100
+                    },
+                    "CVE": {
+                        "rowBackgroundColors": "> table | seriesByName(\"CVE\") | pick(pillBg)",
+                        "rowColors": "> table | seriesByName(\"CVE\") | pick(pillText)",
+                        "width": 160
+                    },
+                    "Exploited": {
+                        "rowBackgroundColors": "> table | seriesByName(\"Exploited\") | matchValue(exploitedBg)",
+                        "rowColors": "> table | seriesByName(\"Exploited\") | matchValue(exploitedText)",
+                        "width": 130
+                    },
+                    "Assets": {
+                        "width": 90
+                    },
+                    "Software": {
+                        "width": 600
+                    }
+                }
             },
-            "description": "Exploited first, then by CVSS. Click a row to open the CVE at NVD.",
+            "description": "Exploited first, then by CVSS. ST score is the ShadowTrackr score. Click a row to open the CVE at NVD.",
             "eventHandlers": [
                 {
                     "type": "drilldown.customUrl",
@@ -230,7 +260,93 @@
                         "newTab": true
                     }
                 }
-            ]
+            ],
+            "context": {
+                "severityBg": [
+                    {
+                        "to": 0.1,
+                        "value": "#8f8e86"
+                    },
+                    {
+                        "from": 0.1,
+                        "to": 4,
+                        "value": "#3f8f3f"
+                    },
+                    {
+                        "from": 4,
+                        "to": 7,
+                        "value": "#f2b31d"
+                    },
+                    {
+                        "from": 7,
+                        "to": 9,
+                        "value": "#e8622c"
+                    },
+                    {
+                        "from": 9,
+                        "value": "#a8323e"
+                    }
+                ],
+                "severityText": [
+                    {
+                        "to": 0.1,
+                        "value": "#0b0b0b"
+                    },
+                    {
+                        "from": 0.1,
+                        "to": 4,
+                        "value": "#0b0b0b"
+                    },
+                    {
+                        "from": 4,
+                        "to": 7,
+                        "value": "#0b0b0b"
+                    },
+                    {
+                        "from": 7,
+                        "to": 9,
+                        "value": "#0b0b0b"
+                    },
+                    {
+                        "from": 9,
+                        "value": "#ffffff"
+                    }
+                ],
+                "pillBg": [
+                    "#3b6a96"
+                ],
+                "pillText": [
+                    "#ffffff"
+                ],
+                "exploitedBg": [
+                    {
+                        "match": "\u26a0 Exploited \u25c6 KEV",
+                        "value": "#d03b3b"
+                    },
+                    {
+                        "match": "\u26a0 Exploited",
+                        "value": "#d03b3b"
+                    },
+                    {
+                        "match": "\u25c6 CISA KEV",
+                        "value": "#d03b3b"
+                    }
+                ],
+                "exploitedText": [
+                    {
+                        "match": "\u26a0 Exploited \u25c6 KEV",
+                        "value": "#ffffff"
+                    },
+                    {
+                        "match": "\u26a0 Exploited",
+                        "value": "#ffffff"
+                    },
+                    {
+                        "match": "\u25c6 CISA KEV",
+                        "value": "#ffffff"
+                    }
+                ]
+            }
         },
         "viz_software": {
             "type": "splunk.table",
@@ -314,7 +430,7 @@
             "type": "ds.search",
             "name": "Top CVEs",
             "options": {
-                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | stats max(cvss) as CVSS max(exploited) as exploited max(cisa_kev) as kev dc(asset) as Assets values(software) as Software by cve | eval Flags=trim(if(exploited=1, \"\u26a0 Exploited \", \"\").if(kev=1, \"\u25c6 CISA KEV\", \"\")) | sort - exploited - CVSS - Assets | rename cve AS CVE | table CVE CVSS Flags Assets Software"
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | stats max(cvss) as cvss max(st_score) as st_score max(exploited) as exploited max(cisa_kev) as cisa_kev dc(asset) as Assets values(software) as Software by cve | sort - exploited - cvss - Assets | rename cve AS CVE | eval CVSS=coalesce(round(cvss, 1), \"\u2013\"), \"ST score\"=coalesce(round(st_score, 1), \"\u2013\"), Exploited=case(exploited=1 AND cisa_kev=1, \"\u26a0 Exploited \u25c6 KEV\", exploited=1, \"\u26a0 Exploited\", cisa_kev=1, \"\u25c6 CISA KEV\", true(), \"\") | table CVSS \"ST score\" CVE Exploited Assets Software"
             }
         },
         "ds_software": {

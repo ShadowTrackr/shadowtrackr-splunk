@@ -14,6 +14,7 @@ One summary per type and organization is returned for the summary index.
 A failing type is logged and reported; the other types still sync.
 """
 
+import json
 import logging
 import re
 import time
@@ -163,6 +164,7 @@ class InventoryCollector:
         self.types = [TYPES[t] for t in types if t in TYPES]
         self.retention_seconds = retention_days * 86400
         self.now = now
+        self._responses: Dict[Any, List[Row]] = {}
 
     def run(self) -> List[Dict[str, Any]]:
         """Sync every selected type and return one summary per type and organization."""
@@ -176,6 +178,7 @@ class InventoryCollector:
             self.logger.info("Group key with %d organizations", len(organizations))
         targets = organizations if organizations is not None else [None]
 
+        self._responses = {}
         summaries = []
         for inv_type in self.types:
             try:
@@ -196,10 +199,9 @@ class InventoryCollector:
         state_key = "{}:{}".format(inv_type.name, org_id or "")
         body = {"organization_id": org_id} if org else {}
         try:
-            records = self.client.post(inv_type.endpoint, body)
-            if inv_type.extra:
-                endpoint, combine = inv_type.extra
-                records = combine(records, self.client.post(endpoint, body))
+            records = self._fetch(inv_type.endpoint, body)
+            for endpoint, combine in inv_type.extra:
+                records = combine(records, self._fetch(endpoint, body))
             rows = inv_type.rows(records, org)
         except AuthError:
             raise  # a bad key affects every type; let the input report it once
@@ -220,6 +222,13 @@ class InventoryCollector:
         self.logger.info("Synced %s: %d present, %d new, %d gone, %d deleted", inv_type.name, summary["present"],
                          summary["new"], summary["gone"], summary["deleted"])
         return self._with_org(summary, org)
+
+    def _fetch(self, endpoint: str, body: Dict[str, Any]) -> List[Row]:
+        """POST once per endpoint and organization per run (CVEs reuse the hosts and websites answers)."""
+        key = (endpoint, json.dumps(body, sort_keys=True))
+        if key not in self._responses:
+            self._responses[key] = self.client.post(endpoint, body)
+        return self._responses[key]
 
     @staticmethod
     def _with_org(summary: Dict[str, Any], org: Optional[Dict[str, Any]]) -> Dict[str, Any]:

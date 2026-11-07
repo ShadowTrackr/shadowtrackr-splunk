@@ -7,7 +7,7 @@ import pytest
 from mock_api.server import DEFAULT_API_KEY, GROUP_API_KEY
 from shadowtrackr_lib.client import AuthError, ShadowTrackrClient, TransientError
 from shadowtrackr_lib.inventory import InventoryCollector, KVStore, list_organizations, reconcile, validate_interval
-from shadowtrackr_lib.inventory_types import TYPES, enrich_cves, expand_internet_standards, merge_cloud_providers
+from shadowtrackr_lib.inventory_types import TYPES, add_st_scores, enrich_cves, expand_internet_standards, merge_cloud_providers
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INVENTORY = os.path.join(ROOT, "tests", "fixtures", "inventory")
@@ -22,8 +22,8 @@ def fixture(endpoint):
 def rows_for(name, records=None, org=None):
     t = TYPES[name]
     records = fixture(t.endpoint) if records is None else records
-    if t.extra:
-        records = t.extra[1](records, fixture(t.extra[0]))
+    for endpoint, combine in t.extra:
+        records = combine(records, fixture(endpoint))
     return t.rows(records, org)
 
 
@@ -309,7 +309,8 @@ def test_empty_guard_state_survives_between_runs():
 def test_only_selected_types_are_synced():
     client = FixtureClient()
     collector(client, FakeKV(), {}, types=["hosts", "cves", "nonsense"]).run()
-    assert [c[0] for c in client.calls] == ["hosts", "cves_assets", "vulnerabilities"]
+    # CVEs also read hosts and websites for the ShadowTrackr score; hosts comes from the run's cache.
+    assert [c[0] for c in client.calls] == ["hosts", "cves_assets", "vulnerabilities", "websites"]
 
 
 # --- against the mock server --------------------------------------------------
@@ -345,3 +346,19 @@ def test_validate_interval_accepts(value):
 def test_validate_interval_rejects(value):
     with pytest.raises(ValueError):
         validate_interval(value)
+
+
+def test_add_st_scores_from_hosts_and_websites():
+    records = [{"cve": "CVE-1", "asset": "192.0.2.1"}, {"cve": "CVE-2", "asset": "www.example.com"},
+               {"cve": "CVE-3", "asset": "192.0.2.1"}]
+    hosts = [{"ip": "192.0.2.1", "vulnerabilities": [
+        {"name": "OpenSSH 8.9", "vulnerabilities": [{"cve": "CVE-1", "shadowtrackr_cvss_score": 7.2}]}]}]
+    websites = [{"url": "www.example.com", "vulnerabilities": [
+        {"name": "Next.js 13", "vulnerabilities": [{"name": "CVE-2", "shadowtrackr_cvss_score": 4.6},
+                                                   {"name": "CVE-9", "shadowtrackr_cvss_score": True}]}]},
+                {"url": "x", "vulnerabilities": ""}]
+    out = add_st_scores(add_st_scores(records, hosts), websites)
+    assert [r.get("shadowtrackr_cvss_score") for r in out] == [7.2, 4.6, None]
+    rows = TYPES["cves"].rows(out)
+    assert sorted(r.get("st_score") for r in rows if "st_score" in r) == [4.6, 7.2]
+

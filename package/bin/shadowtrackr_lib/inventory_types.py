@@ -197,6 +197,7 @@ def project_cve(r: Row) -> Row:
         software=r.get("software"),
         cvss=r.get("cvss_score"),
         severity=severity.lower() if isinstance(severity, str) else None,
+        st_score=r.get("shadowtrackr_cvss_score"),
         exploited=_bool(r.get("exploited")),
         cisa_kev=_bool(r.get("cisa")),
         **_seen(r),
@@ -319,6 +320,31 @@ def enrich_cves(records: List[Row], vulnerabilities: List[Row]) -> List[Row]:
     return out
 
 
+def add_st_scores(records: List[Row], assets: List[Row]) -> List[Row]:
+    """Add the ShadowTrackr score per CVE to /cves_assets rows.
+
+    The score is only in the CVE lists nested in /hosts and /websites
+    (per software: {"vulnerabilities": [{"cve" or "name": ..., "shadowtrackr_cvss_score": ...}]}).
+    It is the same for a CVE on every asset.
+    """
+    scores: Dict[str, float] = {}
+    for asset in assets:
+        for software in asset.get("vulnerabilities") or []:
+            if not isinstance(software, dict):
+                continue
+            for cve in software.get("vulnerabilities") or []:
+                if not isinstance(cve, dict):
+                    continue
+                cve_id, score = cve.get("cve") or cve.get("name"), cve.get("shadowtrackr_cvss_score")
+                if isinstance(cve_id, str) and isinstance(score, (int, float)) and not isinstance(score, bool):
+                    scores[cve_id] = max(score, scores.get(cve_id, score))
+    out = []
+    for r in records:
+        score = scores.get(r.get("cve"))
+        out.append(dict(r, shadowtrackr_cvss_score=score) if score is not None else r)
+    return out
+
+
 # --- type registry ----------------------------------------------------------
 
 
@@ -332,7 +358,7 @@ class InventoryType:
         project: Callable[[Row], Row],
         fields: Tuple[str, ...],
         expand: Optional[Callable[[List[Row]], List[Row]]] = None,
-        extra: Optional[Tuple[str, Callable[[List[Row], List[Row]], List[Row]]]] = None,
+        extra: Tuple[Tuple[str, Callable[[List[Row], List[Row]], List[Row]]], ...] = (),
     ):
         self.name = name
         self.endpoint = endpoint
@@ -341,7 +367,7 @@ class InventoryType:
         self.project = project
         self.fields = fields  # projected fields, for the lookup definition
         self.expand = expand  # turns API records into rows to project (default: as is)
-        self.extra = extra  # (endpoint, combine): a second endpoint merged into the records
+        self.extra = extra  # ((endpoint, combine), ...): other endpoints merged into the records, in order
 
     @property
     def collection(self) -> str:
@@ -403,8 +429,8 @@ TYPES: Dict[str, InventoryType] = {t.name: t for t in [
                   _f("software", "vendor", "product", "version", "patch", "asset_count", "cve_count", "max_cvss",
                      "exploited", "cisa_kev") + SEEN),
     InventoryType("cves", "cves_assets", "Vulnerabilities (CVE per asset)", ("cve", "asset", "software"), project_cve,
-                  _f("cve", "asset", "software", "cvss", "severity", "exploited", "cisa_kev") + SEEN,
-                  extra=("vulnerabilities", enrich_cves)),
+                  _f("cve", "asset", "software", "cvss", "severity", "st_score", "exploited", "cisa_kev") + SEEN,
+                  extra=(("vulnerabilities", enrich_cves), ("hosts", add_st_scores), ("websites", add_st_scores))),
     InventoryType("cloud_providers", "cloud_providers", "Cloud providers", ("cloud_provider",), project_cloud_provider,
                   _f("cloud_provider", "asset_count", "urls") + SEEN, expand=merge_cloud_providers),
     InventoryType("remote_login_services", "remote_login_services", "Remote login services", (), project_generic, ()),
