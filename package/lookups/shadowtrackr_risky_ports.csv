@@ -1,0 +1,39 @@
+port,service,reason
+21,FTP,Plain-text logins and file transfer; a common target for brute force.
+23,Telnet,Plain-text remote login; should never face the internet.
+69,TFTP,Unauthenticated file transfer.
+110,POP3,Plain-text mail logins.
+111,Portmapper,Leaks RPC services and is used for DDoS amplification.
+135,MS RPC,Windows RPC endpoint mapper; used for lateral movement and exploits.
+137,NetBIOS,Windows name service; leaks host and domain names.
+138,NetBIOS,Windows datagram service.
+139,NetBIOS,Windows file sharing over NetBIOS.
+143,IMAP,Plain-text mail logins.
+161,SNMP,Often has default communities that leak or change the device configuration.
+389,LDAP,Directory service; leaks accounts and is used for DDoS amplification.
+445,SMB,Windows file sharing; the target of wormable exploits and ransomware.
+512,rexec,Legacy remote execution without encryption.
+513,rlogin,Legacy remote login without encryption.
+514,rsh,Legacy remote shell without encryption.
+623,IPMI,Server management (BMC) with known authentication bypasses.
+1433,MS SQL,Database; should not face the internet.
+1434,MS SQL Browser,Leaks SQL Server instances and is used for DDoS amplification.
+1900,SSDP,Used for DDoS amplification.
+2049,NFS,File sharing; can expose file systems.
+2375,Docker API,Unauthenticated Docker API gives full control of the host.
+3306,MySQL,Database; should not face the internet.
+3389,RDP,Remote Desktop; the most common ransomware entry point.
+4786,Cisco Smart Install,Lets anyone change the switch configuration.
+5432,PostgreSQL,Database; should not face the internet.
+5900,VNC,Remote desktop that often has weak or no passwords.
+5985,WinRM,Windows remote management over HTTP.
+5986,WinRM,Windows remote management.
+6379,Redis,Often has no authentication; leads to data theft and code execution.
+6443,Kubernetes API,Cluster control plane.
+8291,MikroTik Winbox,Router management with known exploits.
+9200,Elasticsearch,Often has no authentication; a frequent source of data leaks.
+10250,Kubelet,Can allow running commands in containers.
+11211,Memcached,No authentication; used for DDoS amplification.
+27017,MongoDB,Often has no authentication; a frequent source of data leaks.
+27018,MongoDB,Often has no authentication; a frequent source of data leaks.
+50070,Hadoop,NameNode web UI without authentication.

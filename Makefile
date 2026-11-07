@@ -1,7 +1,7 @@
 APP ?= shadowtrackr
 VERSION ?= 0.1.0
 
-.PHONY: build test test-bundled deploy up down restart logs inspect index mock devlogs dashboards
+.PHONY: build test test-bundled deploy up down restart logs inspect index mock devlogs dashboards savedsearches hec
 
 build:
 	# Tests import package/bin; never ship their __pycache__ (AppInspect rejects .pyc files).
@@ -51,3 +51,11 @@ devlogs:
 # Regenerate the Dashboard Studio views from tools/gen_dashboards.py.
 dashboards:
 	python3 -I tools/gen_dashboards.py
+
+# Regenerate the detections (savedsearches.conf) from tools/gen_savedsearches.py.
+savedsearches:
+	python3 -I tools/gen_savedsearches.py
+
+# Send synthetic alert webhook deliveries through HEC and check the parsing.
+hec:
+	python3 -I tools/send_webhook_test.py
