@@ -284,6 +284,17 @@
             },
             "description": "The app refreshes the event type catalogue from the API daily; types listed here are not in it yet.",
             "hideWhenNoData": true
+        },
+        "viz_health": {
+            "type": "splunk.table",
+            "title": "Data sources",
+            "dataSources": {
+                "primary": "ds_health"
+            },
+            "options": {
+                "count": 3
+            },
+            "description": "When each source last delivered data (last 30 days). Events are stale after 24 hours, the inventory after 4 days. The webhook is optional; see the README to set it up."
         }
     },
     "dataSources": {
@@ -451,6 +462,13 @@
                     "latest": "now"
                 }
             }
+        },
+        "ds_health": {
+            "type": "ds.search",
+            "name": "Data sources",
+            "options": {
+                "query": "| tstats count max(_indextime) as last where `shadowtrackr_index` earliest=-30d latest=now by sourcetype | append [| makeresults | eval sourcetype=split(\"shadowtrackr:events,shadowtrackr:inventory:summary,shadowtrackr:alert\", \",\") | mvexpand sourcetype | eval count=0 | fields sourcetype count] | stats sum(count) as count max(last) as last by sourcetype | eval order=case(sourcetype=\"shadowtrackr:events\", 0, sourcetype=\"shadowtrackr:inventory:summary\", 1, sourcetype=\"shadowtrackr:alert\", 2), Source=case(sourcetype=\"shadowtrackr:events\", \"Events input\", sourcetype=\"shadowtrackr:inventory:summary\", \"Inventory input\", sourcetype=\"shadowtrackr:alert\", \"Alert webhook (HEC)\"), limit=case(sourcetype=\"shadowtrackr:events\", 24, sourcetype=\"shadowtrackr:inventory:summary\", 96), hours=round((now()-last)/3600, 1) | where isnotnull(order) | eval Status=case(isnull(last) AND sourcetype=\"shadowtrackr:alert\", \"\u25cb Not set up\", isnull(last), \"\u25b2 No data\", isnotnull(limit) AND hours>limit, \"\u25b2 Stale\", true(), \"\u25cf OK\"), \"Last received\"=if(isnull(last), \"\u2013\", strftime(last, \"%Y-%m-%d %H:%M\")), \"Events (30 days)\"=count | sort order | table Source Status \"Last received\" \"Events (30 days)\""
+            }
         }
     },
     "layout": {
@@ -615,11 +633,21 @@
                 }
             },
             {
-                "item": "viz_unclassified",
+                "item": "viz_health",
                 "type": "block",
                 "position": {
                     "x": 0,
                     "y": 1480,
+                    "w": 1200,
+                    "h": 210
+                }
+            },
+            {
+                "item": "viz_unclassified",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 1690,
                     "w": 1200,
                     "h": 250
                 }

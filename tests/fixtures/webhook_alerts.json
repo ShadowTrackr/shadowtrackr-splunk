@@ -1,0 +1,26 @@
+{
+  "_comment": "Synthetic ShadowTrackr alert webhook deliveries (Splunk HEC event payload), one HEC event per result. Documentation addresses only (RFC 5737, example.com). Delivery d-1 is sent twice, as a retry would, and ends with the marker ShadowTrackr adds when it cut off the results.",
+  "data": [
+    {"alert": "TEST - Risky ports opened", "alert_id": 9001, "delivery_id": "d-1", "result_index": 0,
+     "result": {"ip": "192.0.2.10", "asset": "192.0.2.10", "level": 90, "port": 3389, "msg": "RDP open on 192.0.2.10"},
+     "organization": {"id": 1, "name": "Example Org"}},
+    {"alert": "TEST - Risky ports opened", "alert_id": 9001, "delivery_id": "d-1", "result_index": 1,
+     "result": {"ip": "192.0.2.11", "asset": "192.0.2.11", "level": 81, "port": 21, "msg": "FTP open on 192.0.2.11"},
+     "organization": {"id": 1, "name": "Example Org"}},
+    {"alert": "TEST - Risky ports opened", "alert_id": 9001, "delivery_id": "d-1", "result_index": 0,
+     "result": {"ip": "192.0.2.10", "asset": "192.0.2.10", "level": 90, "port": 3389, "msg": "RDP open on 192.0.2.10"},
+     "organization": {"id": 1, "name": "Example Org"}},
+    {"alert": "TEST - Risky ports opened", "alert_id": 9001, "delivery_id": "d-1", "truncated": true,
+     "organization": {"id": 1, "name": "Example Org"}},
+    {"alert": "TEST - Certificates expiring", "alert_id": 9002, "delivery_id": "d-2", "result_index": 0,
+     "result": {"url": "www.example.com", "host": "192.0.2.20", "not_after": "2026-12-01T00:00:00Z"},
+     "group": {"id": 7, "name": "Example MSSP"}}
+  ],
+  "expected": {
+    "events": 5,
+    "results": 3,
+    "dest": {"9001:0": "192.0.2.10", "9001:1": "192.0.2.11", "9002:0": "www.example.com"},
+    "severity": {"9001:0": "high", "9001:1": "medium", "9002:0": "unknown"},
+    "vendor_account": {"9001:0": "Example Org", "9002:0": "Example MSSP"}
+  }
+}

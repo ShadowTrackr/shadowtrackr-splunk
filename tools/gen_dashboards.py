@@ -234,6 +234,30 @@ def dashboard(name, label, description, subtitle, inputs, data_sources, visualiz
 STATUS_LABEL = 'eval Status=case(level>=90, "▲ Problem", level>=80, "■ Warning", true(), "● Info")'
 
 
+# One row per data source with when it last delivered, whether or not it has data.
+DATA_SOURCES = (("shadowtrackr:events", "Events input", 24),
+                ("shadowtrackr:inventory:summary", "Inventory input", 96),
+                ("shadowtrackr:alert", "Alert webhook (HEC)", None))
+DATA_HEALTH = (
+    "| tstats count max(_indextime) as last where `shadowtrackr_index` earliest=-30d latest=now by sourcetype"
+    ' | append [| makeresults | eval sourcetype=split("{types}", ",") | mvexpand sourcetype'
+    " | eval count=0 | fields sourcetype count]"
+    " | stats sum(count) as count max(last) as last by sourcetype"
+    " | eval order=case({order}), Source=case({labels}), limit=case({limits}),"
+    " hours=round((now()-last)/3600, 1)"
+    " | where isnotnull(order)"
+    ' | eval Status=case(isnull(last) AND sourcetype="shadowtrackr:alert", "○ Not set up",'
+    ' isnull(last), "▲ No data", isnotnull(limit) AND hours>limit, "▲ Stale", true(), "● OK"),'
+    ' "Last received"=if(isnull(last), "–", strftime(last, "%Y-%m-%d %H:%M")), "Events (30 days)"=count'
+    ' | sort order | table Source Status "Last received" "Events (30 days)"'
+).format(
+    types=",".join(t for t, _, _ in DATA_SOURCES),
+    order=", ".join('sourcetype="{}", {}'.format(t, i) for i, (t, _, _) in enumerate(DATA_SOURCES)),
+    labels=", ".join('sourcetype="{}", "{}"'.format(t, label) for t, label, _ in DATA_SOURCES),
+    limits=", ".join('sourcetype="{}", {}'.format(t, limit) for t, _, limit in DATA_SOURCES if limit),
+)
+
+
 def overview():
     base = '`shadowtrackr_events` | where "$org$"="*" OR vendor_account="$org$"'
     alerts = base + " | where level>=$min_level$"
@@ -288,6 +312,7 @@ def overview():
             ' | rename eventid AS "Event id", category AS Source | sort - Events',
         ),
         "ds_orgs": ds_orgs,
+        "ds_health": ds("Data sources", DATA_HEALTH, time=False),
     }
     visualizations = {
         "viz_total": single("Events", "ds_total"),
@@ -313,6 +338,10 @@ def overview():
             "Event types without a classification", "ds_unclassified", count=5, hide_when_empty=True,
             description="The app refreshes the event type catalogue from the API daily; "
                         "types listed here are not in it yet."),
+        "viz_health": table(
+            "Data sources", "ds_health", count=3,
+            description="When each source last delivered data (last 30 days). Events are stale after 24 hours, "
+                        "the inventory after 4 days. The webhook is optional; see the README to set it up."),
     }
     inputs = {
         "input_time": TIME_INPUT,
@@ -332,7 +361,8 @@ def overview():
         ("viz_timeline", 0, 230, 800, 320), ("viz_category", 800, 230, 400, 320),
         ("viz_latest", 0, 550, 1200, 400),
         ("viz_top_assets", 0, 950, 760, 440), ("viz_changes", 760, 950, 440, 440),
-        ("viz_unclassified", 0, 1390, 1200, 250),
+        ("viz_health", 0, 1390, 1200, 210),
+        ("viz_unclassified", 0, 1600, 1200, 250),
     ]
     dashboard("shadowtrackr_overview", "Overview",
               "Events from your external attack surface, collected by the ShadowTrackr events input.",
