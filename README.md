@@ -161,7 +161,7 @@ the same finding does not fire over and over.
 | Phishy domain found | a new or changed lookalike domain | events | every 15 min | domain + event type, 7 days |
 | Leaked data found | your keywords, domains or emails show up in a breach, dump or on Pastebin | events | every 15 min | asset + event type, 1 day |
 | Webhook alert received | a ShadowTrackr alert pushes a result through the webhook | webhook | every 15 min | result, 1 day |
-| Attack on vulnerable asset | your IDS/IPS/WAF sees attacks on an asset with CVEs (high when known exploited or KEV) | your logs + inventory | hourly | asset, 1 day |
+| Attack on vulnerable asset | your IDS/IPS/WAF sees attacks on an asset with CVEs | your logs + inventory | hourly | asset, 1 day |
 | Web traffic to phishy domain | a user or host visits a lookalike of your domains | your logs + inventory | hourly | domain, 1 day |
 | External login on exposed remote access | a successful SSH/RDP/VNC/telnet/WinRM login from an internet address on an asset where ShadowTrackr sees that service exposed | your logs + inventory | hourly | asset + user + source, 1 day |
 
@@ -172,6 +172,10 @@ Notes:
   does not flood the alert queue.
 - Inventory detections treat the first inventory sync as the baseline: only
   findings that appear after it fire.
+- CVE-based detections take their severity from ShadowTrackr's CVE severity,
+  which follows CVSS (the `shadowtrackr_cvss_severity` macro uses the same
+  bands). Known exploited, CISA KEV and NCSC NL decide whether a CVE fires, not
+  how severe it is. A CVE without a CVSS score has severity *unknown*.
 - To change the risky ports, upload your own CSV with the columns `port`,
   `service` and `reason` (Settings > Lookups > Lookup table files), then point
   the `shadowtrackr_risky_ports` lookup definition at it. Edits to the CSV that
@@ -204,9 +208,9 @@ detection, or every finding fires twice.
 **Assets.** The `ShadowTrackr - ES asset lookup - Lookup Gen` search (disabled,
 daily at 17:15) writes every internet-facing host and website from the
 inventory to the `shadowtrackr_es_assets` lookup, in the ES asset format. The
-priority is *critical* for a CVE on the CISA KEV list or a ShadowTrackr problem,
-*high* for other CVEs, *medium* for warnings, and *low* otherwise. The category
-is `shadowtrackr|internet_facing`. To use it:
+priority is the severity of the worst CVE on the asset as ShadowTrackr rates it
+from CVSS (critical 9+, high 7+, medium 4+, low), or *unknown* when the asset
+has no scored CVEs. The category is `shadowtrackr|internet_facing`. To use it:
 
 1. Enable the search and run it once.
 2. In ES, open the Asset and Identity Management configuration and add a new

@@ -102,17 +102,23 @@ DETECTIONS = [
         "name": "New known exploited vulnerability",
         "description": "A newly found CVE on one of your assets is known to be exploited, is on the CISA KEV list "
                        "or has an NCSC NL advisory. Uses the inventory lookups (run the Inventory input); the "
-                       "first inventory sync is the baseline and does not alert. One result per asset.",
+                       "first inventory sync is the baseline and does not alert. One result per asset, with the severity "
+                       "of its worst CVE as ShadowTrackr rates it (from CVSS; unknown when there is no score).",
         "search": "| inputlookup shadowtrackr_cves " + NEW_INVENTORY +
                   " AND (exploited=1 OR cisa_kev=1 OR " + NCSC + ")"
                   " | eval threat_intel=mvappend(if(exploited=1, \"known exploited\", null()),"
                   " if(cisa_kev=1, \"CISA KEV\", null()), if(" + NCSC + ", \"NCSC NL\", null()))"
+                  " | eval st_severity_rank=case(severity=\"critical\", 4, severity=\"high\", 3,"
+                  " severity=\"medium\", 2, severity=\"low\", 1, true(), 0)"
                   " | stats values(cve) as cve values(software) as software max(cvss) as cvss"
+                  " max(st_severity_rank) as st_severity_rank"
                   " values(threat_intel) as threat_intel dc(cve) as cve_count values(organization) as vendor_account"
                   " by asset"
                   " | rename asset as dest"
                   " | eval signature=\"Known exploited vulnerability\","
-                  " severity=if(cvss>=9, \"critical\", \"high\"), st_cve_key=mvjoin(mvsort(cve), \",\")"
+                  " severity=case(st_severity_rank=4, \"critical\", st_severity_rank=3, \"high\","
+                  " st_severity_rank=2, \"medium\", st_severity_rank=1, \"low\", true(), \"unknown\"),"
+                  " st_cve_key=mvjoin(mvsort(cve), \",\")"
                   " | table dest cve cve_count cvss threat_intel software signature severity vendor_account st_cve_key",
         "cron": HOURLY.format(35), "earliest": "-24h", "latest": "now",
         "suppress": ("dest,st_cve_key", "604800s"),
@@ -276,15 +282,15 @@ DETECTIONS = [
     # --- Your logs plus ShadowTrackr ------------------------------------------
     {
         "name": "Attack on vulnerable asset",
-        "description": "Your IDS, IPS or WAF saw attacks on an asset where ShadowTrackr found CVEs. Severity is "
-                       "high when a CVE is known exploited or on the CISA KEV list. Reads the "
+        "description": "Your IDS, IPS or WAF saw attacks on an asset where ShadowTrackr found CVEs. The severity is "
+                       "that of the worst CVE on the asset (from CVSS; unknown when there is no score). Reads the "
                        "shadowtrackr_asset_ids macro (CIM Intrusion Detection tags by default).",
         "search": "`shadowtrackr_asset_ids`"
                   " | stats count min(_time) as firstTime max(_time) as lastTime values(signature) as signature"
                   " values(src) as src dc(src) as src_count values(sourcetype) as sourcetype by dest"
                   " | stenrich field=dest"
                   " | where st_vulnerable=1"
-                  " | eval severity=if(st_exploited=1 OR st_cisa_kev=1, \"high\", \"medium\"),"
+                  " | eval severity=`shadowtrackr_cvss_severity(st_max_cvss)`,"
                   " src=mvindex(src, 0, 9), signature=mvindex(signature, 0, 9)"
                   " | table dest count firstTime lastTime src src_count signature sourcetype severity st_cves"
                   " st_max_cvss st_exploited st_cisa_kev st_organization",
@@ -411,17 +417,15 @@ ES_ASSET_FIELDS = ("ip mac nt_host dns owner priority lat long city country buni
 ES_ASSET_LOOKUP = {
     "name": "ES asset lookup - Lookup Gen",
     "description": "Builds the shadowtrackr_es_assets lookup in the Enterprise Security asset format from the "
-                   "inventory: every internet-facing host and website, with priority critical (CISA KEV CVE or "
-                   "ShadowTrackr problem), high (other CVEs), medium (warnings) or low. Register the lookup in ES "
+                   "inventory: every internet-facing host and website. The priority is the severity of the worst CVE "
+                   "on the asset as ShadowTrackr rates it (from CVSS), or unknown when it has no scored CVEs. Register the lookup in ES "
                    "under Configure > Data Enrichment > Asset and Identity Management.",
     "search": "| inputlookup shadowtrackr_hosts where st_present=1"
               " | eval st_key=ip, dns=hostnames"
               " | append [| inputlookup shadowtrackr_websites where st_present=1"
               " | eval st_key=url, dns=url, ip=if(match(host, \"^[0-9a-fA-F:.]+$\"), host, null())]"
               " | stenrich field=st_key"
-              " | eval priority=case(st_cisa_kev=1 OR problem=1, \"critical\","
-              " st_exploited=1 OR st_vulnerable=1 OR vulnerable=1, \"high\", warning=1, \"medium\","
-              " true(), \"low\"),"
+              " | eval priority=`shadowtrackr_cvss_severity(st_max_cvss)`,"
               " bunit=organization, category=\"shadowtrackr|internet_facing\", is_expected=\"true\","
               " ip=mvjoin(ip, \"|\"), dns=mvjoin(mvdedup(dns), \"|\")"
               " | table " + ES_ASSET_FIELDS +
