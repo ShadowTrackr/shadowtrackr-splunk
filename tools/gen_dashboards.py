@@ -20,6 +20,13 @@ WARNING = "#c98500"
 INFO = "#3987e5"
 NEUTRAL = "#c3c2b7"  # secondary text on the dark surface
 
+# CVE severity, worst to least. Checked with the dataviz validator on the black
+# panel: CVD and normal-vision separation and 3:1 contrast pass; amber sits above
+# the categorical lightness band, which is fine because every bar is also labelled.
+# Unknown is deliberately neutral.
+SEVERITY_COLORS = {"Critical": "#a8323e", "High": "#e8622c", "Medium": "#f2b31d", "Low": "#3987e5",
+                   "Unknown": "#8f8e86"}
+
 HEADER = 90
 
 # Inventory trend from the summary events: the latest count per input and
@@ -309,7 +316,8 @@ def vulnerabilities():
             "CVEs by severity",
             cves + ' | eval severity=coalesce(severity, "unknown") | stats dc(cve) as CVEs by severity | '
             + SEVERITY_ORDER + ' | sort order | eval Severity=upper(substr(severity,1,1)).substr(severity,2)'
-            " | table Severity CVEs", time=False),
+            # One series per severity, so each bar gets its own colour.
+            " | table Severity CVEs | eval {Severity}=CVEs | fields - CVEs", time=False),
         "ds_trend": ds("CVE findings over time",
                        ('`shadowtrackr_inventory_summary` type=cves status=ok'
                         ' | where "$org$"="*" OR organization="$org$"' + TREND).format(label="CVE findings")),
@@ -338,7 +346,12 @@ def vulnerabilities():
         "viz_critical": single("▲ Critical (CVSS 9+)", "ds_critical", PROBLEM),
         "viz_exploited": single("⚠ Known exploited", "ds_exploited", PROBLEM),
         "viz_assets": single("Affected assets", "ds_assets"),
-        "viz_severity": bar("CVEs by severity", "ds_severity", kind="splunk.column"),
+        "viz_severity": {
+            "type": "splunk.column", "title": "CVEs by severity", "dataSources": {"primary": "ds_severity"},
+            "options": {"stackMode": "stacked", "legendDisplay": "off", "dataValuesDisplay": "all",
+                        "seriesColorsByField": SEVERITY_COLORS,
+                        "xAxisTitleVisibility": "hide", "yAxisTitleVisibility": "hide"},
+        },
         "viz_trend": {
             "type": "splunk.line", "title": "CVE findings over time", "dataSources": {"primary": "ds_trend"},
             "options": {"legendDisplay": "off", "seriesColors": [INFO],

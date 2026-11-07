@@ -183,11 +183,16 @@
                 "primary": "ds_severity"
             },
             "options": {
+                "stackMode": "stacked",
                 "legendDisplay": "off",
-                "seriesColors": [
-                    "#3987e5"
-                ],
                 "dataValuesDisplay": "all",
+                "seriesColorsByField": {
+                    "Critical": "#a8323e",
+                    "High": "#e8622c",
+                    "Medium": "#f2b31d",
+                    "Low": "#3987e5",
+                    "Unknown": "#8f8e86"
+                },
                 "xAxisTitleVisibility": "hide",
                 "yAxisTitleVisibility": "hide"
             }
@@ -291,7 +296,7 @@
             "type": "ds.search",
             "name": "CVEs by severity",
             "options": {
-                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | eval severity=coalesce(severity, \"unknown\") | stats dc(cve) as CVEs by severity | eval order=case(severity=\"critical\",1, severity=\"high\",2, severity=\"medium\",3, severity=\"low\",4, true(),5) | sort order | eval Severity=upper(substr(severity,1,1)).substr(severity,2) | table Severity CVEs"
+                "query": "| inputlookup shadowtrackr_cves where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where coalesce(cvss, 0)>=$min_cvss$ AND ($exploited$) | eval severity=coalesce(severity, \"unknown\") | stats dc(cve) as CVEs by severity | eval order=case(severity=\"critical\",1, severity=\"high\",2, severity=\"medium\",3, severity=\"low\",4, true(),5) | sort order | eval Severity=upper(substr(severity,1,1)).substr(severity,2) | table Severity CVEs | eval {Severity}=CVEs | fields - CVEs"
             }
         },
         "ds_trend": {
