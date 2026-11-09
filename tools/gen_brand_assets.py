@@ -11,8 +11,8 @@ The wordmark uses Avenir Next from macOS. The generated PNGs are committed, so
 only regenerating them needs that font.
 
 Outputs:
-  package/static/appIcon.png, appIcon_2x.png        36/72 px tile (light UI)
-  package/static/appIconAlt.png, appIconAlt_2x.png  36/72 px tile with a rim (dark UI)
+  package/static/appIcon.png, appIcon_2x.png        36/72 px square tile
+  package/static/appIconAlt.png, appIconAlt_2x.png  same, for the dark UI
   package/static/appLogo.png, appLogo_2x.png        160x40/320x80 helmet + wordmark,
                                                     transparent, for the brand-blue app bar
   package/appserver/static/images/logo_tile.png     256 px tile for the Overview header
@@ -61,8 +61,13 @@ def rounded_mask(size, radius) -> Image.Image:
     return mask
 
 
-def tile(rim: bool = False) -> Image.Image:
-    """Rounded brand-blue tile with the helmet, at WORK x WORK."""
+def tile(rounded: bool = True) -> Image.Image:
+    """Brand-blue tile with the helmet, at WORK x WORK.
+
+    The Splunk app icons must be square (rounded=False): Splunk Web paints its
+    own light-blue background behind app icons, which shows through
+    transparent corners.
+    """
     canvas = Image.new("RGBA", (WORK, WORK), (0, 0, 0, 0))
     body = vertical_gradient((WORK, WORK), BLUE_LIGHT, BLUE).convert("RGBA")
     head = figure()
@@ -70,14 +75,9 @@ def tile(rim: bool = False) -> Image.Image:
     scale = (WORK * 0.78) / head.height
     head = head.resize((round(head.width * scale), round(head.height * scale)), Image.LANCZOS)
     body.alpha_composite(head, ((WORK - head.width) // 2, round(WORK * 0.115)))
+    if not rounded:
+        return body
     canvas.paste(body, (0, 0), rounded_mask((WORK, WORK), round(WORK * 0.22)))
-    if rim:
-        # A faint light edge keeps the tile from sinking into dark menus.
-        ring = Image.new("RGBA", (WORK, WORK), (0, 0, 0, 0))
-        ImageDraw.Draw(ring).rounded_rectangle(
-            (6, 6, WORK - 7, WORK - 7), radius=round(WORK * 0.21), outline=(255, 255, 255, 70), width=14
-        )
-        canvas.alpha_composite(ring)
     return canvas
 
 
@@ -116,11 +116,11 @@ def app_logo(scale: int) -> Image.Image:
 
 def main():
     light = tile()
-    dark = tile(rim=True)
-    save(light, "package", "static", "appIcon.png", size=(36, 36))
-    save(light, "package", "static", "appIcon_2x.png", size=(72, 72))
-    save(dark, "package", "static", "appIconAlt.png", size=(36, 36))
-    save(dark, "package", "static", "appIconAlt_2x.png", size=(72, 72))
+    square = tile(rounded=False)
+    save(square, "package", "static", "appIcon.png", size=(36, 36))
+    save(square, "package", "static", "appIcon_2x.png", size=(72, 72))
+    save(square, "package", "static", "appIconAlt.png", size=(36, 36))
+    save(square, "package", "static", "appIconAlt_2x.png", size=(72, 72))
     save(app_logo(1), "package", "static", "appLogo.png")
     save(app_logo(2), "package", "static", "appLogo_2x.png")
     save(light, "package", "appserver", "static", "images", "logo_tile.png", size=(256, 256))
