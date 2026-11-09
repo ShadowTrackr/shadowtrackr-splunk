@@ -5,39 +5,40 @@
         "id": {
             "group": null,
             "name": "shadowtrackr",
-            "version": "0.1.0"
+            "version": "1.1.0"
         },
         "author": [
             {
-                "name": "",
-                "email": null,
-                "company": null
+                "name": "ShadowTrackr",
+                "email": "support@shadowtrackr.com",
+                "company": "ShadowTrackr Ltd"
             }
         ],
         "releaseDate": null,
-        "description": "ShadowTrackr",
+        "description": "Brings ShadowTrackr external attack surface data into Splunk: events, asset inventory, CVEs and certificates, with dashboards, detections, log enrichment and Enterprise Security integration.",
         "classification": {
-            "intendedAudience": "IT Professionals",
+            "intendedAudience": "Security Professionals",
             "categories": [
-                "Security, Fraud & Compliance"
+                "Security, Fraud & Compliance",
+                "IT Operations"
             ],
             "developmentStatus": "Production/Stable"
         },
         "commonInformationModels": null,
         "license": {
-            "name": "LICENSE.txt",
+            "name": "Apache License 2.0",
             "text": "./LICENSES/LICENSE.txt",
-            "uri": null
+            "uri": "https://www.apache.org/licenses/LICENSE-2.0"
         },
         "privacyPolicy": {
-            "name": null,
+            "name": "ShadowTrackr Privacy Policy",
             "text": null,
-            "uri": null
+            "uri": "https://shadowtrackr.com/privacy-policy"
         },
         "releaseNotes": {
-            "name": "README",
+            "name": "Release notes",
             "text": "README.txt",
-            "uri": ""
+            "uri": "https://github.com/ShadowTrackr/shadowtrackr-splunk/releases"
         }
     },
     "dependencies": null,

@@ -19,3 +19,4 @@ secrets/
 # IDE and OS
 .idea/
 .DS_Store
+dist/

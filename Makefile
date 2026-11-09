@@ -1,19 +1,32 @@
 APP ?= shadowtrackr
-VERSION ?= 0.1.0
+VERSION ?= 1.1.0
 
-.PHONY: build test test-bundled deploy up down restart logs inspect index mock devlogs dashboards savedsearches hec
+# Tools from the project venv, so it needn't be activated. Quoted, because the
+# checkout path may contain spaces (make's own PATH lookup breaks on those).
+VENV ?= $(CURDIR)/venv
+PYTEST = "$(VENV)/bin/pytest"
+UCC_GEN = "$(VENV)/bin/ucc-gen"
+APPINSPECT = "$(VENV)/bin/splunk-appinspect"
+
+.PHONY: build package test test-bundled deploy up down restart logs inspect index mock devlogs dashboards savedsearches hec
 
 build:
 	# Tests import package/bin; never ship their __pycache__ (AppInspect rejects .pyc files).
 	find package -name __pycache__ -type d -prune -exec rm -rf {} +
-	ucc-gen build --ta-version $(VERSION)
+	$(UCC_GEN) build --ta-version $(VERSION) --python-binary-name "$(VENV)/bin/python3"
+
+# The tarball to upload to Splunkbase, checked by AppInspect the way Splunkbase does.
+package: build
+	mkdir -p dist
+	$(UCC_GEN) package --path "output/$(APP)" -o dist
+	$(APPINSPECT) inspect "dist/$(APP)-$(VERSION).tar.gz" --included-tags cloud
 
 test:
-	pytest tests/
+	$(PYTEST) tests/
 
 # Run the tests against the libraries bundled in the add-on (urllib3 1.26).
 test-bundled: build
-	PYTHONPATH="output/$(APP)/lib" pytest tests/ -p no:cacheprovider
+	PYTHONPATH="output/$(APP)/lib" $(PYTEST) tests/ -p no:cacheprovider
 
 deploy: build
 	mkdir -p splunk-dev/apps/$(APP)
@@ -33,7 +46,7 @@ logs:
 	docker compose exec -u splunk splunk tail -n 100 -f /opt/splunk/var/log/splunk/splunkd.log
 
 inspect: build
-	splunk-appinspect inspect "output/$(APP)" --included-tags cloud
+	$(APPINSPECT) inspect "output/$(APP)" --included-tags cloud
 
 # Create the shadowtrackr index in the dev Splunk container.
 index:

@@ -1,4 +1,4 @@
-splunk-add-on-ucc-framework==6.6.0
+splunk-add-on-ucc-framework==6.6.1
 splunk-appinspect==4.4.0
 pytest==8.4.2
 # Runtime libraries the add-on bundles (see package/lib/requirements.txt)
