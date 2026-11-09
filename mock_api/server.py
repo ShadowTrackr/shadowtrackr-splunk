@@ -31,7 +31,8 @@ v4 behaviour:
     index=<name> (or <index>.<field>:), field=value / field:value with *
     wildcards, != > < >= <=, "by <field>" (count per value) and
     "| table a b"; earliest/latest are accepted and ignored. Rows are
-    flattened like on live (lists become comma-separated strings).
+    flattened like on live (lists become comma-separated strings). A group
+    key may pass organization_id, as on the list endpoints.
 
 Legacy behaviour (--legacy): no ids or new fields, since_id ignored, a wrong
 key gives HTTP 200 with an "error", unknown endpoints give an HTML 404.
@@ -181,6 +182,7 @@ QUERY_INDEXES = {
     "hosts": "hosts", "websites": "websites", "urls": "urls", "domains": "domains", "certificates": "certificates",
     "dns": "dns", "suggestions": "suggestions", "emails": "exposed_email_addresses",
     "vulnerabilities": "vulnerabilities", "phishy_domains": "phishy_domains", "events": "events",
+    "suppliers": "suppliers",
 }
 _QUERY_TERM = re.compile(r'([\w.]+)\s*(!=|>=|<=|=>|=|:|>|<)\s*("[^"]*"|\S+)')
 
@@ -452,15 +454,26 @@ def make_handler(api, api_key):
             q = body.get("q")
             if not isinstance(q, str) or not q.strip():
                 raise BadRequest("Missing parameter: q")
+            org = None
+            if "organization_id" in body:
+                org_id = _int_param(body, "organization_id")
+                if key != GROUP_API_KEY:
+                    raise BadRequest("organization_id requires a group key")
+                org = next((o for o in ORGANIZATIONS if o["oid"] == org_id), None)
+                if org is None:
+                    return self._error(403, "Organization not in this group")
 
             def data_for(index):
                 if index == "events":
-                    status, events = api.events_for(key, {})
+                    status, events = api.events_for(key, {"organization_id": org["oid"]} if org else {})
                     rows = [dict(flatten_query_row(e), created=e.get("timestamp")) for e in events]
                 else:
                     rows = [flatten_query_row(r) for r in api.inventory.get(QUERY_INDEXES[index], [])]
+                    if org is ORGANIZATIONS[1]:
+                        rows = rows[:3]  # Customer B gets a small slice, as on the list endpoints
                 if key == GROUP_API_KEY:
-                    rows = [dict(r, organization=r.get("organization") or ORGANIZATIONS[0]["name"]) for r in rows]
+                    name = org["name"] if org else ORGANIZATIONS[0]["name"]
+                    rows = [dict(r, organization=r.get("organization") or name) for r in rows]
                 return rows
 
             return self._send(200, self._envelope(run_mock_query(q, data_for)))

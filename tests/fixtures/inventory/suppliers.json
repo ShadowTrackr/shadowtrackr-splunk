@@ -1,55 +1,176 @@
 {
-  "results": "7 results found",
+  "results": "17 results found",
   "error": "",
   "data": [
     {
-      "name": "Vrije Universiteit Amsterdam",
+      "name": "Let's Encrypt",
+      "type": "Certificate issuer",
+      "first_seen": "2026-10-08T04:11:24Z",
+      "last_seen": "2026-11-09T06:57:46Z",
+      "num_assets": 471,
+      "city": "San Francisco",
+      "country": "United States",
+      "control": "Non-European"
+    },
+    {
+      "name": "OVH SAS",
+      "type": "Domain registrar,ISP",
+      "first_seen": "2026-10-09T19:04:00Z",
+      "last_seen": "2026-11-08T14:39:40Z",
+      "num_assets": 18,
+      "city": "Roubaix",
+      "country": "France",
+      "control": "Fully European"
+    },
+    {
+      "name": "IONOS SE",
+      "type": "ISP,Domain registrar",
+      "first_seen": "2026-10-09T19:04:00Z",
+      "last_seen": "2026-11-08T14:39:54Z",
+      "num_assets": 18,
+      "city": "Montabaur",
+      "country": "Germany",
+      "control": "Fully European"
+    },
+    {
+      "name": "Krystal Hosting Ltd",
       "type": "ISP",
-      "first_seen": "2026-10-06T03:36:55Z",
-      "last_seen": "2026-10-31T06:05:33Z",
-      "assets": []
+      "first_seen": "2026-10-09T19:04:05Z",
+      "last_seen": "2026-11-08T14:39:40Z",
+      "num_assets": 2,
+      "city": "London",
+      "country": "United Kingdom",
+      "control": "Fully European"
     },
     {
-      "name": "Surf B.V.",
-      "type": "ISP,Domain registrar,Certificate issuer",
-      "first_seen": "2026-10-06T03:36:55Z",
-      "last_seen": "2026-10-31T06:05:33Z",
-      "assets": []
+      "name": "Atlassian",
+      "type": "SaaS software,software",
+      "first_seen": "2026-10-08T03:58:18Z",
+      "last_seen": "2026-11-08T22:50:16Z",
+      "num_assets": 1,
+      "city": "San Francisco",
+      "country": "United States",
+      "control": "Non-European"
     },
     {
-      "name": "Surf B.V.",
-      "type": "ISP,Domain registrar,Certificate issuer",
-      "first_seen": "2026-10-06T03:36:55Z",
-      "last_seen": "2026-10-31T06:05:33Z",
-      "assets": []
+      "name": "Twilio Inc.",
+      "type": "Email delivery,SaaS IDM",
+      "first_seen": "2026-10-08T03:46:39Z",
+      "last_seen": "2026-11-09T04:15:12Z",
+      "num_assets": 1,
+      "city": "San Francisco",
+      "country": "United States",
+      "control": "Non-European"
     },
     {
-      "name": "Akamai Technologies, Inc.",
+      "name": "Mailjet SAS",
+      "type": "Email delivery",
+      "first_seen": "2026-10-08T03:58:18Z",
+      "last_seen": "2026-11-08T22:50:16Z",
+      "num_assets": 1,
+      "city": "Paris",
+      "country": "France",
+      "control": "Fully European"
+    },
+    {
+      "name": "UpCloud Ltd",
       "type": "ISP",
-      "first_seen": "2026-10-06T03:36:55Z",
-      "last_seen": "2026-10-31T06:05:33Z",
-      "assets": []
+      "first_seen": "2026-10-09T19:04:07Z",
+      "last_seen": "2026-11-08T14:39:40Z",
+      "num_assets": 1,
+      "city": "Helsinki",
+      "country": "Finland",
+      "control": "Fully European"
     },
     {
-      "name": "Surf B.V.",
-      "type": "ISP,Domain registrar,Certificate issuer",
-      "first_seen": "2026-10-06T03:36:55Z",
-      "last_seen": "2026-10-31T06:05:33Z",
-      "assets": []
+      "name": "Sectigo Limited",
+      "type": "Certificate issuer,ISP",
+      "first_seen": "2026-10-08T05:00:21Z",
+      "last_seen": "2026-11-09T00:51:37Z",
+      "num_assets": 1,
+      "city": "London",
+      "country": "United Kingdom",
+      "control": "European subsidiary"
     },
     {
-      "name": "INTERBUSINESS",
+      "name": "Google",
+      "type": "software,Cloud platform,ISP,Certificate issuer",
+      "first_seen": "2026-10-08T03:58:18Z",
+      "last_seen": "2026-11-08T22:50:16Z",
+      "num_assets": 1,
+      "city": "Mountain View",
+      "country": "United States",
+      "control": "Non-European"
+    },
+    {
+      "name": "HubSpot Inc.",
+      "type": "SaaS CRM platform",
+      "first_seen": "2026-10-08T03:58:18Z",
+      "last_seen": "2026-11-08T22:50:16Z",
+      "num_assets": 1,
+      "city": "Cambridge, Massachusetts",
+      "country": "United States",
+      "control": "Non-European"
+    },
+    {
+      "name": "ZeroSSL",
+      "type": "Certificate issuer",
+      "first_seen": "2026-10-22T13:24:04Z",
+      "last_seen": "2026-11-08T13:44:19Z",
+      "num_assets": 1,
+      "city": "Vienna",
+      "country": "Austria",
+      "control": "Fully European"
+    },
+    {
+      "name": "MISTRAL",
       "type": "ISP",
-      "first_seen": "2026-10-06T03:36:55Z",
-      "last_seen": "2026-10-31T06:05:33Z",
-      "assets": []
+      "first_seen": "2026-10-09T19:04:00Z",
+      "last_seen": "2026-11-08T14:39:15Z",
+      "num_assets": 1,
+      "city": "Sundhoffen",
+      "country": "France",
+      "control": "Fully European"
     },
     {
-      "name": "Surf B.V.",
-      "type": "ISP,Domain registrar,Certificate issuer",
-      "first_seen": "2026-10-06T03:36:55Z",
-      "last_seen": "2026-10-31T06:05:33Z",
-      "assets": []
+      "name": "Certainly",
+      "type": "Certificate issuer",
+      "first_seen": "2026-10-08T04:13:25Z",
+      "last_seen": "2026-11-09T02:24:25Z",
+      "num_assets": 1,
+      "city": "San Francisco, California",
+      "country": "United States",
+      "control": "Non-European"
+    },
+    {
+      "name": "Neue Medien Münnich GmbH",
+      "type": "ISP",
+      "first_seen": "2026-10-09T19:04:07Z",
+      "last_seen": "2026-11-08T14:39:36Z",
+      "num_assets": 1,
+      "city": "Neusalza-Spremberg",
+      "country": "Germany",
+      "control": "Fully European"
+    },
+    {
+      "name": "RegistryGate GmbH",
+      "type": "Domain registrar",
+      "first_seen": "2026-10-08T03:46:58Z",
+      "last_seen": "2026-11-07T10:07:22Z",
+      "num_assets": 1,
+      "city": "St. Ingbert",
+      "country": "Germany",
+      "control": "European subsidiary"
+    },
+    {
+      "name": "Host Europe GmbH",
+      "type": "ISP",
+      "first_seen": "2026-10-09T19:04:05Z",
+      "last_seen": "2026-11-08T14:39:36Z",
+      "num_assets": 1,
+      "city": "Köln",
+      "country": "Germany",
+      "control": "European subsidiary"
     }
   ]
 }

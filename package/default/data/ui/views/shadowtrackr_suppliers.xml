@@ -1,0 +1,539 @@
+<dashboard version="2" theme="dark">
+    <label>Supplier dependency</label>
+    <description>The suppliers behind your internet-facing assets, how many assets each holds, and where each is controlled from: ShadowTrackr's Supplier Dependency Report, from the inventory lookups.</description>
+    <definition><![CDATA[
+{
+    "title": "Supplier dependency",
+    "description": "The suppliers behind your internet-facing assets, how many assets each holds, and where each is controlled from: ShadowTrackr's Supplier Dependency Report, from the inventory lookups.",
+    "inputs": {
+        "input_control": {
+            "type": "input.dropdown",
+            "title": "Control",
+            "options": {
+                "token": "control",
+                "defaultValue": "*",
+                "items": [
+                    {
+                        "label": "All",
+                        "value": "*"
+                    },
+                    {
+                        "label": "Sovereign European",
+                        "value": "Sovereign European"
+                    },
+                    {
+                        "label": "Fully European",
+                        "value": "Fully European"
+                    },
+                    {
+                        "label": "European subsidiary",
+                        "value": "European subsidiary"
+                    },
+                    {
+                        "label": "Non-European",
+                        "value": "Non-European"
+                    },
+                    {
+                        "label": "Unclassified",
+                        "value": "Unclassified"
+                    }
+                ]
+            }
+        },
+        "input_country": {
+            "type": "input.dropdown",
+            "title": "Country",
+            "dataSources": {
+                "primary": "ds_countries"
+            },
+            "options": {
+                "token": "country",
+                "defaultValue": "*",
+                "items": ">frame(label, value) | objects()"
+            },
+            "context": {
+                "label": ">primary | seriesByName(\"label\") | renameSeries(\"label\") | formatByType(fmt)",
+                "value": ">primary | seriesByName(\"value\") | renameSeries(\"value\") | formatByType(fmt)",
+                "fmt": {
+                    "string": {}
+                }
+            }
+        },
+        "input_stype": {
+            "type": "input.dropdown",
+            "title": "Supplier type",
+            "dataSources": {
+                "primary": "ds_types"
+            },
+            "options": {
+                "token": "stype",
+                "defaultValue": "*",
+                "items": ">frame(label, value) | objects()"
+            },
+            "context": {
+                "label": ">primary | seriesByName(\"label\") | renameSeries(\"label\") | formatByType(fmt)",
+                "value": ">primary | seriesByName(\"value\") | renameSeries(\"value\") | formatByType(fmt)",
+                "fmt": {
+                    "string": {}
+                }
+            }
+        },
+        "input_org": {
+            "type": "input.dropdown",
+            "title": "Organization",
+            "dataSources": {
+                "primary": "ds_orgs"
+            },
+            "options": {
+                "token": "org",
+                "defaultValue": "*",
+                "items": ">frame(label, value) | objects()"
+            },
+            "context": {
+                "label": ">primary | seriesByName(\"label\") | renameSeries(\"label\") | formatByType(formattedConfig)",
+                "value": ">primary | seriesByName(\"value\") | renameSeries(\"value\") | formatByType(formattedConfig)",
+                "formattedConfig": {
+                    "number": {
+                        "prefix": ""
+                    }
+                }
+            }
+        }
+    },
+    "defaults": {},
+    "visualizations": {
+        "viz_logo": {
+            "type": "splunk.image",
+            "options": {
+                "src": "/static/app/shadowtrackr/images/logo_tile.png",
+                "preserveAspectRatio": true
+            },
+            "eventHandlers": [
+                {
+                    "type": "drilldown.customUrl",
+                    "options": {
+                        "url": "https://shadowtrackr.com/usr/",
+                        "newTab": true
+                    }
+                }
+            ]
+        },
+        "viz_title": {
+            "type": "splunk.markdown",
+            "options": {
+                "markdown": "## ShadowTrackr\nSupplier dependency \u00b7 [Open the report in ShadowTrackr](https://shadowtrackr.com/usr/search?q=%24supplier_dependency_report) \u00b7 [Open ShadowTrackr](https://shadowtrackr.com/usr/) \u00b7 [Documentation](https://shadowtrackr.com/docs)"
+            }
+        },
+        "viz_masked": {
+            "type": "splunk.table",
+            "title": "Supplier mapping",
+            "dataSources": {
+                "primary": "ds_masked"
+            },
+            "options": {
+                "count": 1
+            },
+            "hideWhenNoData": true
+        },
+        "viz_total": {
+            "type": "splunk.singlevalue",
+            "title": "Suppliers",
+            "dataSources": {
+                "primary": "ds_total"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_outside": {
+            "type": "splunk.singlevalue",
+            "title": "Outside the EU",
+            "dataSources": {
+                "primary": "ds_outside"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_sovereign": {
+            "type": "splunk.singlevalue",
+            "title": "Sovereign European",
+            "dataSources": {
+                "primary": "ds_sovereign"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_fully": {
+            "type": "splunk.singlevalue",
+            "title": "Fully European",
+            "dataSources": {
+                "primary": "ds_fully"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_subsidiary": {
+            "type": "splunk.singlevalue",
+            "title": "European subsidiary",
+            "dataSources": {
+                "primary": "ds_subsidiary"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_non_eu": {
+            "type": "splunk.singlevalue",
+            "title": "Non-European",
+            "dataSources": {
+                "primary": "ds_non_eu"
+            },
+            "options": {
+                "sparklineDisplay": "off",
+                "trendDisplay": "off"
+            }
+        },
+        "viz_map": {
+            "type": "splunk.map",
+            "title": "Assets per supplier country",
+            "description": "Where the suppliers holding your assets are headquartered. Lighter is more assets: 1, 2\u20139, 10\u201399, 100+; grey is none.",
+            "dataSources": {
+                "primary": "ds_map"
+            },
+            "options": {
+                "center": [
+                    30,
+                    5
+                ],
+                "zoom": 0.9,
+                "showBaseLayer": false,
+                "layers": [
+                    {
+                        "type": "choropleth",
+                        "areaIds": "> primary | seriesByName(\"featureId\")",
+                        "areaValues": "> primary | seriesByName(\"Assets\")",
+                        "dataColors": "> areaValues | rangeValue(countryBuckets)",
+                        "additionalTooltipFields": [
+                            "Suppliers"
+                        ],
+                        "choroplethEmptyAreaColor": "#2a3036",
+                        "choroplethStrokeColor": "#171d21",
+                        "choroplethOpacity": 1
+                    }
+                ]
+            },
+            "context": {
+                "countryBuckets": [
+                    {
+                        "to": 1,
+                        "value": "#2a3036"
+                    },
+                    {
+                        "from": 1,
+                        "to": 2,
+                        "value": "#2f5a93"
+                    },
+                    {
+                        "from": 2,
+                        "to": 10,
+                        "value": "#3f7fd0"
+                    },
+                    {
+                        "from": 10,
+                        "to": 100,
+                        "value": "#6aa5ec"
+                    },
+                    {
+                        "from": 100,
+                        "value": "#b0d2f7"
+                    }
+                ]
+            }
+        },
+        "viz_by_control": {
+            "type": "splunk.column",
+            "title": "Assets by control",
+            "dataSources": {
+                "primary": "ds_by_control"
+            },
+            "options": {
+                "stackMode": "stacked",
+                "legendDisplay": "off",
+                "dataValuesDisplay": "all",
+                "seriesColorsByField": {
+                    "Sovereign European": "#3366cc",
+                    "Fully European": "#7fb0f0",
+                    "European subsidiary": "#f0a060",
+                    "Non-European": "#d9534f",
+                    "Unclassified": "#8f8e86"
+                },
+                "xAxisTitleVisibility": "hide",
+                "yAxisTitleVisibility": "hide"
+            }
+        },
+        "viz_suppliers": {
+            "type": "splunk.table",
+            "title": "Suppliers",
+            "dataSources": {
+                "primary": "ds_suppliers"
+            },
+            "options": {
+                "count": 12
+            },
+            "description": "Control is ShadowTrackr's own classification of where a supplier's headquarters and shareholder control are: Sovereign European (EU-only dependencies throughout the chain), Fully European (no controlling interest from outside the EU), European subsidiary (a non-European controlling party) or Non-European. EU is whether the supplier's country is an EU member state. Click a row to open the report in ShadowTrackr.",
+            "eventHandlers": [
+                {
+                    "type": "drilldown.customUrl",
+                    "options": {
+                        "url": "https://shadowtrackr.com/usr/search?q=%24supplier_dependency_report",
+                        "newTab": true
+                    }
+                }
+            ]
+        }
+    },
+    "dataSources": {
+        "ds_total": {
+            "type": "ds.search",
+            "name": "Suppliers",
+            "options": {
+                "query": "| inputlookup shadowtrackr_suppliers where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval control=coalesce(control, \"Unclassified\") | where (\"$control$\"=\"*\" OR control=\"$control$\") AND (\"$country$\"=\"*\" OR country=\"$country$\") AND (\"$stype$\"=\"*\" OR isnotnull(mvfilter(supplier_type=\"$stype$\"))) | stats count"
+            }
+        },
+        "ds_outside": {
+            "type": "ds.search",
+            "name": "Outside the EU",
+            "options": {
+                "query": "| inputlookup shadowtrackr_suppliers where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval control=coalesce(control, \"Unclassified\") | where (\"$control$\"=\"*\" OR control=\"$control$\") AND (\"$country$\"=\"*\" OR country=\"$country$\") AND (\"$stype$\"=\"*\" OR isnotnull(mvfilter(supplier_type=\"$stype$\"))) | stats count(eval(in_eu!=1 OR isnull(in_eu))) as outside count as total | eval pct=if(total>0, round(100*outside/total), 0) | eval value=outside.\" of \".total.\" (\".pct.\"%)\" | table value"
+            }
+        },
+        "ds_sovereign": {
+            "type": "ds.search",
+            "name": "Sovereign European",
+            "options": {
+                "query": "| inputlookup shadowtrackr_suppliers where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval control=coalesce(control, \"Unclassified\") | where (\"$control$\"=\"*\" OR control=\"$control$\") AND (\"$country$\"=\"*\" OR country=\"$country$\") AND (\"$stype$\"=\"*\" OR isnotnull(mvfilter(supplier_type=\"$stype$\"))) | where control=\"Sovereign European\" | stats count"
+            }
+        },
+        "ds_fully": {
+            "type": "ds.search",
+            "name": "Fully European",
+            "options": {
+                "query": "| inputlookup shadowtrackr_suppliers where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval control=coalesce(control, \"Unclassified\") | where (\"$control$\"=\"*\" OR control=\"$control$\") AND (\"$country$\"=\"*\" OR country=\"$country$\") AND (\"$stype$\"=\"*\" OR isnotnull(mvfilter(supplier_type=\"$stype$\"))) | where control=\"Fully European\" | stats count"
+            }
+        },
+        "ds_subsidiary": {
+            "type": "ds.search",
+            "name": "European subsidiary",
+            "options": {
+                "query": "| inputlookup shadowtrackr_suppliers where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval control=coalesce(control, \"Unclassified\") | where (\"$control$\"=\"*\" OR control=\"$control$\") AND (\"$country$\"=\"*\" OR country=\"$country$\") AND (\"$stype$\"=\"*\" OR isnotnull(mvfilter(supplier_type=\"$stype$\"))) | where control=\"European subsidiary\" | stats count"
+            }
+        },
+        "ds_non_eu": {
+            "type": "ds.search",
+            "name": "Non-European",
+            "options": {
+                "query": "| inputlookup shadowtrackr_suppliers where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval control=coalesce(control, \"Unclassified\") | where (\"$control$\"=\"*\" OR control=\"$control$\") AND (\"$country$\"=\"*\" OR country=\"$country$\") AND (\"$stype$\"=\"*\" OR isnotnull(mvfilter(supplier_type=\"$stype$\"))) | where control=\"Non-European\" | stats count"
+            }
+        },
+        "ds_map": {
+            "type": "ds.search",
+            "name": "Assets per country",
+            "options": {
+                "query": "| inputlookup shadowtrackr_suppliers where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval control=coalesce(control, \"Unclassified\") | where (\"$control$\"=\"*\" OR control=\"$control$\") AND (\"$country$\"=\"*\" OR country=\"$country$\") AND (\"$stype$\"=\"*\" OR isnotnull(mvfilter(supplier_type=\"$stype$\"))) | where isnotnull(country) | stats sum(asset_count) as Assets dc(supplier) as Suppliers by country | rename country AS featureId | append [| inputlookup geo_countries | fields featureId | eval Assets=0, Suppliers=0] | stats sum(Assets) as Assets sum(Suppliers) as Suppliers by featureId | geom geo_countries"
+            }
+        },
+        "ds_by_control": {
+            "type": "ds.search",
+            "name": "Assets by control",
+            "options": {
+                "query": "| inputlookup shadowtrackr_suppliers where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval control=coalesce(control, \"Unclassified\") | where (\"$control$\"=\"*\" OR control=\"$control$\") AND (\"$country$\"=\"*\" OR country=\"$country$\") AND (\"$stype$\"=\"*\" OR isnotnull(mvfilter(supplier_type=\"$stype$\"))) | stats sum(asset_count) as Assets by control | eval order=case(control=\"Sovereign European\",1, control=\"Fully European\",2, control=\"European subsidiary\",3, control=\"Non-European\",4, true(),5) | sort order | rename control AS Control | table Control Assets | eval {Control}=Assets | fields - Assets"
+            }
+        },
+        "ds_suppliers": {
+            "type": "ds.search",
+            "name": "Suppliers",
+            "options": {
+                "query": "| inputlookup shadowtrackr_suppliers where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval control=coalesce(control, \"Unclassified\") | where (\"$control$\"=\"*\" OR control=\"$control$\") AND (\"$country$\"=\"*\" OR country=\"$country$\") AND (\"$stype$\"=\"*\" OR isnotnull(mvfilter(supplier_type=\"$stype$\"))) | eval order=case(control=\"Sovereign European\",1, control=\"Fully European\",2, control=\"European subsidiary\",3, control=\"Non-European\",4, true(),5) | sort - asset_count order supplier | eval Type=mvjoin(supplier_type, \", \"), EU=case(in_eu=1, \"Yes\", in_eu=0, \"No\", true(), \"\u2013\"), \"First seen\"=substr(first_seen, 1, 10), \"Last seen\"=substr(last_seen, 1, 10) | rename supplier AS Supplier, control AS Control, country AS Country, city AS City, asset_count AS Assets | table Supplier Assets Control Country City EU Type \"First seen\" \"Last seen\""
+            }
+        },
+        "ds_masked": {
+            "type": "ds.search",
+            "name": "Supplier mapping not in plan",
+            "options": {
+                "query": "| inputlookup shadowtrackr_suppliers where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | where supplier_mapping=0 | stats count | where count>0 | eval Notice=\"The ShadowTrackr plan of \".if(count=1, \"this supplier\", count.\" suppliers\").\" does not include supplier mapping, so ShadowTrackr hides the supplier names, countries and control. Upgrade the plan in ShadowTrackr to see them.\" | table Notice"
+            }
+        },
+        "ds_orgs": {
+            "type": "ds.search",
+            "name": "Organizations",
+            "options": {
+                "query": "| inputlookup shadowtrackr_hosts | stats count by organization | rename organization AS org_name | eval label=org_name, value=org_name, order=1 | append [| makeresults | eval label=\"All organizations\", value=\"*\", order=0] | sort order label | table label value"
+            }
+        },
+        "ds_countries": {
+            "type": "ds.search",
+            "name": "Country",
+            "options": {
+                "query": "| inputlookup shadowtrackr_suppliers where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval value=country | where isnotnull(value) | stats count by value | eval label=value, order=1 | append [| makeresults | eval label=\"All\", value=\"*\", order=0] | sort order label | table label value"
+            }
+        },
+        "ds_types": {
+            "type": "ds.search",
+            "name": "Supplier type",
+            "options": {
+                "query": "| inputlookup shadowtrackr_suppliers where st_present=1 | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval value=supplier_type | mvexpand value | where isnotnull(value) | stats count by value | eval label=value, order=1 | append [| makeresults | eval label=\"All\", value=\"*\", order=0] | sort order label | table label value"
+            }
+        }
+    },
+    "layout": {
+        "type": "grid",
+        "options": {
+            "width": 1200
+        },
+        "globalInputs": [
+            "input_control",
+            "input_country",
+            "input_stype",
+            "input_org"
+        ],
+        "structure": [
+            {
+                "item": "viz_logo",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "w": 90,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_title",
+                "type": "block",
+                "position": {
+                    "x": 90,
+                    "y": 0,
+                    "w": 1110,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_masked",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 90,
+                    "w": 1200,
+                    "h": 90
+                }
+            },
+            {
+                "item": "viz_total",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 180,
+                    "w": 200,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_outside",
+                "type": "block",
+                "position": {
+                    "x": 200,
+                    "y": 180,
+                    "w": 200,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_sovereign",
+                "type": "block",
+                "position": {
+                    "x": 400,
+                    "y": 180,
+                    "w": 200,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_fully",
+                "type": "block",
+                "position": {
+                    "x": 600,
+                    "y": 180,
+                    "w": 200,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_subsidiary",
+                "type": "block",
+                "position": {
+                    "x": 800,
+                    "y": 180,
+                    "w": 200,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_non_eu",
+                "type": "block",
+                "position": {
+                    "x": 1000,
+                    "y": 180,
+                    "w": 200,
+                    "h": 110
+                }
+            },
+            {
+                "item": "viz_map",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 290,
+                    "w": 800,
+                    "h": 440
+                }
+            },
+            {
+                "item": "viz_by_control",
+                "type": "block",
+                "position": {
+                    "x": 800,
+                    "y": 290,
+                    "w": 400,
+                    "h": 440
+                }
+            },
+            {
+                "item": "viz_suppliers",
+                "type": "block",
+                "position": {
+                    "x": 0,
+                    "y": 730,
+                    "w": 1200,
+                    "h": 520
+                }
+            }
+        ]
+    }
+}
+    ]]></definition>
+    <meta type="hiddenElements"><![CDATA[
+{
+    "hideEdit": false,
+    "hideOpenInSearch": false,
+    "hideExport": false
+}
+    ]]></meta>
+</dashboard>

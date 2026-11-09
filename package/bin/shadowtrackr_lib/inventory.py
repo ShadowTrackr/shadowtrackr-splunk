@@ -212,7 +212,10 @@ class InventoryCollector:
         state_key = "{}:{}".format(inv_type.name, org_id or "")
         body = {"organization_id": org_id} if org else {}
         try:
-            records = self._fetch(inv_type.endpoint, body)
+            if inv_type.query:
+                records = self._fetch("query", dict(body, q=inv_type.query))
+            else:
+                records = self._fetch(inv_type.endpoint, body)
             for endpoint, combine in inv_type.extra:
                 records = combine(records, self._fetch(endpoint, body))
             rows = inv_type.rows(records, org)

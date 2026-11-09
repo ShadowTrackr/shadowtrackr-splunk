@@ -547,6 +547,164 @@ def certificates():
               "Certificates", inputs, data_sources, visualizations, rows)
 
 
+# --- Supplier dependency ------------------------------------------------------------
+
+# ShadowTrackr's control classes, European to non-European, as in its Supplier
+# Dependency Report. A diverging blue <-> orange scale instead of ShadowTrackr's
+# green -> red, which deutan and protan readers cannot tell apart at
+# green/amber. Checked with the dataviz validator on the dark surface (#171d21):
+# CVD and normal-vision separation and 3:1 contrast pass; the inner steps sit
+# above the categorical lightness band, which a diverging scale does by design,
+# and every bar and tile carries its label. Unclassified is neutral.
+CONTROL_COLORS = {"Sovereign European": "#3366cc", "Fully European": "#7fb0f0",
+                  "European subsidiary": "#f0a060", "Non-European": "#d9534f", "Unclassified": "#8f8e86"}
+CONTROL_ORDER = ('eval order=case(control="Sovereign European",1, control="Fully European",2,'
+                 ' control="European subsidiary",3, control="Non-European",4, true(),5)')
+# Assets per country on the map, in buckets: one supplier often holds most
+# assets (a certificate issuer), which would wash out a linear gradient. One
+# blue, lighter for more on the dark surface; passes the validator's ordinal checks.
+COUNTRY_BUCKETS = [{"to": 1, "value": "#2a3036"}, {"from": 1, "to": 2, "value": "#2f5a93"}, {"from": 2, "to": 10, "value": "#3f7fd0"},
+                   {"from": 10, "to": 100, "value": "#6aa5ec"}, {"from": 100, "value": "#b0d2f7"}]
+REPORT_URL = "https://shadowtrackr.com/usr/search?q=%24supplier_dependency_report"
+
+
+def dropdown(title, token, ds_id, query):
+    """A dropdown filled from a query that returns one value column; "All" (*) is first."""
+    return {
+        "type": "input.dropdown", "title": title, "dataSources": {"primary": ds_id},
+        "options": {"token": token, "defaultValue": "*", "items": ">frame(label, value) | objects()"},
+        "context": {"label": '>primary | seriesByName("label") | renameSeries("label") | formatByType(fmt)',
+                    "value": '>primary | seriesByName("value") | renameSeries("value") | formatByType(fmt)',
+                    "fmt": {"string": {}}},
+    }, ds(title, query + " | where isnotnull(value) | stats count by value | eval label=value, order=1"
+          ' | append [| makeresults | eval label="All", value="*", order=0] | sort order label | table label value',
+          time=False)
+
+
+def supplier_dependency():
+    base = lookup("suppliers")
+    suppliers = base + (
+        ' | eval control=coalesce(control, "Unclassified")'
+        ' | where ("$control$"="*" OR control="$control$") AND ("$country$"="*" OR country="$country$")'
+        ' AND ("$stype$"="*" OR isnotnull(mvfilter(supplier_type="$stype$")))')
+    org, ds_orgs = lookup_orgs()
+
+    def control_count(control):
+        return ds(control, suppliers + ' | where control="{}" | stats count'.format(control), time=False)
+
+    country_input, ds_countries = dropdown("Country", "country", "ds_countries", base + " | eval value=country")
+    type_input, ds_types = dropdown("Supplier type", "stype", "ds_types",
+                                    base + " | eval value=supplier_type | mvexpand value")
+    data_sources = {
+        "ds_total": ds("Suppliers", suppliers + " | stats count", time=False),
+        # As ShadowTrackr: a supplier without a known EU country counts as outside the EU.
+        "ds_outside": ds("Outside the EU", suppliers + " | stats count(eval(in_eu!=1 OR isnull(in_eu))) as outside"
+                         " count as total | eval pct=if(total>0, round(100*outside/total), 0)"
+                         ' | eval value=outside." of ".total." (".pct."%)" | table value', time=False),
+        "ds_sovereign": control_count("Sovereign European"),
+        "ds_fully": control_count("Fully European"),
+        "ds_subsidiary": control_count("European subsidiary"),
+        "ds_non_eu": control_count("Non-European"),
+        # Every country, so the map has its outlines; countries without suppliers get 0.
+        "ds_map": ds("Assets per country", suppliers + " | where isnotnull(country)"
+                     " | stats sum(asset_count) as Assets dc(supplier) as Suppliers by country"
+                     " | rename country AS featureId"
+                     " | append [| inputlookup geo_countries | fields featureId | eval Assets=0, Suppliers=0]"
+                     " | stats sum(Assets) as Assets sum(Suppliers) as Suppliers by featureId"
+                     " | geom geo_countries", time=False),
+        "ds_by_control": ds(
+            "Assets by control",
+            suppliers + " | stats sum(asset_count) as Assets by control | " + CONTROL_ORDER + " | sort order"
+            # One series per class, so each bar gets its own colour.
+            " | rename control AS Control | table Control Assets | eval {Control}=Assets | fields - Assets",
+            time=False),
+        "ds_suppliers": ds(
+            "Suppliers",
+            suppliers + " | " + CONTROL_ORDER + " | sort - asset_count order supplier"
+            ' | eval Type=mvjoin(supplier_type, ", "), EU=case(in_eu=1, "Yes", in_eu=0, "No", true(), "–"),'
+            ' "First seen"=substr(first_seen, 1, 10), "Last seen"=substr(last_seen, 1, 10)'
+            " | rename supplier AS Supplier, control AS Control, country AS Country, city AS City,"
+            " asset_count AS Assets"
+            ' | table Supplier Assets Control Country City EU Type "First seen" "Last seen"', time=False),
+        "ds_masked": ds(
+            "Supplier mapping not in plan",
+            base + " | where supplier_mapping=0 | stats count | where count>0"
+            ' | eval Notice="The ShadowTrackr plan of ".if(count=1, "this supplier", count." suppliers")'
+            '." does not include supplier mapping, so ShadowTrackr hides the supplier names, countries and'
+            ' control. Upgrade the plan in ShadowTrackr to see them." | table Notice', time=False),
+        "ds_orgs": ds_orgs,
+        "ds_countries": ds_countries,
+        "ds_types": ds_types,
+    }
+
+    visualizations = {
+        "viz_masked": table("Supplier mapping", "ds_masked", count=1, hide_when_empty=True),
+        "viz_total": single("Suppliers", "ds_total"),
+        "viz_outside": single("Outside the EU", "ds_outside"),
+        "viz_sovereign": single("Sovereign European", "ds_sovereign"),
+        "viz_fully": single("Fully European", "ds_fully"),
+        "viz_subsidiary": single("European subsidiary", "ds_subsidiary"),
+        "viz_non_eu": single("Non-European", "ds_non_eu"),
+        "viz_map": {
+            "type": "splunk.map", "title": "Assets per supplier country",
+            "description": "Where the suppliers holding your assets are headquartered. "
+                           "Lighter is more assets: 1, 2–9, 10–99, 100+; grey is none.",
+            "dataSources": {"primary": "ds_map"},
+            "options": {
+                "center": [30, 5], "zoom": 0.9, "showBaseLayer": False,
+                "layers": [{
+                    "type": "choropleth",
+                    "areaIds": '> primary | seriesByName("featureId")',
+                    "areaValues": '> primary | seriesByName("Assets")',
+                    "dataColors": "> areaValues | rangeValue(countryBuckets)",
+                    "additionalTooltipFields": ["Suppliers"],
+                    "choroplethEmptyAreaColor": "#2a3036", "choroplethStrokeColor": "#171d21",
+                    "choroplethOpacity": 1,
+                }],
+            },
+            "context": {"countryBuckets": COUNTRY_BUCKETS},
+        },
+        "viz_by_control": {
+            "type": "splunk.column", "title": "Assets by control", "dataSources": {"primary": "ds_by_control"},
+            "options": {"stackMode": "stacked", "legendDisplay": "off", "dataValuesDisplay": "all",
+                        "seriesColorsByField": CONTROL_COLORS,
+                        "xAxisTitleVisibility": "hide", "yAxisTitleVisibility": "hide"},
+        },
+        "viz_suppliers": table(
+            "Suppliers", "ds_suppliers", count=12,
+            description="Control is ShadowTrackr's own classification of where a supplier's headquarters and "
+                        "shareholder control are: Sovereign European (EU-only dependencies throughout the chain), "
+                        "Fully European (no controlling interest from outside the EU), European subsidiary "
+                        "(a non-European controlling party) or Non-European. EU is whether the supplier's "
+                        "country is an EU member state. Click a row to open the report in ShadowTrackr.",
+            url=REPORT_URL),
+    }
+    inputs = {
+        "input_control": {
+            "type": "input.dropdown", "title": "Control",
+            "options": {"token": "control", "defaultValue": "*",
+                        "items": [{"label": "All", "value": "*"}]
+                        + [{"label": c, "value": c} for c in CONTROL_COLORS]},
+        },
+        "input_country": country_input,
+        "input_stype": type_input,
+        "input_org": org,
+    }
+    rows = [
+        ("viz_masked", 0, 0, 1200, 90),
+        ("viz_total", 0, 90, 200, 110), ("viz_outside", 200, 90, 200, 110),
+        ("viz_sovereign", 400, 90, 200, 110), ("viz_fully", 600, 90, 200, 110),
+        ("viz_subsidiary", 800, 90, 200, 110), ("viz_non_eu", 1000, 90, 200, 110),
+        ("viz_map", 0, 200, 800, 440), ("viz_by_control", 800, 200, 400, 440),
+        ("viz_suppliers", 0, 640, 1200, 520),
+    ]
+    dashboard("shadowtrackr_suppliers", "Supplier dependency",
+              "The suppliers behind your internet-facing assets, how many assets each holds, and where each is "
+              "controlled from: ShadowTrackr's Supplier Dependency Report, from the inventory lookups.",
+              "Supplier dependency · [Open the report in ShadowTrackr](" + REPORT_URL + ")",
+              inputs, data_sources, visualizations, rows)
+
+
 # --- Search explorer --------------------------------------------------------------
 
 # Checked against the live API. No commas or quotes: they go through makeresults csv.
@@ -563,6 +721,7 @@ EXAMPLES = [
     ("index=events earliest=-1d by source", "Events of the last day per source"),
     ("index=suggestions", "Assets ShadowTrackr suggests adding to your monitoring"),
     ("index=emails", "Exposed email addresses"),
+    ("index=suppliers", "Suppliers with their country and where they are controlled from"),
 ]
 
 
@@ -803,5 +962,6 @@ if __name__ == "__main__":
     overview()
     vulnerabilities()
     certificates()
+    supplier_dependency()
     explorer()
     asset360()

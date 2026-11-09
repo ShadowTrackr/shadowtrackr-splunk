@@ -252,10 +252,45 @@ def project_phishy_domain(r: Row) -> Row:
     )
 
 
+# EU member states, as ShadowTrackr's country_is_eu() (lib/lib.php) has them for
+# "headquartered outside the EU" in its Supplier Dependency Report.
+EU_COUNTRIES = frozenset((
+    "austria", "belgium", "bulgaria", "croatia", "cyprus", "czechia", "czech republic", "denmark", "estonia",
+    "finland", "france", "germany", "greece", "hungary", "ireland", "italy", "latvia", "lithuania", "luxembourg",
+    "malta", "netherlands", "the netherlands", "poland", "portugal", "romania", "slovakia", "slovenia", "spain",
+    "sweden",
+))
+
+# What /query puts in name, country, city and control when the plan has no supplier mapping.
+MASKED = "***"
+
+
 def project_supplier(r: Row) -> Row:
+    """A row of /query index=suppliers: one per supplier, with where it is controlled.
+
+    Without supplier mapping in the plan, the API stars out name, country, city
+    and control; those stay empty here and supplier_mapping is false.
+    """
+    masked = any(r.get(f) == MASKED for f in ("name", "country", "city", "control"))
+
+    def clear(field: str) -> Optional[str]:
+        value = _text(r.get(field)).strip()
+        return None if value in ("", MASKED) else value
+
     types = [t.strip() for t in _text(r.get("type")).split(",") if t.strip()]
-    assets = _scalars(r.get("assets"))
-    return dict(supplier=r.get("name"), supplier_type=types, asset_count=len(assets), assets=assets, **_seen(r))
+    country = clear("country")
+    count = r.get("num_assets")
+    return dict(
+        supplier=clear("name"),
+        supplier_type=types,
+        country=country,
+        city=clear("city"),
+        control=clear("control"),
+        in_eu=None if country is None else country.lower() in EU_COUNTRIES,
+        asset_count=count if isinstance(count, int) and not isinstance(count, bool) else None,
+        supplier_mapping=not masked,
+        **_seen(r),
+    )
 
 
 def project_generic(r: Row) -> Row:
@@ -369,6 +404,7 @@ class InventoryType:
         fields: Tuple[str, ...],
         expand: Optional[Callable[[List[Row]], List[Row]]] = None,
         extra: Tuple[Tuple[str, Callable[[List[Row], List[Row]], List[Row]]], ...] = (),
+        query: Optional[str] = None,
     ):
         self.name = name
         self.endpoint = endpoint
@@ -378,6 +414,9 @@ class InventoryType:
         self.fields = fields  # projected fields, for the lookup definition
         self.expand = expand  # turns API records into rows to project (default: as is)
         self.extra = extra  # ((endpoint, combine), ...): other endpoints merged into the records, in order
+        # Fetch with /query and this query instead of the list endpoint. endpoint then
+        # only names the fixture and the mock data.
+        self.query = query
 
     @property
     def collection(self) -> str:
@@ -456,8 +495,12 @@ TYPES: Dict[str, InventoryType] = {t.name: t for t in [
                   _f("phishy_domain", "lookalike_of", "score", "registrar", "isp", "country", "city", "nameservers",
                      "mailservers", "has_mx", "has_certificate", "https_status", "https_title", "registered", "tags")
                   + SEEN),
+    # /query, not /suppliers: the list endpoint has no country or control and misses
+    # most suppliers (it reads a test copy of the suppliers index).
     InventoryType("suppliers", "suppliers", "Suppliers", ("supplier",), project_supplier,
-                  _f("supplier", "supplier_type", "asset_count", "assets") + SEEN),
+                  _f("supplier", "supplier_type", "country", "city", "control", "in_eu", "asset_count",
+                     "supplier_mapping") + SEEN,
+                  query="index=suppliers"),
     InventoryType("internet_standards", "internet_standards", "Internet standards checks",
                   ("url", "category", "check"), lambda r: r,
                   _f("url", "category", "check", "passed", "status", "done", "note"),

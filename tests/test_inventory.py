@@ -128,6 +128,33 @@ def test_exposed_email_projection():
     assert row["latest_breach"] == max(b["breached"] for b in raw["breaches"])
 
 
+def test_supplier_projection():
+    rows = {r["supplier"]: r for r in rows_for("suppliers")}
+    assert len(rows) == len(fixture("suppliers"))
+    ovh = rows["OVH SAS"]
+    assert ovh["supplier_type"] == ["Domain registrar", "ISP"]
+    assert (ovh["country"], ovh["city"], ovh["control"]) == ("France", "Roubaix", "Fully European")
+    assert ovh["asset_count"] == 18 and ovh["in_eu"] is True and ovh["supplier_mapping"] is True
+    # ShadowTrackr counts the UK as outside the EU, even for a Fully European supplier.
+    assert rows["Krystal Hosting Ltd"]["in_eu"] is False
+    assert rows["Let's Encrypt"]["in_eu"] is False
+
+
+def test_supplier_projection_without_supplier_mapping():
+    masked = {"name": "***", "type": "ISP,Domain registrar", "country": "***", "city": "***", "control": "***",
+              "num_assets": 4, "first_seen": "2026-10-09T19:04:00Z", "last_seen": "2026-11-08T14:39:54Z"}
+    row, = rows_for("suppliers", [masked])
+    assert row["supplier_mapping"] is False and row["asset_count"] == 4
+    assert row["supplier_type"] == ["ISP", "Domain registrar"]
+    assert not {"supplier", "country", "city", "control", "in_eu"} & set(row)
+
+
+def test_suppliers_are_read_through_query():
+    client = FixtureClient()
+    collector(client, FakeKV(), {}, types=["suppliers"]).run()
+    assert client.calls == [("query", {"q": "index=suppliers"})]
+
+
 def test_inventory_conf_is_in_sync_with_types():
     import importlib.util
 
@@ -244,6 +271,9 @@ class FixtureClient:
 
     def post(self, endpoint, body=None):
         self.calls.append((endpoint, body))
+        if endpoint == "query":
+            # Types read through /query use the fixture named after their endpoint.
+            endpoint = next(t.endpoint for t in TYPES.values() if t.query == body["q"])
         if endpoint in self.fail:
             raise TransientError("HTTP 500 from " + endpoint)
         if endpoint in self.overrides:
@@ -381,6 +411,16 @@ def test_mock_group_key_syncs_each_organization(mock_api):
         ("Customer A", len(fixture("hosts"))), ("Customer B", 3)]
     hosts = kv.data["shadowtrackr_hosts"].values()
     assert {h["organization"] for h in hosts} == {"Customer A", "Customer B"}
+
+
+def test_mock_group_key_syncs_suppliers_per_organization(mock_api):
+    client = ShadowTrackrClient(GROUP_API_KEY, base_url=mock_api)
+    kv = FakeKV()
+    summaries = collector(client, kv, {}, types=["suppliers"]).run()
+    assert [(s["organization"], s["present"]) for s in summaries] == [
+        ("Customer A", len(fixture("suppliers"))), ("Customer B", 3)]
+    rows = kv.data["shadowtrackr_suppliers"].values()
+    assert all(r.get("control") for r in rows)
 
 
 @pytest.mark.parametrize("value", ["3600", "43200", 604800, "0 7,10,13,16 * * 1-5", "*/30 * * * *", " 0 7 * * 1-5 "])

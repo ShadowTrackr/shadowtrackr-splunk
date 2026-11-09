@@ -66,7 +66,7 @@ Open **Inputs > Create New Input > ShadowTrackr Events**. The defaults poll ever
 ### 5. Sync the inventory
 
 Create a **ShadowTrackr Inventory** input. It fills the lookups that feed
-`| stenrich`, the Vulnerabilities, Certificates and Asset 360 dashboards, and
+`| stenrich`, the Vulnerabilities, Certificates, Supplier dependency and Asset 360 dashboards, and
 several detections. By default it syncs at 07:00, 10:00, 13:00 and 16:00 on
 weekdays (Splunk server time); use a cron schedule or a number of seconds to
 change that.
@@ -137,6 +137,7 @@ them at your indexes for speed.
 | Overview | Events, problems and warnings over time; inventory counts and trends |
 | Vulnerabilities & software | CVEs by severity, exploited and CISA KEV, vulnerable software, assets at risk |
 | Certificates | Expiry, grades, issuers and weak configurations |
+| Supplier dependency | ShadowTrackr's Supplier Dependency Report: the suppliers behind your assets (hosting, registrars, certificate issuers, mail and SaaS), how many assets each holds, a world map of where they are headquartered, how many are outside the EU, and where each is controlled from (Sovereign European, Fully European, European subsidiary, Non-European). Needs supplier mapping in your ShadowTrackr plan; without it ShadowTrackr hides the names, countries and control, and the dashboard says so. |
 | Asset 360 | One IP, hostname or URL from every angle: ShadowTrackr's inventory, findings, CVEs, certificates, DNS and events, and your own firewall, proxy/WAF, authentication and IDS logs for the asset and its related IPs and hostnames. Click an asset in the other dashboards to open it here. |
 | Search explorer | Live queries against the ShadowTrackr API with `\| shadowtrackr`, with clickable examples. Runs only when you press Submit. |
 
@@ -238,7 +239,7 @@ An app upgrade resets the lookup to empty until the search runs again.
 | Input | Sourcetype | Notes |
 |---|---|---|
 | ShadowTrackr Events | `shadowtrackr:events` | Polls `/events` with `since_id` paging (every 15 minutes by default) and keeps its checkpoint in the KV Store. The first run backfills the configured number of days. It never uses `update_only`, so other API consumers are not affected. |
-| ShadowTrackr Inventory | KV Store lookups + `shadowtrackr:inventory:summary` | Syncs the inventory every 3 hours during office hours (07:00, 10:00, 13:00 and 16:00 on weekdays, in the Splunk server's time zone; change the cron schedule or use seconds on the input) into one lookup per type (`shadowtrackr_hosts`, `shadowtrackr_websites`, `shadowtrackr_urls`, `shadowtrackr_domains`, `shadowtrackr_subnets`, `shadowtrackr_certificates`, `shadowtrackr_dns`, `shadowtrackr_mailservers`, `shadowtrackr_software`, `shadowtrackr_cves`, `shadowtrackr_cloud_providers`, `shadowtrackr_remote_login_services`, `shadowtrackr_blacklisted_assets`, `shadowtrackr_exposed_emails`, `shadowtrackr_suggestions`, `shadowtrackr_phishy_domains`, `shadowtrackr_suppliers`, `shadowtrackr_internet_standards`). Each row has `st_first_synced`, `st_last_synced` and `st_present`; rows ShadowTrackr no longer reports stay for 30 days with `st_present=0`. Per-run counts go to the index for trends. |
+| ShadowTrackr Inventory | KV Store lookups + `shadowtrackr:inventory:summary` | Syncs the inventory every 3 hours during office hours (07:00, 10:00, 13:00 and 16:00 on weekdays, in the Splunk server's time zone; change the cron schedule or use seconds on the input) into one lookup per type (`shadowtrackr_hosts`, `shadowtrackr_websites`, `shadowtrackr_urls`, `shadowtrackr_domains`, `shadowtrackr_subnets`, `shadowtrackr_certificates`, `shadowtrackr_dns`, `shadowtrackr_mailservers`, `shadowtrackr_software`, `shadowtrackr_cves`, `shadowtrackr_cloud_providers`, `shadowtrackr_remote_login_services`, `shadowtrackr_blacklisted_assets`, `shadowtrackr_exposed_emails`, `shadowtrackr_suggestions`, `shadowtrackr_phishy_domains`, `shadowtrackr_suppliers`, `shadowtrackr_internet_standards`). Each row has `st_first_synced`, `st_last_synced` and `st_present`; rows ShadowTrackr no longer reports stay for 30 days with `st_present=0`. Per-run counts go to the index for trends. Suppliers are read with the query `index=suppliers` rather than the `/suppliers` endpoint, because only the query has each supplier's country, city and control. |
 | Alert webhook (HEC) | `shadowtrackr:alert` | Results of ShadowTrackr alerts, pushed by ShadowTrackr to HEC. See [step 7](#7-optional-receive-shadowtrackr-alerts-by-webhook). The index comes from the HEC token. |
 
 Searches use these macros, so the index is set in one place:
@@ -343,7 +344,7 @@ corrects the CIM type for a few event types.
 | Group (MSSP) key, inventory empty | The input log warns when every type returns no rows. A group key must be able to list its organizations; use a Group read-only key. |
 | Connection errors | Splunk cannot reach `api.shadowtrackr.com`; set the proxy under Configuration > Proxy. |
 | Events in another index than the dashboards search | The `shadowtrackr_index` macro must match the input's index. |
-| Vulnerabilities, Certificates or Asset 360 empty | Create the Inventory input and wait for its first run (or lower the interval once). Check that the KV Store is up: run `\| rest /services/kvstore/status`. |
+| Vulnerabilities, Certificates, Supplier dependency or Asset 360 empty | Create the Inventory input and wait for its first run (or lower the interval once). Check that the KV Store is up: run `\| rest /services/kvstore/status`. |
 | `stenrich` warns "Lookup ... not found" | The Inventory input has not run yet. |
 | Webhook events do not arrive | Run `curl https://<splunk>:8088/services/collector/health`, then the test in step 7. Check that the token allows the `shadowtrackr` index. HEC errors show up in `index=_internal sourcetype=splunkd component=HttpInputDataHandler`. |
 | A detection never fires | Run its search by hand over a longer time range. The log-based detections need the four log macros to find your data, and the inventory detections need the Inventory input. |

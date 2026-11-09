@@ -9,3 +9,8 @@ replaced by example domains and documentation IP ranges).
 `blacklisted_assets.json` are **synthetic**: the test account has no data for
 them. Their field names follow the v3 API documentation and must be replaced
 by redacted real responses.
+
+`suppliers.json` is the live answer of `/query` with `q=index=suppliers`, not of
+the `/suppliers` list endpoint: the sync reads suppliers through `/query`
+because only that has `country`, `city` and `control`. Supplier names are
+public companies and are kept.
