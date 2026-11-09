@@ -38,8 +38,12 @@ key gives HTTP 200 with an "error", unknown endpoints give an HTML 404.
 
 API keys:
   mock-api-key-0000000000    organization "Customer A"
-  mock-group-key-000000000   group key for "Customer A" and "Customer B"
+  mock-group-key-000000000   Group read-only key for "Customer A" and "Customer B":
+                             lists its organizations, but asking for their keys
+                             with a groupcode is refused (403 insufficient_scope)
   mock-no-api-access         valid key without API access (403)
+  mock-expired-key           expired scoped key (401 "API key expired")
+  mock-ip-not-allowed        request from outside the key's IP allowlist (403)
   mock-error-500 / mock-error-429 / mock-error-slow / mock-error-html
                              fault injection
 
@@ -65,6 +69,8 @@ FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "tests
 DEFAULT_API_KEY = "mock-api-key-0000000000"
 GROUP_API_KEY = "mock-group-key-000000000"
 NO_ACCESS_KEY = "mock-no-api-access"
+EXPIRED_KEY = "mock-expired-key"
+IP_NOT_ALLOWED_KEY = "mock-ip-not-allowed"
 API_PREFIX = "/api/v4/"
 EVENTS_DEFAULT_LIMIT = 1000
 EVENTS_MAX_LIMIT = 5000
@@ -364,6 +370,10 @@ def make_handler(api, api_key):
                 key = DEFAULT_API_KEY
             if key == NO_ACCESS_KEY:
                 return self._error(403, "API access is not enabled for this account")
+            if key == EXPIRED_KEY:
+                return self._error(401, "API key expired")
+            if key == IP_NOT_ALLOWED_KEY:
+                return self._error(403, "Request not allowed from this IP address")
             if key == api_key and key not in KEY_ORGS:
                 key = DEFAULT_API_KEY
             if key not in KEY_ORGS:
@@ -378,6 +388,9 @@ def make_handler(api, api_key):
                     if key != GROUP_API_KEY:
                         # As on live: HTTP 200 with an error for a normal key.
                         return self._send(200, self._envelope(error="Error: No groupcode provided"))
+                    if "groupcode" in body:
+                        # The organizations' keys and admin codes need group_admin.
+                        return self._error(403, "insufficient_scope")
                     return self._send(200, {"results": "2 Organizations found", "error": "",
                                             "data": {"active_organizations": 2, "organizations": ORGANIZATIONS}})
                 if endpoint in INVENTORY_ENDPOINTS:

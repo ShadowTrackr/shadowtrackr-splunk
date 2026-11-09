@@ -14,6 +14,11 @@ ADDON_NAME = "shadowtrackr"
 CHECKPOINT_COLLECTION = "shadowtrackr_checkpoints"
 DEFAULT_TIMEOUT = 60
 
+# Shown when ShadowTrackr answers 401/403. Scoped keys can expire (after a year
+# by default), be revoked, or be limited to an IP allowlist.
+AUTH_HINT = ("Check that the key is correct and has not expired or been revoked, that API access is enabled, "
+             "and, if the key has an IP allowlist, that it includes this Splunk server's public IP address")
+
 
 def logger_for_input(input_name: str) -> logging.Logger:
     return log.Logs().get_logger(f"{ADDON_NAME.lower()}_{input_name}")

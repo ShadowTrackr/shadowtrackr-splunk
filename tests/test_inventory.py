@@ -5,7 +5,7 @@ import os
 import pytest
 
 from mock_api.server import DEFAULT_API_KEY, GROUP_API_KEY
-from shadowtrackr_lib.client import AuthError, ShadowTrackrClient, TransientError
+from shadowtrackr_lib.client import APIError, AuthError, ShadowTrackrClient, TransientError
 from shadowtrackr_lib.inventory import InventoryCollector, KVStore, list_organizations, reconcile, validate_interval
 from shadowtrackr_lib.inventory_types import TYPES, add_nested_cve_details, enrich_cves, expand_internet_standards, merge_cloud_providers
 
@@ -311,6 +311,52 @@ def test_only_selected_types_are_synced():
     collector(client, FakeKV(), {}, types=["hosts", "cves", "nonsense"]).run()
     # CVEs also read hosts and websites for the ShadowTrackr score; hosts comes from the run's cache.
     assert [c[0] for c in client.calls] == ["hosts", "cves_assets", "vulnerabilities", "websites"]
+
+
+class GroupKeyClient(FixtureClient):
+    """A group key: lists two organizations, list endpoints need organization_id."""
+
+    def __init__(self, organizations=None, **kwargs):
+        super().__init__(**kwargs)
+        self.organizations = organizations
+
+    def request(self, endpoint, body):
+        if isinstance(self.organizations, Exception):
+            raise self.organizations
+        return {"data": {"organizations": [{"oid": 1, "name": "A"}, {"oid": 2, "name": "B"}]}}
+
+    def post(self, endpoint, body=None):
+        if not (body or {}).get("organization_id"):
+            self.calls.append((endpoint, body))
+            return []
+        return super().post(endpoint, body)
+
+
+def test_refused_organizations_means_normal_key():
+    for error in (AuthError("HTTP 403 from organizations"), APIError("Error: No groupcode provided")):
+        assert list_organizations(GroupKeyClient(organizations=error)) is None
+
+
+def test_transient_organizations_failure_stops_the_run():
+    kv = FakeKV()
+    client = GroupKeyClient(organizations=TransientError("HTTP 503 from organizations"))
+    with pytest.raises(TransientError):
+        collector(client, kv, {}).run()
+    assert client.calls == [] and kv.data == {}
+
+
+def test_all_empty_inventory_is_warned(caplog):
+    client = GroupKeyClient(organizations=AuthError("HTTP 403 from organizations"))
+    with caplog.at_level(logging.WARNING, logger="test"):
+        collector(client, FakeKV(), {}, types=["hosts", "domains"]).run()
+    assert "could not list its organizations" in caplog.text
+
+
+def test_group_key_is_not_warned(caplog):
+    with caplog.at_level(logging.WARNING, logger="test"):
+        summaries = collector(GroupKeyClient(), FakeKV(), {}, types=["hosts"]).run()
+    assert [s["organization"] for s in summaries] == ["A", "B"]
+    assert "could not list" not in caplog.text
 
 
 # --- against the mock server --------------------------------------------------

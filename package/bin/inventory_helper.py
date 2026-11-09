@@ -7,7 +7,7 @@ from solnlib.modular_input import checkpointer
 from solnlib.splunk_rest_client import SplunkRestClient
 from splunklib import modularinput as smi
 
-from shadowtrackr_common import ADDON_NAME, CHECKPOINT_COLLECTION, build_client, logger_for_input, to_int
+from shadowtrackr_common import ADDON_NAME, AUTH_HINT, CHECKPOINT_COLLECTION, build_client, logger_for_input, to_int
 from shadowtrackr_lib.client import AuthError, ShadowTrackrError
 from shadowtrackr_lib.inventory import InventoryCollector, KVStore, validate_interval
 from shadowtrackr_lib.inventory_types import DEFAULT_TYPES, TYPES
@@ -106,7 +106,7 @@ def stream_events(inputs: smi.InputDefinition, event_writer: smi.EventWriter):
                 e,
                 "Authentication Error",
                 msg_before="ShadowTrackr rejected the API key for account "
-                f"'{input_item.get('account')}'. Check the key and that API access is enabled: ",
+                f"'{input_item.get('account')}'. {AUTH_HINT}: ",
             )
         except ShadowTrackrError as e:
             log.log_exception(logger, e, "API Error", msg_before="ShadowTrackr API request failed: ")

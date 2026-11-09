@@ -9,7 +9,7 @@ import sys
 import import_declare_test  # noqa: F401  (adds lib/ to sys.path)
 from splunklib.searchcommands import Configuration, GeneratingCommand, Option, dispatch, validators
 
-from shadowtrackr_common import CredentialAccessError, build_client_for_search, list_account_names, search_service
+from shadowtrackr_common import AUTH_HINT, CredentialAccessError, build_client_for_search, list_account_names, search_service
 from shadowtrackr_lib.client import AuthError, ShadowTrackrError
 from shadowtrackr_lib.query import DEFAULT_MAX_RESULTS, choose_account, run_query
 
@@ -40,7 +40,7 @@ class ShadowTrackrCommand(GeneratingCommand):
             self.error_exit(e, str(e))
             return
         except AuthError as e:
-            self.error_exit(e, "ShadowTrackr rejected the API key of account '{}': {}".format(account, e))
+            self.error_exit(e, "ShadowTrackr rejected the API key of account '{}': {}. {}.".format(account, e, AUTH_HINT))
             return
         except ShadowTrackrError as e:
             self.error_exit(e, "ShadowTrackr query failed: {}".format(e))

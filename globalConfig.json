@@ -47,7 +47,7 @@
                             "type": "text",
                             "label": "API key",
                             "field": "api_key",
-                            "help": "Found in ShadowTrackr under Settings > API access. Requires a Business or Enterprise subscription.",
+                            "help": "Create a key in ShadowTrackr under Settings > API access (it is shown only once). Read-only is enough. For an MSSP, create a Group read-only key in the group settings. Requires a Business or Enterprise subscription.",
                             "required": true,
                             "encrypted": true,
                             "validators": [

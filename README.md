@@ -35,10 +35,25 @@ Search macros, app ShadowTrackr) and pick that index on the inputs.
 
 ### 3. Add your API key
 
-In the app, open **Configuration > Accounts** and add an account with your API
-key (ShadowTrackr: Settings > API access). Leave the API base URL at its
-default. The key is stored encrypted in the Splunk credential store. A group
-(MSSP) key collects every organization in the group.
+Create a key in ShadowTrackr under **Settings > API access** (Create key). The
+app only reads, so pick the **Read-only** access level. An MSSP can collect
+every organization in its group with one key: a group administrator creates a
+**Group read-only** key in the group settings. The key is shown only once, so
+copy it straight away. Keys created before scoped keys existed keep working.
+
+In the app, open **Configuration > Accounts** and add an account with the key.
+Leave the API base URL at its default. The key is stored encrypted in the
+Splunk credential store.
+
+Two key settings need attention:
+
+- **Expiry:** keys expire after one year by default. When a key expires, the
+  inputs stop with "API key expired". Note the date, or choose "never". To
+  replace a key, roll it in ShadowTrackr (the old key keeps working for a grace
+  period) and paste the new key into the account.
+- **IP allowlist:** if you restrict the key to IP addresses, add the public IP
+  address Splunk connects from. On Splunk Cloud, that is your stack's outbound
+  IP addresses. Behind a proxy, it is the proxy's address.
 
 If Splunk reaches the internet through a proxy, set it under
 **Configuration > Proxy**.
@@ -322,7 +337,10 @@ corrects the CIM type for a few event types.
 | Symptom | Check |
 |---|---|
 | No events | Run `index=_internal source=*shadowtrackr_*.log*`. The input logs every run and every API error there. For more detail, set the log level to DEBUG under Configuration > Logging. |
-| "Invalid API key" or "no API access" in the log | Copy the key again from ShadowTrackr: Settings > API access. API access needs a Business or Enterprise subscription. |
+| "Invalid API key" or "no API access" in the log | Check the key in ShadowTrackr: Settings > API access. A revoked key, or one created on another install, gives this error. Keys are shown only once, so create a new one if needed. API access needs a Business or Enterprise subscription. |
+| "API key expired" in the log | Create or roll a key in ShadowTrackr and paste it into the account under Configuration > Accounts. |
+| HTTP 403 in the log with a valid key | Three causes are possible. The key has an IP allowlist that does not include Splunk's public IP address. The key lacks the read scope (every access level has it). Or a group key asks for an organization outside its group. |
+| Group (MSSP) key, inventory empty | The input log warns when every type returns no rows. A group key must be able to list its organizations; use a Group read-only key. |
 | Connection errors | Splunk cannot reach `api.shadowtrackr.com`; set the proxy under Configuration > Proxy. |
 | Events in another index than the dashboards search | The `shadowtrackr_index` macro must match the input's index. |
 | Vulnerabilities, Certificates or Asset 360 empty | Create the Inventory input and wait for its first run (or lower the interval once). Check that the KV Store is up: run `\| rest /services/kvstore/status`. |
@@ -357,14 +375,15 @@ make hec                      # send synthetic webhook deliveries through HEC an
 timestamps shifted to the present. Add an account in Splunk with:
 
 - API base URL: `http://host.docker.internal:8081/api/v4`
-- API key: `mock-api-key-0000000000`, or `mock-group-key-000000000` for a group
-  (MSSP) key with two organizations
+- API key: `mock-api-key-0000000000`, or `mock-group-key-000000000` for a Group
+  read-only (MSSP) key with two organizations
 
 The mock implements the v4 API (since_id paging, structured fields,
 `/event_types`, status codes, group keys). `python3 mock_api/server.py --legacy`
 behaves like the API before those changes. Fault injection keys:
 `mock-error-500`, `mock-error-429`, `mock-error-slow`, `mock-error-html` and
-`mock-no-api-access`. `POST /_mock/insert` adds an event, e.g. a late insert.
+`mock-no-api-access`, `mock-expired-key` (401 "API key expired") and
+`mock-ip-not-allowed` (403, outside the IP allowlist). `POST /_mock/insert` adds an event, e.g. a late insert.
 
 ### Dev logs for Asset 360
 

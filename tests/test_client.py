@@ -3,7 +3,7 @@ import socket
 
 import pytest
 
-from mock_api.server import DEFAULT_API_KEY, GROUP_API_KEY, NO_ACCESS_KEY, org_for
+from mock_api.server import DEFAULT_API_KEY, EXPIRED_KEY, GROUP_API_KEY, IP_NOT_ALLOWED_KEY, NO_ACCESS_KEY, org_for
 from shadowtrackr_lib.client import (
     APIError,
     AuthError,
@@ -325,6 +325,24 @@ def test_mock_no_api_access_is_403(mock_api):
     client = ShadowTrackrClient(NO_ACCESS_KEY, base_url=mock_api)
     with pytest.raises(AuthError, match="not enabled"):
         client.events_since(0, 10)
+
+
+def test_mock_expired_key_is_401(mock_api):
+    client = ShadowTrackrClient(EXPIRED_KEY, base_url=mock_api)
+    with pytest.raises(AuthError, match="API key expired"):
+        client.events_since(0, 10)
+
+
+def test_mock_ip_outside_allowlist_is_403(mock_api):
+    client = ShadowTrackrClient(IP_NOT_ALLOWED_KEY, base_url=mock_api)
+    with pytest.raises(AuthError, match="IP address"):
+        client.events_since(0, 10)
+
+
+def test_mock_group_read_only_key_cannot_read_organization_keys(mock_api):
+    client = ShadowTrackrClient(GROUP_API_KEY, base_url=mock_api)
+    with pytest.raises(AuthError, match="insufficient_scope"):
+        client.request("organizations", {"groupcode": "x"})
 
 
 def test_mock_unknown_endpoint_is_json_404(mock_api):

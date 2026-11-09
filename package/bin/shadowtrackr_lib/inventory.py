@@ -20,7 +20,7 @@ import re
 import time
 from typing import Any, Callable, Dict, Iterable, List, Optional
 
-from .client import AuthError, ShadowTrackrError
+from .client import AuthError, ShadowTrackrError, TransientError
 from .inventory_types import TYPES, InventoryType, Row
 
 EMPTY_RUNS_BEFORE_GONE = 2
@@ -65,11 +65,19 @@ class KVStore:
 def list_organizations(client: Any) -> Optional[List[Dict[str, Any]]]:
     """Organizations for a group key, or None for a normal key.
 
-    A normal key gets an error ("No groupcode provided") from /organizations.
+    Any group key may list its organizations, including a Group read-only key,
+    as long as no groupcode is sent (that would also return the keys and need
+    group_admin). A normal key is refused: live answers "No groupcode provided"
+    with HTTP 200, and a 401/403 counts as refused too.
+
+    Transient failures are raised: taking a group key for a normal one would
+    sync nothing, because group keys get no data without organization_id.
     """
     try:
         envelope = client.request("organizations", {})
-    except (AuthError, ShadowTrackrError):
+    except TransientError:
+        raise
+    except ShadowTrackrError:
         return None
     data = envelope.get("data")
     if not isinstance(data, dict) or not isinstance(data.get("organizations"), list):
@@ -191,6 +199,11 @@ class InventoryCollector:
                 summary = self._sync(inv_type, org, existing, empty_runs)
                 summaries.append(summary)
             self.save_state({"empty_runs": empty_runs})
+        synced = [s for s in summaries if s.get("status") in ("ok", "skipped_empty")]
+        if organizations is None and synced and not any(s["present"] for s in synced):
+            self.logger.warning(
+                "Every inventory type returned no rows. If this is a group (MSSP) key, it could not list its "
+                "organizations, and a group key gets no data without one. Check the key in ShadowTrackr.")
         return summaries
 
     def _sync(self, inv_type: InventoryType, org: Optional[Dict[str, Any]], existing: List[Row],
