@@ -1,0 +1,90 @@
+# Build, test and AppInspect the app on every push and pull request.
+# A version tag (v1.2.3) also publishes a GitHub release with the package.
+#
+# To release: bump VERSION in the Makefile, globalConfig.json and
+# package/app.manifest, add release notes to package/README.txt, commit, then
+#   git tag v1.2.3 && git push origin v1.2.3
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The oldest Python the app supports (Splunk 9.x bundles 3.9).
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Install tools
+        run: |
+          sudo apt-get update && sudo apt-get install -y libmagic1  # AppInspect
+          python -m venv venv
+          venv/bin/pip install -r requirements-dev.txt
+
+      - name: Check versions and release notes
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            python3 -I tools/release_info.py check "$GITHUB_REF_NAME"
+          else
+            python3 -I tools/release_info.py check
+          fi
+
+      - name: Test
+        run: make test
+
+      - name: Test against the bundled libraries
+        run: make test-bundled
+
+      - name: Package and AppInspect (cloud)
+        run: make package
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: dist/*.tar.gz
+          if-no-files-found: error
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: package
+          path: dist
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          python3 -I tools/release_info.py notes > notes.md
+          cat >> notes.md <<EOF
+
+          Upload \`shadowtrackr-${version}.tar.gz\` to Splunk (Apps > Manage Apps > Install app from file), or install the app from Splunkbase.
+          EOF
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" dist/*.tar.gz --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" dist/*.tar.gz --verify-tag \
+              --title "ShadowTrackr app for Splunk ${version}" --notes-file notes.md
+          fi

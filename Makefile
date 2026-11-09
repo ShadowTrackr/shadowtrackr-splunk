@@ -16,10 +16,13 @@ build:
 	$(UCC_GEN) build --ta-version $(VERSION) --python-binary-name "$(VENV)/bin/python3"
 
 # The tarball to upload to Splunkbase, checked by AppInspect the way Splunkbase does.
+# With --ci AppInspect exits 101-104 on failures, future failures and warnings;
+# warnings (103) don't block Splunkbase or Cloud vetting, so only they pass.
 package: build
 	mkdir -p dist
 	$(UCC_GEN) package --path "output/$(APP)" -o dist
-	$(APPINSPECT) inspect "dist/$(APP)-$(VERSION).tar.gz" --included-tags cloud
+	$(APPINSPECT) inspect "dist/$(APP)-$(VERSION).tar.gz" --included-tags cloud --ci; \
+		code=$$?; [ $$code -eq 0 ] || [ $$code -eq 103 ] || { echo "AppInspect failed (exit $$code)"; exit 1; }
 
 test:
 	$(PYTEST) tests/
