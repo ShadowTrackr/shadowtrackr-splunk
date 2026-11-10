@@ -26,8 +26,9 @@ import urllib.parse
 import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MGMT = "https://localhost:8089"
-HEC = "https://localhost:8088/services/collector/event"
+# Another Splunk (e.g. a throwaway one for screenshots): set SPLUNK_MGMT_URL and SPLUNK_HEC_URL.
+MGMT = os.environ.get("SPLUNK_MGMT_URL", "https://localhost:8089")
+HEC = os.environ.get("SPLUNK_HEC_URL", "https://localhost:8088/services/collector/event")
 INDEX = "devlogs"
 CTX = ssl._create_unverified_context()
 
