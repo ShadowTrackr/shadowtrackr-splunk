@@ -379,7 +379,7 @@
             "type": "ds.search",
             "name": "CVEs",
             "options": {
-                "query": "`shadowtrackr_inventory_summary` status=ok type=cves | where \"$org$\"=\"*\" OR organization=\"$org$\" | fillnull value=\"-\" organization | bin _time span=1d | stats latest(present) as present by _time, input, organization | timechart span=1d sum(present) as \"CVE findings\" | filldown \"CVE findings\"",
+                "query": "`shadowtrackr_inventory_summary` status=ok type=cves | where \"$org$\"=\"*\" OR organization=\"$org$\" | eval present=coalesce(open, present) | fillnull value=\"-\" organization | bin _time span=1d | stats latest(present) as present by _time, input, organization | timechart span=1d sum(present) as \"CVE findings\" | filldown \"CVE findings\"",
                 "queryParameters": {
                     "earliest": "$global_time.earliest$",
                     "latest": "$global_time.latest$"

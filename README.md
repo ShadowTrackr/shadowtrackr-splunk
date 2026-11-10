@@ -135,7 +135,7 @@ them at your indexes for speed.
 | Dashboard | Shows |
 |---|---|
 | Overview | Events, problems and warnings over time; inventory counts and trends |
-| Vulnerabilities & software | CVEs by severity, exploited and CISA KEV, vulnerable software, assets at risk |
+| Vulnerabilities & software | CVEs by severity, exploited and CISA KEV, vulnerable software, assets at risk. Shows open CVE findings by default; resolved ones stay listed for 7 days, marked resolved (Status filter). |
 | Certificates | Expiry, grades, issuers and weak configurations |
 | Supplier dependency | ShadowTrackr's Supplier Dependency Report: the suppliers behind your assets (hosting, registrars, certificate issuers, mail and SaaS), how many assets each holds, a world map of where they are headquartered, how many are outside the EU, and where each is controlled from (Sovereign European, Fully European, European subsidiary, Non-European). Needs supplier mapping in your ShadowTrackr plan; without it ShadowTrackr hides the names, countries and control, and the dashboard says so. |
 | Asset 360 | One IP, hostname or URL from every angle: ShadowTrackr's inventory, findings, CVEs, certificates, DNS and events, and your own firewall, proxy/WAF, authentication and IDS logs for the asset and its related IPs and hostnames. Click an asset in the other dashboards to open it here. |
@@ -282,7 +282,7 @@ in the inventory lookups and adds:
 | `st_phishy`, `st_lookalike_of`, `st_phishy_score` | the name is (a subdomain of) a phishy lookalike domain |
 | `st_first_seen`, `st_last_seen` | when ShadowTrackr first and last saw it |
 
-It makes no API calls: the data comes from the ShadowTrackr Inventory input,
+Resolved CVE findings do not count. It makes no API calls: the data comes from the ShadowTrackr Inventory input,
 so any role that can read the app's lookups can use it. Each distinct value
 is looked up once per search, and lookups are batched, so it is fine on large
 searches. It runs on the search head.

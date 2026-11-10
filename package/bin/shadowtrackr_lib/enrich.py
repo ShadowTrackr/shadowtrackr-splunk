@@ -220,6 +220,7 @@ class Enricher:
 
     def _common(self, rows: List[Row], cves: List[Row], certs: List[Row], websites: List[Row],
                 types: List[str]) -> Row:
+        cves = [c for c in cves if not _flag(c.get("resolved"))]  # resolved findings are not on the asset any more
         ctx = self.unknown()
         known = bool(rows)
         ctx["known"] = 1 if known else 0

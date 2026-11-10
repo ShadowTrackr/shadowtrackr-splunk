@@ -141,6 +141,20 @@ def test_cves_per_asset(kv_data, kv):
     assert ctx["vulnerable"] == 1
 
 
+def test_resolved_cves_do_not_count():
+    rows = {"shadowtrackr_hosts": [{"ip": "192.0.2.77", "st_present": 1, "tcp_ports": [22]}],
+            "shadowtrackr_cves": [
+                {"cve": "CVE-OPEN", "asset": "192.0.2.77", "cvss": 5.0, "st_present": 1, "resolved": 0},
+                {"cve": "CVE-FIXED", "asset": "192.0.2.77", "cvss": 9.8, "exploited": 1, "st_present": 1,
+                 "resolved": 1, "resolved_at": "2026-11-08T10:00:00Z", "resolved_reason": "Version upgraded"},
+                {"cve": "CVE-OLD-API", "asset": "192.0.2.77", "cvss": 4.0, "st_present": 1}]}
+    key = normalize("192.0.2.77")
+    ctx = Enricher(FakeKV(rows)).enrich([key])[key]
+    assert sorted(ctx["cves"]) == ["CVE-OLD-API", "CVE-OPEN"]
+    assert ctx["cve_count"] == 2 and ctx["max_cvss"] == 5.0
+    assert ctx["exploited"] == 0
+
+
 def test_undiscovered_subdomain_is_in_scope_but_not_known(kv):
     ctx = Enricher(kv).enrich([("domain", "brand-new.example.com")])[("domain", "brand-new.example.com")]
     assert ctx["known"] == 0

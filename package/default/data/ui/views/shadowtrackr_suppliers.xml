@@ -1,10 +1,10 @@
 <dashboard version="2" theme="dark">
     <label>Supplier dependency</label>
-    <description>The suppliers behind your internet-facing assets, how many assets each holds, and where each is controlled from: ShadowTrackr's Supplier Dependency Report, from the inventory lookups.</description>
+    <description>The suppliers behind your internet-facing assets, how many assets each holds, and where each is controlled from.</description>
     <definition><![CDATA[
 {
     "title": "Supplier dependency",
-    "description": "The suppliers behind your internet-facing assets, how many assets each holds, and where each is controlled from: ShadowTrackr's Supplier Dependency Report, from the inventory lookups.",
+    "description": "The suppliers behind your internet-facing assets, how many assets each holds, and where each is controlled from.",
     "inputs": {
         "input_control": {
             "type": "input.dropdown",

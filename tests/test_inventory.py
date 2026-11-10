@@ -103,6 +103,59 @@ def test_cves_get_flags_from_vulnerabilities():
     assert rows["CVE-2"]["exploited"] is False
 
 
+def test_cves_keep_their_own_flags():
+    # A newer /cves_assets row says exploited/cisa itself; /vulnerabilities must not clear that.
+    cves = [{"cve": "CVE-1", "asset": "a", "software": "s", "exploited": True, "cisa": True}]
+    rows = TYPES["cves"].rows(enrich_cves(cves, []))
+    assert rows[0]["exploited"] is True and rows[0]["cisa_kev"] is True
+
+
+# A /cves_assets row since November 2026: score, threat intel and resolved status in the row itself.
+NEW_CVE_ROW = {"cve": "CVE-2026-123158", "cvss_score": 8.1, "severity": "HIGH", "shadowtrackr_cvss_score": 9.2,
+               "shadowtrackr_severity": "CRITICAL", "asset": "192.0.2.10", "software": "OpenSSH 8.9 p1",
+               "cisa": True, "exploited": True, "ncsc_number": None, "ncsc_chance": None, "ncsc_impact": None,
+               "resolved": False, "resolved_at": None, "resolved_reason": None,
+               "first_seen": "2026-11-05T21:01:23Z", "last_seen": "2026-11-05T21:01:23Z"}
+
+
+def test_cve_row_with_score_and_status_from_the_api():
+    row, = TYPES["cves"].rows([NEW_CVE_ROW])
+    assert (row["cvss"], row["st_score"], row["severity"]) == (8.1, 9.2, "high")
+    assert row["exploited"] is True and row["cisa_kev"] is True
+    assert row["resolved"] is False
+    assert "resolved_at" not in row and "resolved_reason" not in row
+
+
+def test_resolved_cve_is_marked():
+    row, = TYPES["cves"].rows([dict(NEW_CVE_ROW, resolved=True, resolved_at="2026-11-08T10:00:00Z",
+                                    resolved_reason="Version upgraded")])
+    assert row["resolved"] is True
+    assert (row["resolved_at"], row["resolved_reason"]) == ("2026-11-08T10:00:00Z", "Version upgraded")
+
+
+def test_older_api_rows_have_no_resolved_field():
+    row, = TYPES["cves"].rows([{"cve": "CVE-1", "asset": "a", "software": "s", "cvss_score": 7}])
+    assert "resolved" not in row
+
+
+def test_nested_details_only_fill_gaps():
+    hosts = [{"ip": "192.0.2.10", "vulnerabilities": [{"name": "OpenSSH", "vulnerabilities": [
+        {"cve": "CVE-2026-123158", "shadowtrackr_cvss_score": 7.0, "ncsc_number": "NCSC-2026-0001"}]}]}]
+    out, = add_nested_cve_details([NEW_CVE_ROW], hosts)
+    assert out["shadowtrackr_cvss_score"] == 9.2  # the row's own score wins
+    assert out["ncsc_number"] == "NCSC-2026-0001"  # a gap is filled
+
+
+def test_summary_counts_open_cve_findings():
+    rows = TYPES["cves"].rows([NEW_CVE_ROW, dict(NEW_CVE_ROW, asset="192.0.2.11", resolved=True,
+                                                 resolved_at="2026-11-08T10:00:00Z")])
+    summary = reconcile(TYPES["cves"], rows, [], 1000, 30 * DAY, 0, None)["summary"]
+    assert (summary["present"], summary["open"]) == (2, 1)
+    # Types and older APIs without a resolved field have no "open".
+    hosts = reconcile(TYPES["hosts"], rows_for("hosts"), [], 1000, 30 * DAY, 0, None)["summary"]
+    assert "open" not in hosts
+
+
 def test_cloud_providers_are_merged_per_provider():
     merged = merge_cloud_providers([
         {"cloud_provider": "Cloudflare", "assets": 2, "urls": ["a"], "first_seen": "2026-10-02", "last_seen": "x1"},

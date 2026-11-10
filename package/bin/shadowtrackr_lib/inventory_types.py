@@ -190,7 +190,11 @@ def project_software(r: Row) -> Row:
 
 
 def project_cve(r: Row) -> Row:
+    """One CVE on one asset. Since November 2026 /cves_assets carries the ShadowTrackr score, the
+    threat intel flags and resolved/resolved_at/resolved_reason itself; older APIs get the score
+    and flags merged in from /vulnerabilities and the CVE lists nested in /hosts and /websites."""
     severity = r.get("severity")
+    resolved = _bool(r.get("resolved"))
     return dict(
         cve=r.get("cve"),
         asset=r.get("asset"),
@@ -203,6 +207,10 @@ def project_cve(r: Row) -> Row:
         ncsc_impact=r.get("ncsc_impact"),
         exploited=_bool(r.get("exploited")),
         cisa_kev=_bool(r.get("cisa")),
+        # Only APIs that report it say whether a finding is resolved; unknown means open.
+        resolved=resolved if "resolved" in r else None,
+        resolved_at=r.get("resolved_at") if resolved else None,
+        resolved_reason=r.get("resolved_reason") if resolved else None,
         **_seen(r),
     )
 
@@ -354,7 +362,8 @@ def enrich_cves(records: List[Row], vulnerabilities: List[Row]) -> List[Row]:
     out = []
     for r in records:
         exploited, cisa = flags.get(r.get("cve"), (False, False))
-        out.append(dict(r, exploited=exploited, cisa=cisa))
+        # Keep what the row says itself (newer APIs); /vulnerabilities only adds to it.
+        out.append(dict(r, exploited=_bool(r.get("exploited")) or exploited, cisa=_bool(r.get("cisa")) or cisa))
     return out
 
 
@@ -387,7 +396,14 @@ def add_nested_cve_details(records: List[Row], assets: List[Row]) -> List[Row]:
                 for field in NESTED_CVE_FIELDS[1:]:
                     if isinstance(cve.get(field), str) and cve[field]:
                         found[field] = cve[field]
-    return [dict(r, **details[r["cve"]]) if r.get("cve") in details else r for r in records]
+    out = []
+    for r in records:
+        found = details.get(r.get("cve"))
+        if found:
+            # Fill gaps only: a newer /cves_assets has these fields itself.
+            r = dict(r, **{k: v for k, v in found.items() if r.get(k) in (None, "")})
+        out.append(r)
+    return out
 
 
 # --- type registry ----------------------------------------------------------
@@ -479,7 +495,7 @@ TYPES: Dict[str, InventoryType] = {t.name: t for t in [
                      "exploited", "cisa_kev") + SEEN),
     InventoryType("cves", "cves_assets", "Vulnerabilities (CVE per asset)", ("cve", "asset", "software"), project_cve,
                   _f("cve", "asset", "software", "cvss", "severity", "st_score", "ncsc", "ncsc_chance", "ncsc_impact",
-                     "exploited", "cisa_kev") + SEEN,
+                     "exploited", "cisa_kev", "resolved", "resolved_at", "resolved_reason") + SEEN,
                   extra=(("vulnerabilities", enrich_cves), ("hosts", add_nested_cve_details),
                          ("websites", add_nested_cve_details))),
     InventoryType("cloud_providers", "cloud_providers", "Cloud providers", ("cloud_provider",), project_cloud_provider,

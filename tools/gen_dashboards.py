@@ -42,6 +42,12 @@ TREND = (' | fillnull value="-" organization | bin _time span=1d'
          ' | stats latest(present) as present by _time, input, organization'
          ' | timechart span=1d sum(present) as "{label}" | filldown "{label}"')
 TIME_TOKENS = {"earliest": "$global_time.earliest$", "latest": "$global_time.latest$"}
+# CVE findings in the summary: "open" leaves out resolved ones (APIs that report them); older runs
+# only have "present".
+OPEN_CVES = " | eval present=coalesce(open, present)"
+# A resolved CVE finding stays in the lookup while ShadowTrackr lists it (7 days), marked resolved.
+CVE_STATUS = ('eval Status=if(resolved=1, "✓ Resolved".if(isnotnull(resolved_at), " ".substr(resolved_at, 1, 10), ""),'
+              ' "Open")')
 
 
 # --- building blocks ----------------------------------------------------------
@@ -264,7 +270,7 @@ def overview():
     def surface(title):
         inv_type, label = title
         return ('`shadowtrackr_inventory_summary` status=ok type={} | where "$org$"="*" OR organization="$org$"'
-                + TREND).format(inv_type, label=label)
+                + (OPEN_CVES if inv_type == "cves" else "") + TREND).format(inv_type, label=label)
 
     org, ds_orgs = org_input("`shadowtrackr_events` vendor_account=* | stats count by vendor_account"
                              " | rename vendor_account AS org_name")
@@ -387,7 +393,8 @@ SEVERITY_ORDER = 'eval order=case(severity="critical",1, severity="high",2, seve
 
 
 def vulnerabilities():
-    cves = lookup("cves") + " | where coalesce(cvss, 0)>=$min_cvss$ AND ($threat_intel$)"
+    all_cves = lookup("cves") + " | where coalesce(cvss, 0)>=$min_cvss$ AND ($threat_intel$)"
+    cves = all_cves + " AND ($status$)"
     software = lookup("software")
     org, ds_orgs = lookup_orgs()
     data_sources = {
@@ -395,6 +402,7 @@ def vulnerabilities():
         "ds_critical": ds("Critical CVEs", cves + " | where cvss>=9 | stats dc(cve) as Critical", time=False),
         "ds_exploited": ds("Exploited CVEs", cves + " | where exploited=1 | stats dc(cve) as Exploited", time=False),
         "ds_assets": ds("Affected assets", cves + " | stats dc(asset) as Assets", time=False),
+        "ds_resolved": ds("Resolved findings", all_cves + " | where resolved=1 | stats count", time=False),
         "ds_severity": ds(
             "CVEs by severity",
             cves + ' | eval severity=coalesce(severity, "unknown") | stats dc(cve) as CVEs by severity | '
@@ -403,14 +411,18 @@ def vulnerabilities():
             " | table Severity CVEs | eval {Severity}=CVEs | fields - CVEs", time=False),
         "ds_trend": ds("CVE findings over time",
                        ('`shadowtrackr_inventory_summary` type=cves status=ok'
-                        ' | where "$org$"="*" OR organization="$org$"' + TREND).format(label="CVE findings")),
+                        ' | where "$org$"="*" OR organization="$org$"' + OPEN_CVES + TREND).format(
+                           label="Open CVE findings")),
         "ds_top_cves": ds(
             "Top CVEs",
             cves + " | stats max(cvss) as cvss max(st_score) as st_score max(exploited) as exploited"
             " max(cisa_kev) as cisa_kev max(ncsc) as ncsc max(ncsc_chance) as ncsc_chance max(ncsc_impact) as ncsc_impact"
-            " dc(asset) as Assets values(software) as Software by cve"
+            " dc(asset) as Assets dc(eval(if(resolved=1, asset, null()))) as resolved_assets"
+            " values(software) as Software by cve"
+            ' | eval Status=case(resolved_assets=0, "Open", resolved_assets>=Assets, "✓ Resolved",'
+            ' true(), "Open, ".resolved_assets." resolved")'
             " | sort - exploited - cisa_kev - cvss - Assets | rename cve AS CVE" + CVE_COLUMNS_SPL
-            + ' | table CVSS "ST score" CVE "Threat intel" Assets Software', time=False),
+            + ' | table CVSS "ST score" CVE "Threat intel" Status Assets Software', time=False),
         "ds_software": ds(
             "Software with known CVEs",
             software + " | where cve_count>0 | sort - exploited - max_cvss - asset_count"
@@ -429,6 +441,7 @@ def vulnerabilities():
         "viz_critical": single("▲ Critical (CVSS 9+)", "ds_critical", PROBLEM),
         "viz_exploited": single("⚠ Known exploited", "ds_exploited", PROBLEM),
         "viz_assets": single("Affected assets", "ds_assets"),
+        "viz_resolved": single("✓ Resolved findings", "ds_resolved"),
         "viz_severity": {
             "type": "splunk.column", "title": "CVEs by severity", "dataSources": {"primary": "ds_severity"},
             "options": {"stackMode": "stacked", "legendDisplay": "off", "dataValuesDisplay": "all",
@@ -441,7 +454,9 @@ def vulnerabilities():
                         "xAxisTitleVisibility": "hide", "yAxisTitleVisibility": "hide"},
         },
         "viz_top_cves": cve_table("Top CVEs", "ds_top_cves", description="Exploited first, then CISA KEV, then by CVSS. "
-                                  "ST score is the ShadowTrackr score.", widths={"Assets": 90, "Software": 430}),
+                                  "ST score is the ShadowTrackr score. Status filter: open findings by default; "
+                                  "resolved ones stay listed for 7 days.",
+                                  widths={"Status": 150, "Assets": 90, "Software": 280}),
         "viz_software": table("Software with known CVEs", "ds_software", count=9),
         "viz_asset_risk": asset_table("Assets with the most serious CVEs", "ds_asset_risk", "Asset", count=9),
     }
@@ -460,12 +475,19 @@ def vulnerabilities():
                                   {"label": "NCSC NL", "value": "isnotnull(ncsc)"},
                                   {"label": "Known exploited only", "value": "exploited=1"}]},
         },
+        "input_status": {
+            "type": "input.dropdown", "title": "Status",
+            "options": {"token": "status", "defaultValue": "coalesce(resolved, 0)!=1",
+                        "items": [{"label": "Open", "value": "coalesce(resolved, 0)!=1"},
+                                  {"label": "Resolved", "value": "resolved=1"},
+                                  {"label": "All", "value": "true()"}]},
+        },
         "input_org": org,
         "input_time": dict(TIME_INPUT, title="Trend period"),
     }
     rows = [
-        ("viz_cves", 0, 0, 300, 110), ("viz_critical", 300, 0, 300, 110),
-        ("viz_exploited", 600, 0, 300, 110), ("viz_assets", 900, 0, 300, 110),
+        ("viz_cves", 0, 0, 240, 110), ("viz_critical", 240, 0, 240, 110),
+        ("viz_exploited", 480, 0, 240, 110), ("viz_assets", 720, 0, 240, 110), ("viz_resolved", 960, 0, 240, 110),
         ("viz_severity", 0, 110, 500, 300), ("viz_trend", 500, 110, 700, 300),
         ("viz_top_cves", 0, 410, 1200, 420),
         ("viz_software", 0, 830, 600, 420), ("viz_asset_risk", 600, 830, 600, 420),
@@ -700,7 +722,7 @@ def supplier_dependency():
     ]
     dashboard("shadowtrackr_suppliers", "Supplier dependency",
               "The suppliers behind your internet-facing assets, how many assets each holds, and where each is "
-              "controlled from: ShadowTrackr's Supplier Dependency Report, from the inventory lookups.",
+              "controlled from.",
               "Supplier dependency · [Open the report in ShadowTrackr](" + REPORT_URL + ")",
               inputs, data_sources, visualizations, rows)
 
@@ -857,8 +879,9 @@ def asset360():
             time=False),
         "ds_cves": ds(
             "CVEs", related("cves", "asset")
-            + " | sort - exploited - cisa_kev - cvss | rename cve AS CVE, software AS Software, asset AS Asset"
-            + CVE_COLUMNS_SPL + ' | table CVSS "ST score" CVE "Threat intel" Asset Software', time=False),
+            + " | eval st_resolved=coalesce(resolved, 0) | " + CVE_STATUS
+            + " | sort st_resolved - exploited - cisa_kev - cvss | rename cve AS CVE, software AS Software, asset AS Asset"
+            + CVE_COLUMNS_SPL + ' | table CVSS "ST score" CVE "Threat intel" Status Asset Software', time=False),
         "ds_dns": ds(
             "DNS records", related("dns", "url")
             + " | sort url rrtype | rename url AS Name, rrtype AS Type, rrdata AS Value | table Name Type Value",
@@ -917,8 +940,9 @@ def asset360():
         "viz_services": table("Services", "ds_services", count=10),
         "viz_websites": asset_table("Websites", "ds_websites", "URL", count=8),
         "viz_certificates": table("Certificates", "ds_certificates", count=8),
-        "viz_cves": cve_table("CVEs", "ds_cves", count=8, description="ST score is the ShadowTrackr score.",
-                              widths={"Asset": 230, "Software": 290}),
+        "viz_cves": cve_table("CVEs", "ds_cves", count=8, description="ST score is the ShadowTrackr score. "
+                              "Open findings first; resolved ones stay listed for 7 days.",
+                              widths={"Threat intel": 240, "Status": 210, "Asset": 150, "Software": 220}),
         "viz_dns": table("DNS records", "ds_dns", count=8),
         "viz_event_timeline": {
             "type": "splunk.column", "title": "ShadowTrackr events", "dataSources": {"primary": "ds_event_timeline"},

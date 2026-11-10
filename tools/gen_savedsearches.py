@@ -105,7 +105,7 @@ DETECTIONS = [
                        "first inventory sync is the baseline and does not alert. One result per asset, with the severity "
                        "of its worst CVE as ShadowTrackr rates it (from CVSS; unknown when there is no score).",
         "search": "| inputlookup shadowtrackr_cves " + NEW_INVENTORY +
-                  " AND (exploited=1 OR cisa_kev=1 OR " + NCSC + ")"
+                  " AND coalesce(resolved, 0)!=1 AND (exploited=1 OR cisa_kev=1 OR " + NCSC + ")"
                   " | eval threat_intel=mvappend(if(exploited=1, \"known exploited\", null()),"
                   " if(cisa_kev=1, \"CISA KEV\", null()), if(" + NCSC + ", \"NCSC NL\", null()))"
                   " | eval st_severity_rank=case(severity=\"critical\", 4, severity=\"high\", 3,"

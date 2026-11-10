@@ -130,18 +130,22 @@ def reconcile(
         elif not present and now - _int(old.get("st_last_synced"), now) > retention_seconds:
             delete.append(key)
 
+    summary = {
+        "type": inv_type.name,
+        "status": "skipped_empty" if skip_gone else "ok",
+        "present": len(rows),
+        "new": new,
+        "gone": gone,
+        "deleted": len(delete),
+    }
+    if any("resolved" in r for r in rows):
+        # CVE findings: resolved ones stay listed for a while; trends count the open ones.
+        summary["open"] = sum(1 for r in rows if r.get("resolved") not in (True, 1, "1", "true"))
     return {
         "save": save,
         "delete": delete,
         "empty_runs": (empty_runs + 1) if not rows else 0,
-        "summary": {
-            "type": inv_type.name,
-            "status": "skipped_empty" if skip_gone else "ok",
-            "present": len(rows),
-            "new": new,
-            "gone": gone,
-            "deleted": len(delete),
-        },
+        "summary": summary,
     }
 
 
