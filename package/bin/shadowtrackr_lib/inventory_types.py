@@ -215,6 +215,25 @@ def project_cve(r: Row) -> Row:
     )
 
 
+def collapse_cve_findings(records: List[Row]) -> List[Row]:
+    """One record per CVE, asset and software.
+
+    /cves_assets can list the same finding more than once, for example resolved earlier and found
+    again since. The open one wins over a resolved one, then the most recently seen; first_seen is
+    the earliest of them. Without this the order of the API's answer decided.
+    """
+    groups: Dict[Tuple[Any, Any, Any], List[Row]] = {}
+    for r in records:
+        if isinstance(r, dict):
+            groups.setdefault((r.get("cve"), r.get("asset"), r.get("software")), []).append(r)
+    out = []
+    for rows in groups.values():
+        best = max(rows, key=lambda r: (not _bool(r.get("resolved")), _text(r.get("last_seen"))))
+        firsts = [r.get("first_seen") for r in rows if r.get("first_seen")]
+        out.append(dict(best, first_seen=min(firsts)) if firsts else best)
+    return out
+
+
 def project_cloud_provider(r: Row) -> Row:
     return dict(cloud_provider=r.get("cloud_provider"), asset_count=r.get("assets"),
                 urls=_scalars(r.get("urls")), **_seen(r))
@@ -497,7 +516,8 @@ TYPES: Dict[str, InventoryType] = {t.name: t for t in [
                   _f("cve", "asset", "software", "cvss", "severity", "st_score", "ncsc", "ncsc_chance", "ncsc_impact",
                      "exploited", "cisa_kev", "resolved", "resolved_at", "resolved_reason") + SEEN,
                   extra=(("vulnerabilities", enrich_cves), ("hosts", add_nested_cve_details),
-                         ("websites", add_nested_cve_details))),
+                         ("websites", add_nested_cve_details)),
+                  expand=collapse_cve_findings),
     InventoryType("cloud_providers", "cloud_providers", "Cloud providers", ("cloud_provider",), project_cloud_provider,
                   _f("cloud_provider", "asset_count", "urls") + SEEN, expand=merge_cloud_providers),
     InventoryType("remote_login_services", "remote_login_services", "Remote login services", (), project_generic, ()),

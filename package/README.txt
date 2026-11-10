@@ -35,6 +35,17 @@ Setup
 
 Release notes
 -------------
+1.2.0
+- Every CVE now has its ShadowTrackr score, and CVSS scores keep their
+  decimal (needs the ShadowTrackr API update of November 2026).
+- Resolved CVE findings are marked resolved instead of looking open. The
+  Vulnerabilities dashboard shows open findings by default, with a Status
+  filter, a Resolved findings tile and a Status column; Asset 360 shows the
+  status too. | stenrich, the ES asset priority and the "New known
+  exploited vulnerability" detection count open findings only. The CVE
+  trend counts open findings from the first inventory sync after the
+  upgrade, so it drops once.
+
 1.1.0
 - First Splunkbase release.
 - Events, Inventory and alert webhook inputs; | stenrich and | shadowtrackr

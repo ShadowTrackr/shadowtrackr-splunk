@@ -1,5 +1,5 @@
 APP ?= shadowtrackr
-VERSION ?= 1.1.0
+VERSION ?= 1.2.0
 
 # Tools from the project venv, so it needn't be activated. Quoted, because the
 # checkout path may contain spaces (make's own PATH lookup breaks on those).

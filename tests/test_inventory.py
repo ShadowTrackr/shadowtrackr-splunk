@@ -146,6 +146,23 @@ def test_nested_details_only_fill_gaps():
     assert out["ncsc_number"] == "NCSC-2026-0001"  # a gap is filled
 
 
+def test_open_finding_wins_over_a_resolved_duplicate():
+    resolved = dict(NEW_CVE_ROW, resolved=True, resolved_at="2026-11-06T12:00:00Z", resolved_reason="Version unknown",
+                    first_seen="2026-10-01T00:00:00Z", last_seen="2026-11-03T09:29:31Z")
+    found_again = dict(NEW_CVE_ROW, first_seen="2026-11-08T00:00:00Z", last_seen="2026-11-09T10:27:44Z")
+    for records in ([resolved, found_again], [found_again, resolved]):
+        row, = TYPES["cves"].rows(records)
+        assert row["resolved"] is False
+        assert (row["first_seen"], row["last_seen"]) == ("2026-10-01T00:00:00Z", "2026-11-09T10:27:44Z")
+
+
+def test_latest_resolved_duplicate_wins():
+    older = dict(NEW_CVE_ROW, resolved=True, resolved_reason="Version unknown", last_seen="2026-11-01T00:00:00Z")
+    newer = dict(NEW_CVE_ROW, resolved=True, resolved_reason="Software removed", last_seen="2026-11-05T00:00:00Z")
+    row, = TYPES["cves"].rows([newer, older])
+    assert row["resolved_reason"] == "Software removed"
+
+
 def test_summary_counts_open_cve_findings():
     rows = TYPES["cves"].rows([NEW_CVE_ROW, dict(NEW_CVE_ROW, asset="192.0.2.11", resolved=True,
                                                  resolved_at="2026-11-08T10:00:00Z")])
