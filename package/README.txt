@@ -22,6 +22,7 @@ Requirements
 ------------
 - A ShadowTrackr Business or Enterprise subscription (for API access).
 - Splunk Enterprise or Splunk Cloud Platform with the KV Store enabled.
+  Tested on Splunk Enterprise 10.2 and 9.4.
 
 Setup
 -----

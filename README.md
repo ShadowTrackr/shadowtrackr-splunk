@@ -10,7 +10,7 @@ API access requires a ShadowTrackr Business or Enterprise subscription.
 
 - A ShadowTrackr Business or Enterprise subscription (for API access).
 - Splunk Enterprise or Splunk Cloud Platform with the KV Store enabled. The app
-  is developed and tested on Splunk Enterprise 10.2.
+  is developed on Splunk Enterprise 10.2 and tested on 10.2 and 9.4.
 - Optional: CIM-compliant add-ons for your firewall, proxy, authentication and
   IDS logs (for Asset 360 and the log-based detections).
 - Optional: Splunk Enterprise Security, for the correlation searches and the
